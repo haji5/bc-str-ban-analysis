@@ -1,5 +1,7 @@
 # BRIEFING NOTE: Deputy Minister, Ministry of Housing and Municipal Affairs
 
+> *Independent portfolio analysis written in briefing-note format. It was not commissioned by, prepared for, or endorsed by the Government of British Columbia.*
+
 **Subject:** Early evidence on the *Short-Term Rental Accommodations Act* (Bill 35): listing supply and rents, Jan 2022 to Jun 2026
 **Classification:** For decision support. Analytical; not legal advice
 **Date:** October 2026 · **Data through:** June 2026

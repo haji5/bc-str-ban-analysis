@@ -21,6 +21,13 @@ RESULTS_PATH = PROCESSED / "model_results.json"
 MANIFEST_PATH = RAW / "manifest.json"
 SYNTHETIC_PARQUET = PROCESSED / "synthetic_listings.parquet"
 
+# Committed snapshot of what the dashboard reads (the full database is ~110 MB and
+# depends on gitignored raw downloads). Refresh with `make app-data`.
+APP_DATA = DATA / "app"
+APP_DB_PATH = APP_DATA / "str_app.duckdb"
+APP_RESULTS_PATH = APP_DATA / "model_results.json"
+APP_TABLES = ["str_rent_panel", "str_nbhd_panel", "snapshot_months"]
+
 SEED = 20240501  # Phase-1 enforcement date; fixes every random draw in the repo.
 
 # --------------------------------------------------------------------------- panel

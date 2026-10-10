@@ -204,6 +204,20 @@ def test_event_study_window_and_pretrends(results):
     assert np.mean([c["estimate"] for c in post]) < 0, "post-period delisting must be negative"
 
 
+def test_committed_app_bundle_is_complete():
+    """The dashboard's committed data must open read-only and hold every table it queries."""
+    assert cfg.APP_DB_PATH.exists() and cfg.APP_RESULTS_PATH.exists(), "run `make app-data`"
+    assert cfg.APP_DB_PATH.stat().st_size < 50e6, "bundle must stay small enough for GitHub"
+    con = duckdb.connect(str(cfg.APP_DB_PATH), read_only=True)
+    try:
+        for t in cfg.APP_TABLES:
+            assert con.execute(f"SELECT count(*) FROM {t}").fetchone()[0] > 0, t
+    finally:
+        con.close()
+    bundled = json.loads(cfg.APP_RESULTS_PATH.read_text())
+    assert bundled["results"] and "rent" in bundled
+
+
 def test_rent_models_run(results):
     rf = results["rent"]["rent_reduced_form"]
     assert rf["nobs"] > 100 and all(math.isfinite(c["estimate"]) for c in rf["coefs"])

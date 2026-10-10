@@ -16,6 +16,7 @@ TARGETS = {
     "plots": [["-m", "src.plots"]],
     "test": [["-m", "pytest"]],
     "app": [["-m", "streamlit", "run", "app/app.py"]],
+    "app-data": [["-m", "src.database", "--export-app"]],
 }
 TARGETS["all"] = TARGETS["data"] + TARGETS["sql"] + TARGETS["model"] + TARGETS["test"]
 
