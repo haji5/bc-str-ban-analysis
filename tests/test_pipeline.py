@@ -214,7 +214,7 @@ def test_event_study_window_and_pretrends(results, spec):
 
 
 def test_committed_app_bundle_is_complete():
-    """The dashboard's committed data must open read-only and hold every table it queries."""
+    """The committed bundle must open read-only and hold every table the dashboard exporter queries."""
     assert cfg.APP_DB_PATH.exists() and cfg.APP_RESULTS_PATH.exists(), "run `make app-data`"
     assert cfg.APP_DB_PATH.stat().st_size < 50e6, "bundle must stay small enough for GitHub"
     con = duckdb.connect(str(cfg.APP_DB_PATH), read_only=True)

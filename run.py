@@ -15,7 +15,6 @@ TARGETS = {
     "model": [["-m", "src.models"], ["-m", "src.plots"]],
     "plots": [["-m", "src.plots"]],
     "test": [["-m", "pytest"]],
-    "app": [["-m", "streamlit", "run", "app/app.py"]],
     "app-data": [["-m", "src.database", "--export-app"]],
     "site": [["scripts/export_dashboard.py"]],
 }

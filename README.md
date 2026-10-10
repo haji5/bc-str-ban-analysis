@@ -7,9 +7,9 @@ An end-to-end causal evaluation of British Columbia's *Short-Term Rental Accommo
 - assembles 52 Inside Airbnb snapshots, 40 of them recovered from unlisted archives;
 - joins them to Statistics Canada, Bank of Canada and CMHC housing data in a DuckDB SQL layer;
 - estimates difference-in-differences and event-study models with cluster-robust, wild-bootstrap and randomization inference;
-- presents the results in an interactive web dashboard, a Streamlit app for live re-estimation, and a two-page policy brief.
+- presents the results in an interactive web dashboard and a two-page policy brief.
 
-**Stack:** Python · DuckDB/SQL · pyfixest · statsmodels · pandas · matplotlib · Plotly · D3.js · Streamlit · pytest
+**Stack:** Python · DuckDB/SQL · pyfixest · statsmodels · pandas · matplotlib · D3.js · pytest
 **Data:** Inside Airbnb listings through June 2026 (retrieved October 2026); StatCan CPI Table 18-10-0004-01; Bank of Canada policy rate; CMHC Rental Market Survey.
 
 ## Headline findings
@@ -123,12 +123,11 @@ This checks the estimators, not the identification. The simulated data have para
 make install        # venv + dependencies (Python 3.10-3.13)
 make all            # data -> sql -> model (+figures) -> test; real data with automatic fallback
 make all OFFLINE=1  # no network: committed fixtures + synthetic panel only
-make app            # Streamlit app (local, live re-estimation)
 make app-data       # refresh the dashboard's committed data bundle (data/app/)
 make site           # re-export the static dashboard's data (docs/) from that bundle
 ```
 
-Without GNU make (e.g. on Windows), `python run.py all` runs the same steps, and `python run.py all --offline` is the offline version. Individual targets are `data`, `sql`, `model`, `plots`, `test`, `app`, `app-data` and `site`.
+Without GNU make (e.g. on Windows), `python run.py all` runs the same steps, and `python run.py all --offline` is the offline version. Individual targets are `data`, `sql`, `model`, `plots`, `test`, `app-data` and `site`.
 
 A full run downloads about 135 MB (Inside Airbnb listings files only, plus StatCan and Bank of Canada). Once downloads finish, the build takes seconds and estimation about a minute and a half (the randomization inference and 9,999-draw wild bootstraps dominate). Results are identical across rebuilds up to floating-point tolerance.
 
@@ -143,14 +142,7 @@ A full run downloads about 135 MB (Inside Airbnb listings files only, plus StatC
 
 Every figure on it is traceable: clicking a number shows the dataset or formula behind it. It is a static site in `docs/`, served by GitHub Pages. `make site` (`scripts/export_dashboard.py`) exports its data from the committed bundle in `data/app/`, and a test fails if the two drift apart. To preview it locally, run `python -m http.server -d docs` and open http://localhost:8000.
 
-**Streamlit app** (`app/app.py`, run locally with `make app`). The analyst's workbench:
-
-- city and room-type filters;
-- an adjustable event-study window;
-- regressions re-estimated live;
-- a data-provenance tab.
-
-The app never builds data itself. If `make all` has produced the full database, it reads that. Otherwise it reads a 2 MB bundle committed in `data/app/`, which holds the panel tables and model results. After re-running the pipeline, refresh the bundle with `make app-data`.
+The bundle in `data/app/` (about 2 MB) holds the panel tables and model results, so the dashboard can be rebuilt from a fresh clone without the ~110 MB database. After re-running the pipeline, refresh it with `make app-data`, then `make site`.
 
 ## Limitations
 
@@ -186,7 +178,6 @@ src/database.py          DuckDB build; executes queries/*.sql
 src/models.py            S1-S5 specifications
 src/plots.py             figures in assets/
 queries/01-03_*.sql      SQL transformation layer
-app/app.py               Streamlit app (local, live re-estimation)
 docs/                    static D3 dashboard (GitHub Pages); data/ is generated
 scripts/                 export_dashboard.py: dashboard data from data/app/ (make site)
 tests/test_pipeline.py   pytest suite

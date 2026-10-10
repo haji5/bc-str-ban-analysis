@@ -193,9 +193,8 @@ def generate(out_path: Path) -> int:
 
     # ------------------------------------------------------------------ row assembly
     # Rows are formatted and written in chunks so peak memory stays well under 1 GB
-    # (materialising ~1M rows of strings at once peaked at ~2.8 GB, which is more than a
-    # Streamlit Community Cloud container gets). Every random array is drawn up front, in
-    # the original call order and at full length, so the output is identical to a
+    # (materialising ~1M rows of strings at once peaked at ~2.8 GB). Every random array is
+    # drawn up front, in the original call order and at full length, so the output is identical to a
     # single-pass build; booleans/small ints are narrowed right after drawing.
     A = pd.DataFrame(attr)
     pos = np.concatenate(rows_id) - 10_000_000            # row -> listing attribute index

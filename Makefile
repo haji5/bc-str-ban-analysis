@@ -12,7 +12,7 @@ endif
 PY := $(if $(wildcard $(VENV_PY)),$(VENV_PY),$(PYTHON))
 export STR_OFFLINE := $(if $(OFFLINE),1,)
 
-.PHONY: install data sql model plots test app app-data site all clean
+.PHONY: install data sql model plots test app-data site all clean
 
 install:
 	$(PYTHON) -m venv .venv
@@ -35,10 +35,7 @@ plots:
 test:
 	$(PY) -m pytest
 
-app:
-	$(PY) -m streamlit run app/app.py
-
-# Refresh the small committed database the dashboard reads (run after `make all`).
+# Refresh the small committed bundle (data/app/) the dashboard is exported from (run after `make all`).
 app-data:
 	$(PY) -m src.database --export-app
 
