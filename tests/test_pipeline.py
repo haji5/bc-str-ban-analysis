@@ -7,6 +7,8 @@ from __future__ import annotations
 import hashlib
 import json
 import math
+import subprocess
+import sys
 from datetime import date
 
 import duckdb
@@ -223,6 +225,19 @@ def test_committed_app_bundle_is_complete():
         con.close()
     bundled = json.loads(cfg.APP_RESULTS_PATH.read_text())
     assert bundled["results"] and "rent" in bundled
+
+
+def test_static_dashboard_data_matches_bundle(tmp_path):
+    """docs/ (GitHub Pages) must hold exactly what the exporter writes from data/app/: no hand edits."""
+    subprocess.run([sys.executable, str(cfg.ROOT / "scripts/export_dashboard.py"), str(cfg.ROOT), str(tmp_path)],
+                   check=True, capture_output=True)
+    site = cfg.ROOT / "docs"
+    exported = sorted(p.name for p in (tmp_path / "data").glob("*.json"))
+    assert exported == sorted(p.name for p in (site / "data").glob("*.json")), "run `make site`"
+    for name in exported:
+        assert (tmp_path / "data" / name).read_bytes() == (site / "data" / name).read_bytes(), f"{name}: run `make site`"
+    manifest = json.loads((site / "datasets.json").read_text(encoding="utf-8"))
+    assert manifest == json.loads((tmp_path / "datasets.json").read_text(encoding="utf-8")), "run `make site`"
 
 
 def test_rent_models_run(results):

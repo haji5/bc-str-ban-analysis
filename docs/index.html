@@ -1,0 +1,481 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Did BC's short-term rental ban work? · Bill 35 dashboard</title>
+<meta name="description" content="Interactive evaluation of British Columbia's Short-Term Rental Accommodations Act (Bill 35), 2022-2026: listing supply, neighbourhood change, difference-in-differences and event-study estimates, and rents.">
+<meta property="og:title" content="Did BC's short-term rental ban work?">
+<meta property="og:description" content="Interactive evaluation of BC's Bill 35: supply, causal estimates and rents, 2022-2026.">
+<meta property="og:type" content="website">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232a78d6'/%3E%3Cpath d='M7 22l6-7 5 4 7-9' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400&display=swap">
+<link rel="stylesheet" href="site.css">
+<style>
+.bc { font-family: var(--font-sans); color: var(--color-fg); max-width: 1240px; margin-inline: auto; }
+.bc b, .bc strong { font-weight: 600; }
+.bc-eyebrow { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); letter-spacing: .08em; text-transform: uppercase; display: flex; flex-wrap: wrap; gap: var(--cds-gap-xs) var(--cds-gap-md); }
+.bc-eyebrow span + span::before { content: "·"; margin-right: var(--cds-gap-md); }
+.bc-title { font-family: var(--font-serif); font-weight: 400; font-size: calc(var(--cds-font-size-title) * 1.6); line-height: 1.08; letter-spacing: -.01em; margin: var(--cds-gap-sm) 0; text-wrap: balance; }
+.bc-take { font-size: calc(var(--cds-font-size-body) * 1.15); line-height: 1.55; max-width: 68ch; color: var(--color-fg-muted); margin: 0; text-wrap: pretty; }
+.bc-take b { color: var(--color-fg); font-variant-numeric: tabular-nums; }
+.bc-tabs { display: flex; gap: var(--cds-gap-xs); border-bottom: 1px solid var(--color-border-line); margin: var(--cds-gap-xl) 0 var(--cds-gap-lg); overflow-x: auto; scrollbar-width: none; }
+.bc-tab { appearance: none; background: none; border: 0; border-bottom: 2px solid transparent; margin-bottom: -1px; padding: var(--cds-pad-sm) var(--cds-pad-md); font: inherit; font-size: var(--cds-font-size-body); color: var(--color-fg-muted); cursor: pointer; white-space: nowrap; }
+.bc-tab:hover { color: var(--color-fg); }
+.bc-tab[aria-selected="true"] { color: var(--color-fg); border-bottom-color: var(--color-fg); }
+.bc-tab-n { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); margin-right: 6px; font-variant-numeric: tabular-nums; }
+.bc-page[hidden] { display: none; }
+.bc-section { margin: var(--cds-gap-xl) 0 var(--cds-gap-md); }
+.bc-section h2 { font-family: var(--font-serif); font-weight: 400; font-size: var(--cds-font-size-title); margin: 0 0 var(--cds-gap-xs); }
+.bc-section p { margin: 0; color: var(--color-fg-muted); max-width: 72ch; line-height: 1.5; }
+.bc-cols { display: grid; gap: var(--cds-gap-md); grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); margin-bottom: var(--cds-gap-md); }
+.bc-cols-4 { display: grid; gap: var(--cds-gap-md); grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr)); margin-bottom: var(--cds-gap-md); }
+.bc-kpis { display: grid; gap: var(--cds-gap-md); grid-template-columns: repeat(auto-fit, minmax(min(100%, 10.5rem), 1fr)); margin-bottom: var(--cds-gap-md); }
+.bc-card { background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-lg); min-width: 0; container-type: inline-size; margin-bottom: var(--cds-gap-md); }
+.bc-cols > .bc-card, .bc-cols-4 > .bc-card, .bc-kpis > .bc-card { margin-bottom: 0; }
+.bc-card-h { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--cds-gap-sm) var(--cds-gap-md); flex-wrap: wrap; }
+.bc-card h3 { font-size: var(--cds-font-size-heading); font-weight: var(--cds-font-weight-medium); margin: 0; }
+.bc-note { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); margin: 4px 0 var(--cds-gap-sm); line-height: 1.45; max-width: 80ch; }
+.bc-foot { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); margin-top: var(--cds-gap-sm); line-height: 1.45; }
+.bc-kpi { display: flex; flex-direction: column; padding: var(--cds-pad-md) var(--cds-pad-lg); }
+.bc-kpi-l { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); line-height: 1.35; min-height: 2.7em; }
+.bc-kpi-v { font-family: var(--font-serif); font-weight: 400; font-size: calc(var(--cds-font-size-title) * 1.3); line-height: 1.1; margin: var(--cds-gap-xs) 0; font-variant-numeric: tabular-nums; }
+.bc-kpi-s { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); font-variant-numeric: tabular-nums; margin-top: auto; }
+.bc-kpi-s b { color: var(--color-fg); }
+.bc-kpi--hero { border-color: var(--color-fg); }
+.bc-kpi--hero .bc-kpi-v { font-size: calc(var(--cds-font-size-title) * 1.6); }
+.bc .bc-good { color: var(--color-ok); }
+.bc .bc-bad { color: var(--color-bad); }
+.bc-chart { position: relative; min-height: 300px; }
+.bc-chart.bc-h200 { min-height: 200px; }
+.bc-chart.bc-h240 { min-height: 240px; }
+.bc-chart.bc-h340 { min-height: 340px; }
+.bc-chart svg { display: block; overflow: visible; }
+.bc-chart svg text { font-family: var(--font-sans); }
+.bc-tick { font-size: var(--cds-font-size-caption); fill: var(--color-fg-muted); font-variant-numeric: tabular-nums; }
+.bc-gl { stroke: var(--cds-chart-grid); stroke-width: 1; }
+.bc-axis { stroke: var(--cds-chart-axis); stroke-width: 1; }
+.bc-ref { stroke: var(--cds-chart-reference); stroke-width: 1; stroke-dasharray: 4 3; }
+.bc-pol { stroke: var(--cds-chart-reference); stroke-width: 1; stroke-dasharray: 3 3; }
+.bc-pol-t { font-size: var(--cds-font-size-caption); fill: var(--color-fg-muted); }
+.bc-band { fill: var(--cds-chart-grid); opacity: .45; }
+.bc-line { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.bc-rule { stroke: var(--cds-chart-axis); stroke-width: 1; pointer-events: none; }
+.bc-endlab { font-size: var(--cds-font-size-caption); font-variant-numeric: tabular-nums; }
+.bc-endlab-v { fill: var(--color-fg); font-weight: 600; }
+.bc-lab { font-size: var(--cds-font-size-caption); fill: var(--color-fg); }
+.bc-lab-m { font-size: var(--cds-font-size-caption); fill: var(--color-fg-muted); font-variant-numeric: tabular-nums; }
+.bc-tip { position: absolute; z-index: 5; pointer-events: none; background: var(--cds-surface-popover); border: 1px solid var(--cds-border); border-radius: var(--cds-radius); box-shadow: var(--cds-shadow-popover); padding: var(--cds-pad-xs) var(--cds-pad-sm); font-size: var(--cds-font-size-caption); min-width: 150px; max-width: 280px; }
+.bc-tip[hidden] { display: none; }
+.bc-tip-h { color: var(--cds-text-secondary); margin-bottom: 2px; }
+.bc-tip-r { display: flex; align-items: center; gap: 6px; line-height: 1.6; }
+.bc-tip-n { flex: 1; }
+.bc-tip-v { font-weight: 600; font-variant-numeric: tabular-nums; }
+.bc-sw { width: 8px; height: 8px; border-radius: 2px; flex: none; }
+.bc-fail { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+.bc-fail-dot { width: .375rem; height: .375rem; border-radius: 50%; background: var(--color-bad); }
+.bc-seg { display: inline-flex; border: 1px solid var(--color-border-line); border-radius: 999px; padding: 2px; gap: 2px; flex-wrap: wrap; }
+.bc-seg button { appearance: none; border: 0; background: none; font: inherit; font-size: var(--cds-font-size-caption); padding: 4px 12px; border-radius: 999px; color: var(--color-fg-muted); cursor: pointer; white-space: nowrap; }
+.bc-seg button:hover { color: var(--color-fg); }
+.bc-seg button[aria-pressed="true"] { background: var(--color-fg); color: var(--color-bg); }
+.bc-ctrls { display: flex; gap: var(--cds-gap-sm); flex-wrap: wrap; align-items: center; }
+.bc-legend { display: flex; flex-wrap: wrap; gap: 4px var(--cds-gap-md); font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); margin: var(--cds-gap-xs) 0; }
+.bc-legend span { display: inline-flex; align-items: center; gap: 6px; }
+.bc-legend i { display: inline-block; width: 14px; height: 3px; border-radius: 2px; }
+.bc-legend i.bc-dotk { width: 9px; height: 9px; border-radius: 50%; }
+.bc-legend i.bc-ring { width: 7px; height: 7px; border-radius: 50%; background: none !important; border: 1.5px solid var(--color-fg-muted); }
+.bc-findings { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--cds-gap-md); grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); counter-reset: f; }
+.bc-findings li { counter-increment: f; font-size: var(--cds-font-size-body); line-height: 1.5; color: var(--color-fg-muted); }
+.bc-findings li::before { content: "0" counter(f); display: block; font-family: var(--font-serif); font-size: var(--cds-font-size-title); color: var(--color-fg); margin-bottom: 4px; }
+.bc-findings b { color: var(--color-fg); display: block; }
+.bc-findings .bc-num { color: var(--color-fg); font-weight: 600; display: inline; font-variant-numeric: tabular-nums; }
+.bc-pill { display: inline-flex; align-items: center; gap: 6px; font-size: var(--cds-font-size-caption); padding: 3px 10px; border-radius: 999px; border: 1px solid var(--color-border-line); font-variant-numeric: tabular-nums; }
+.bc-pill i { width: 7px; height: 7px; border-radius: 50%; background: var(--color-fg-muted); }
+.bc-pill.bc-pass i { background: var(--color-ok); }
+.bc-pill.bc-fails i { background: var(--color-bad); }
+.bc-banner { border-left: 3px solid var(--color-warn); padding: var(--cds-pad-xs) var(--cds-pad-md); font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); margin: var(--cds-gap-sm) 0 var(--cds-gap-md); line-height: 1.5; }
+.bc-banner[hidden] { display: none; }
+.bc-tablewrap { max-height: 480px; overflow: auto; margin-top: var(--cds-gap-sm); }
+.bc-table { width: 100%; border-collapse: collapse; font-size: var(--cds-font-size-caption); font-variant-numeric: tabular-nums; }
+.bc-table th { position: sticky; top: 0; background: var(--color-panel); text-align: left; font-weight: var(--cds-font-weight-medium); color: var(--color-fg-muted); border-bottom: 1px solid var(--color-border-line); padding: 0; z-index: 1; }
+.bc-table th button { appearance: none; background: none; border: 0; font: inherit; color: inherit; padding: 6px 8px; cursor: pointer; width: 100%; text-align: inherit; white-space: nowrap; }
+.bc-table th[aria-sort="ascending"] button::after { content: " ↑"; }
+.bc-table th[aria-sort="descending"] button::after { content: " ↓"; }
+.bc-table td { padding: 6px 8px; border-bottom: 1px solid var(--color-border-line); vertical-align: middle; }
+.bc-table .bc-n { text-align: right; }
+.bc-table tr:hover td { background: var(--cds-chart-grid); }
+.bc-tag { display: inline-block; padding: 1px 7px; border-radius: 999px; border: 1px solid var(--color-border-line); color: var(--color-fg-muted); }
+.bc-search { font: inherit; font-size: var(--cds-font-size-caption); padding: 5px 10px; border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); background: var(--color-bg); color: var(--color-fg); min-width: 12rem; }
+@container (max-width: 620px) { .bc-hide-sm { display: none; } }
+.bc-flow { display: grid; gap: var(--cds-gap-sm); grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr)); counter-reset: s; }
+.bc-step { border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-md); position: relative; counter-increment: s; background: var(--color-bg); }
+.bc-step::before { content: counter(s); position: absolute; top: var(--cds-pad-sm); right: var(--cds-pad-md); font-family: var(--font-serif); color: var(--color-fg-muted); }
+.bc-step h4 { margin: 0 0 4px; font-size: var(--cds-font-size-body); font-weight: var(--cds-font-weight-medium); }
+.bc-step p { margin: 0; font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); line-height: 1.45; }
+.bc-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: var(--cds-gap-sm); }
+.bc-chips span { font-size: var(--cds-font-size-caption); border: 1px solid var(--color-border-line); border-radius: 999px; padding: 2px 9px; color: var(--color-fg-muted); }
+.bc-design { width: 100%; border-collapse: collapse; font-size: var(--cds-font-size-caption); line-height: 1.45; }
+.bc-design th, .bc-design td { text-align: left; padding: 8px; border-bottom: 1px solid var(--color-border-line); vertical-align: top; }
+.bc-design th { color: var(--color-fg-muted); font-weight: var(--cds-font-weight-medium); }
+.bc-list { margin: 0; padding-left: 1.1em; font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); line-height: 1.55; }
+.bc-list li { margin-bottom: 6px; }
+.bc-list b { color: var(--color-fg); }
+.bc-colophon { margin: var(--cds-gap-xl) 0 var(--cds-gap-md); font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); border-top: 1px solid var(--color-border-line); padding-top: var(--cds-gap-md); line-height: 1.5; }
+[data-dash-source-state="refreshing"] { opacity: .5; transition: opacity var(--cds-dur-slow); }
+[data-dash-source-state="empty"] { color: transparent; }
+@media (prefers-reduced-motion: no-preference) {
+  .bc-draw { stroke-dasharray: 1; stroke-dashoffset: 1; animation: bc-draw 1.4s var(--cds-ease-out) forwards; }
+  .bc-pop { animation: bc-pop var(--cds-dur-slow) var(--cds-ease-out) both; }
+  @keyframes bc-draw { to { stroke-dashoffset: 0; } }
+  @keyframes bc-pop { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+}
+</style>
+</head>
+<body>
+<div class="bc">
+  <header id="top">
+    <div class="bc-eyebrow"><span>Policy evaluation</span><span>British Columbia · Bill 35</span><span>Inside Airbnb, StatCan, BoC, CMHC · data through Jun 2026</span></div>
+    <h1 class="bc-title">Did BC’s short-term rental ban work?</h1>
+    <p class="bc-take" id="takeaway">Where Bill 35 changed the rules, its measured effect on short-term rental supply is <b data-source="cum_effect" data-field="total_pct" data-row="0" data-fmt="pct0">—</b> against untouched areas of the same region. Where a bylaw already existed, it barely moved, and rents kept climbing: Victoria’s CPI for rented accommodation is up <b data-source="headline" data-field="change" data-where="key=cpi_victoria" data-fmt="pct">—</b> since the announcement. Bill 35 is a compliance tool, not a measurable affordability lever.</p>
+  </header>
+
+  <nav class="bc-tabs" role="tablist" aria-label="Sections">
+    <button class="bc-tab" role="tab" id="tab-verdict" data-page="verdict" aria-selected="true"><span class="bc-tab-n">01</span>Verdict</button>
+    <button class="bc-tab" role="tab" id="tab-supply" data-page="supply" aria-selected="false"><span class="bc-tab-n">02</span>Supply</button>
+    <button class="bc-tab" role="tab" id="tab-neighbourhoods" data-page="neighbourhoods" aria-selected="false"><span class="bc-tab-n">03</span>Neighbourhoods</button>
+    <button class="bc-tab" role="tab" id="tab-causal" data-page="causal" aria-selected="false"><span class="bc-tab-n">04</span>Causal estimates</button>
+    <button class="bc-tab" role="tab" id="tab-rents" data-page="rents" aria-selected="false"><span class="bc-tab-n">05</span>Rents</button>
+    <button class="bc-tab" role="tab" id="tab-method" data-page="method" aria-selected="false"><span class="bc-tab-n">06</span>Data &amp; method</button>
+  </nav>
+
+  <!-- ============================================================ VERDICT -->
+  <section class="bc-page" id="verdict" role="tabpanel" aria-labelledby="tab-verdict">
+    <div class="bc-kpis" id="kpis">
+      <div class="bc-card bc-kpi bc-kpi--hero" id="kpi-effect">
+        <div class="bc-kpi-l">Causal effect on listings, covered vs exempt areas</div>
+        <div class="bc-kpi-v" data-source="cum_effect" data-field="total_pct" data-row="0" data-fmt="pct0">—</div>
+        <div class="bc-kpi-s">Phase 1 <b data-source="cum_effect" data-field="phase1_pct" data-row="0" data-fmt="pct0">—</b> (p <b data-source="cum_effect" data-field="phase1_ri_p" data-row="0" data-fmt="p">—</b>) · Phase 2 <b data-source="cum_effect" data-field="phase2_pct" data-row="0" data-fmt="pct0">—</b> (p <b data-source="cum_effect" data-field="phase2_ri_p" data-row="0" data-fmt="p">—</b>) · randomization inference</div>
+      </div>
+      <div class="bc-card bc-kpi" id="kpi-covered">
+        <div class="bc-kpi-l">Victoria CRD entire homes, covered areas · Jun 2026</div>
+        <div class="bc-kpi-v" data-source="headline" data-field="post" data-where="key=vic_covered" data-fmt="int">—</div>
+        <div class="bc-kpi-s"><b data-source="headline" data-field="change" data-where="key=vic_covered" data-fmt="pct" data-good="down">—</b> vs Aug 2023</div>
+      </div>
+      <div class="bc-card bc-kpi" id="kpi-exempt">
+        <div class="bc-kpi-l">Victoria CRD entire homes, never-covered areas · Jun 2026</div>
+        <div class="bc-kpi-v" data-source="headline" data-field="post" data-where="key=vic_exempt" data-fmt="int">—</div>
+        <div class="bc-kpi-s"><b data-source="headline" data-field="change" data-where="key=vic_exempt" data-fmt="pct">—</b> vs Aug 2023</div>
+      </div>
+      <div class="bc-card bc-kpi" id="kpi-vancouver">
+        <div class="bc-kpi-l">Vancouver entire homes (2018 bylaw city) · Jun 2026</div>
+        <div class="bc-kpi-v" data-source="headline" data-field="post" data-where="key=van_entire" data-fmt="int">—</div>
+        <div class="bc-kpi-s"><b data-source="headline" data-field="change" data-where="key=van_entire" data-fmt="pct">—</b> vs Sep 2023</div>
+      </div>
+      <div class="bc-card bc-kpi" id="kpi-registry">
+        <div class="bc-kpi-l">BC entire homes showing a provincial registration number</div>
+        <div class="bc-kpi-v" data-source="headline" data-field="post" data-where="key=bc_registration" data-fmt="share">—</div>
+        <div class="bc-kpi-s">Jun 2026 · a further <b data-source="headline" data-field="post" data-where="key=bc_exempt_claim" data-fmt="share">—</b> show “Exempt”</div>
+      </div>
+      <div class="bc-card bc-kpi" id="kpi-rent">
+        <div class="bc-kpi-l">Victoria CPI, rented accommodation</div>
+        <div class="bc-kpi-v" data-source="headline" data-field="change" data-where="key=cpi_victoria" data-fmt="pct" data-good="down">—</div>
+        <div class="bc-kpi-s">Sep 2023 → Jun 2026 · Ottawa <b data-source="headline" data-field="change" data-where="key=cpi_ottawa" data-fmt="pct">—</b></div>
+      </div>
+    </div>
+
+    <div class="bc-card" id="hero-card">
+      <div class="bc-card-h">
+        <div>
+          <h3 id="hero-title">Covered areas fell. Exempt areas next door didn’t.</h3>
+          <p class="bc-note">Active listings in the Victoria Capital Regional District, indexed to Aug 2023 (last snapshot before the announcement) = 100. The never-covered areas (Juan de Fuca electoral area, Southern Gulf Islands) form the within-region control. Salt Spring Island was exempt until its November 2025 opt-in. Metchosin and Highlands are small but within 15 km of Langford, so the rule covers them.</p>
+        </div>
+        <div class="bc-seg" id="hero-room" role="group" aria-label="Room type">
+          <button data-v="entire_home" aria-pressed="true">Entire homes</button>
+          <button data-v="private_room" aria-pressed="false">Private rooms</button>
+        </div>
+      </div>
+      <div class="bc-chart bc-h340" id="hero-chart" data-source="victoria_split"></div>
+      <div class="bc-legend"><span><i class="bc-ring"></i>Truncated scrape (Mar 2026), excluded from estimation</span><span>Shaded: principal-residence rule in force</span></div>
+    </div>
+
+    <div class="bc-cols">
+      <div class="bc-card" id="mini-forest-card">
+        <h3>Three research designs, one direction</h3>
+        <p class="bc-note">Effect on active entire-home listings, % with 95% CI (real data). Phase 2 is incremental to Phase 1.</p>
+        <div class="bc-legend" id="mini-forest-legend"></div>
+        <div class="bc-chart bc-h240" id="mini-forest" data-source="estimates"></div>
+      </div>
+      <div class="bc-card" id="mini-cpi-card">
+        <h3>Rents didn’t follow</h3>
+        <p class="bc-note">StatCan CPI, rented accommodation, Sep 2023 = 100. Ottawa had no comparable provincial policy.</p>
+        <div class="bc-chart bc-h240" id="mini-cpi" data-source="macro"></div>
+      </div>
+    </div>
+
+    <div class="bc-card" id="findings-card">
+      <h3>What the evidence says</h3>
+      <p class="bc-note">Four findings, each traceable to a number on this dashboard.</p>
+      <ol class="bc-findings">
+        <li><b>Supply fell where the rules changed.</b> Covered-area entire homes in the CRD: <span class="bc-num" data-source="headline" data-field="change" data-where="key=vic_covered" data-fmt="pct">—</span>. Never-covered rural areas: <span class="bc-num" data-source="headline" data-field="change" data-where="key=vic_exempt" data-fmt="pct">—</span>. The Phase-1 effect, <span class="bc-num" data-source="cum_effect" data-field="phase1_pct" data-row="0" data-fmt="pct0">—</span>, holds up (randomization p = <span class="bc-num" data-source="cum_effect" data-field="phase1_ri_p" data-row="0" data-fmt="p">—</span>). The Phase-2 increment cannot be told apart from chance (p = <span class="bc-num" data-source="cum_effect" data-field="phase2_ri_p" data-row="0" data-fmt="p">—</span>).</li>
+        <li><b>Vancouver didn’t shrink.</b> A principal-residence bylaw has applied since 2018; entire homes ended at <span class="bc-num" data-source="headline" data-field="change" data-where="key=van_entire" data-fmt="pct">—</span> versus Sep 2023 after a dip at the registry deadline (<span class="bc-num" data-source="headline" data-field="change" data-where="key=van_entire_same_season" data-fmt="pct">—</span> against June 2023, the same season). The June 2026 snapshot has an unusually high share of new listings, so the size of the rebound is uncertain.</li>
+        <li><b>Commercial operators left first.</b> The multi-listing-host share of Victoria entire homes moved <span class="bc-num" data-source="headline" data-field="change" data-where="key=vic_multi_host" data-fmt="pp">—</span>.</li>
+        <li><b>No rent relief is visible.</b> CPI rent rose <span class="bc-num" data-source="headline" data-field="change" data-where="key=cpi_victoria" data-fmt="pct">—</span> in Victoria, <span class="bc-num" data-source="headline" data-field="change" data-where="key=cpi_vancouver" data-fmt="pct">—</span> in Vancouver and <span class="bc-num" data-source="headline" data-field="change" data-where="key=cpi_ottawa" data-fmt="pct">—</span> in untreated Ottawa.</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ============================================================ SUPPLY -->
+  <section class="bc-page" id="supply" role="tabpanel" aria-labelledby="tab-supply" hidden>
+    <div class="bc-section">
+      <h2 id="supply-h">Listing trajectories, four markets</h2>
+      <p>Two treated BC markets and two controls on one shared scale. Ottawa’s own 2022 bylaw and Seattle’s missing pre-period are why neither is relied on for inference.</p>
+    </div>
+    <div class="bc-ctrls" style="margin-bottom: var(--cds-gap-md)">
+      <div class="bc-seg" id="supply-room" role="group" aria-label="Room type">
+        <button data-v="entire_home" aria-pressed="true">Entire homes</button>
+        <button data-v="private_room" aria-pressed="false">Private rooms</button>
+      </div>
+      <div class="bc-seg" id="supply-measure" role="group" aria-label="Measure">
+        <button data-v="index" aria-pressed="true">Indexed, pre-announcement = 100</button>
+        <button data-v="count" aria-pressed="false">Active listings</button>
+      </div>
+    </div>
+    <div class="bc-cols-4" id="supply-grid" data-source="supply">
+      <div class="bc-card" id="sm-vancouver"><h3>Vancouver</h3><p class="bc-note bc-sm-note">—</p><div class="bc-chart bc-h200"></div></div>
+      <div class="bc-card" id="sm-victoria"><h3>Victoria CRD</h3><p class="bc-note bc-sm-note">—</p><div class="bc-chart bc-h200"></div></div>
+      <div class="bc-card" id="sm-ottawa"><h3>Ottawa <span class="bc-tag">control</span></h3><p class="bc-note bc-sm-note">—</p><div class="bc-chart bc-h200"></div></div>
+      <div class="bc-card" id="sm-seattle"><h3>Seattle <span class="bc-tag">control</span></h3><p class="bc-note bc-sm-note">—</p><div class="bc-chart bc-h200"></div></div>
+    </div>
+    <div class="bc-cols">
+      <div class="bc-card" id="multihost-card">
+        <h3>Commercial operators exited first</h3>
+        <p class="bc-note">Share of active entire-home listings run by hosts with more than one listing. Victoria: <b data-source="headline" data-field="pre" data-where="key=vic_multi_host" data-fmt="share">—</b> → <b data-source="headline" data-field="post" data-where="key=vic_multi_host" data-fmt="share">—</b>.</p>
+        <div class="bc-chart bc-h240" id="multihost-chart" data-source="supply"></div>
+      </div>
+      <div class="bc-card" id="registry-card">
+        <h3>Registration went from zero to most listings</h3>
+        <p class="bc-note">Share of active entire-home listings displaying a provincial registration number. Platform validation began Jun 2025.</p>
+        <div class="bc-chart bc-h240" id="registry-chart" data-source="supply"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ NEIGHBOURHOODS -->
+  <section class="bc-page" id="neighbourhoods" role="tabpanel" aria-labelledby="tab-neighbourhoods" hidden>
+    <div class="bc-section">
+      <h2 id="nbhd-h">Where the listings went</h2>
+      <p>Change in active entire-home listings from the last pre-announcement snapshot to Jun 2026, by neighbourhood. Faded bars rest on fewer than 30 listings.</p>
+    </div>
+    <div class="bc-ctrls" style="margin-bottom: var(--cds-gap-md)">
+      <div class="bc-seg" id="nbhd-city" role="group" aria-label="City">
+        <button data-v="victoria" aria-pressed="true">Victoria CRD</button>
+        <button data-v="vancouver" aria-pressed="false">Vancouver</button>
+      </div>
+    </div>
+    <div class="bc-card" id="diverge-card">
+      <h3 id="diverge-title">Change by neighbourhood</h3>
+      <div class="bc-legend"><span><i class="bc-dotk" style="background: var(--bc-c0)"></i>Covered by principal-residence rule</span><span><i class="bc-dotk" style="background: var(--cds-chart-muted)"></i>Exempt area</span></div>
+      <div class="bc-chart" id="diverge-chart" data-source="nbhd_change"></div>
+    </div>
+    <div class="bc-card" id="nbhd-table-card">
+      <div class="bc-card-h">
+        <div><h3>Neighbourhood detail</h3><p class="bc-note">Trend shows every complete snapshot, Jun 2022 – Jun 2026. Licence shown: any city or provincial number displayed.</p></div>
+        <input class="bc-search" id="nbhd-search" type="search" placeholder="Search neighbourhoods" aria-label="Search neighbourhoods">
+      </div>
+      <div class="bc-tablewrap">
+        <table class="bc-table" id="nbhd-table" data-source="nbhd_change" data-row-key="city,neighbourhood">
+          <thead><tr>
+            <th data-field="neighbourhood"><button>Neighbourhood</button></th>
+            <th data-field="coverage" class="bc-hide-sm"><button>Coverage</button></th>
+            <th data-source="nbhd_series" class="bc-hide-sm"><button disabled>Trend</button></th>
+            <th data-field="n_pre" class="bc-n"><button>Before</button></th>
+            <th data-field="n_post" class="bc-n"><button>Jun 2026</button></th>
+            <th data-field="change_pct" class="bc-n"><button>Change</button></th>
+            <th data-field="multi_host_post" class="bc-n bc-hide-sm"><button>Multi-host</button></th>
+            <th data-field="licensed_post" class="bc-n bc-hide-sm"><button>Licence shown</button></th>
+          </tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ CAUSAL -->
+  <section class="bc-page" id="causal" role="tabpanel" aria-labelledby="tab-causal" hidden>
+    <div class="bc-section">
+      <h2 id="causal-h">Causal estimates</h2>
+      <p>Neighbourhood-level difference-in-differences and event studies with neighbourhood-clustered standard errors. The preferred design has only three control areas, so its p-values come from randomization inference: every alternative set of three areas is tried as the control group. Switch to the synthetic panel to see the same pipeline recover a known, simulated truth.</p>
+    </div>
+    <div class="bc-ctrls">
+      <div class="bc-seg" id="causal-src" role="group" aria-label="Data">
+        <button data-v="live" aria-pressed="true">Real data</button>
+        <button data-v="synthetic" aria-pressed="false">Synthetic panel (known truth)</button>
+      </div>
+    </div>
+    <div class="bc-banner" id="synth-banner" hidden>Synthetic data: a calibrated panel generated with a known effect (dotted line and ticks). It validates the estimators; it is not evidence about BC.</div>
+    <div class="bc-card" id="es-card" style="margin-top: var(--cds-gap-md)">
+      <div class="bc-card-h">
+        <div><h3 id="es-title">Event study</h3><p class="bc-note" id="es-note">Effect relative to Sep 2023, log points with 95% CI.</p></div>
+        <div class="bc-seg" id="es-design" role="group" aria-label="Design">
+          <button data-v="S2-ES" aria-pressed="true">Victoria covered vs exempt</button>
+          <button data-v="S3" aria-pressed="false">Entire vs private rooms, BC</button>
+          <button data-v="S4" aria-pressed="false">BC vs control cities</button>
+        </div>
+      </div>
+      <div class="bc-chart bc-h340" id="es-chart" data-source="event_study"></div>
+      <div class="bc-ctrls" style="margin-top: var(--cds-gap-sm)">
+        <span class="bc-pill" id="pt-pill"><i></i>Pre-trend test: F = <b id="pt-f" data-source="pretrend" data-field="F" data-where="id=live|S2-ES" data-fmt="num">—</b>, p = <b id="pt-p" data-source="pretrend" data-field="p" data-where="id=live|S2-ES" data-fmt="p">—</b><span id="pt-ri-wrap">, randomization p = <b id="pt-ri" data-source="pretrend" data-field="ri_p" data-where="id=live|S2-ES" data-fmt="p">—</b></span> <span id="pt-verdict"></span></span>
+        <span class="bc-pill" id="slope-pill"><i></i>Differential linear pre-trend p = <b data-source="pretrend" data-field="p" data-where="id=live|slope" data-fmt="p">—</b></span>
+      </div>
+    </div>
+    <div class="bc-card" id="forest-card">
+      <h3>Every specification</h3>
+      <p class="bc-note">Effect on active listings, % (exp(β) − 1) with 95% CI. Hover a point for the log-point estimate and its p-values: clustered, randomization (preferred design) and wild bootstrap.</p>
+      <div class="bc-legend" id="forest-legend"></div>
+      <div class="bc-chart" id="forest-chart" data-source="estimates"></div>
+    </div>
+    <div class="bc-card" id="coef-card">
+      <h3>Coefficient table</h3>
+      <p class="bc-note">Log points. Fixed effects: unit plus city × month unless noted. RI p is randomization inference, reported for the preferred design (three control areas). Wild-bootstrap p is reported where clusters are few.</p>
+      <div class="bc-tablewrap">
+        <table class="bc-table" id="coef-table" data-source="estimates" data-row-key="id">
+          <thead><tr>
+            <th data-field="label"><button>Specification</button></th>
+            <th data-field="phase"><button>Phase</button></th>
+            <th data-field="estimate" class="bc-n"><button>β</button></th>
+            <th data-field="se" class="bc-n bc-hide-sm"><button>SE</button></th>
+            <th data-field="p" class="bc-n"><button>p</button></th>
+            <th data-field="ri_p" class="bc-n bc-hide-sm"><button>RI p</button></th>
+            <th data-field="wild_p" class="bc-n bc-hide-sm"><button>Wild p</button></th>
+            <th data-field="truth" class="bc-n bc-hide-sm"><button>Truth</button></th>
+            <th data-field="nobs" class="bc-n bc-hide-sm"><button>N</button></th>
+          </tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ RENTS -->
+  <section class="bc-page" id="rents" role="tabpanel" aria-labelledby="tab-rents" hidden>
+    <div class="bc-section">
+      <h2 id="rents-h">Did rents respond?</h2>
+      <p>No detectable effect. The listings removed are too few, relative to the rental stock, for any rent effect to rise above the noise in the price data, and larger forces were moving rents at the same time.</p>
+    </div>
+    <div class="bc-card" id="cpi-card">
+      <h3>CPI rented accommodation, three cities</h3>
+      <p class="bc-note">StatCan Table 18-10-0004-01, monthly, Sep 2023 = 100. A sitting-tenant measure, capped by BC’s annual increase limit.</p>
+      <div class="bc-chart bc-h340" id="cpi-chart" data-source="macro"></div>
+    </div>
+    <div class="bc-card" id="bound-card">
+      <h3>The ceiling on any rent effect</h3>
+      <p class="bc-note">Victoria lost <b data-source="rent_bound" data-field="units_removed" data-where="city=victoria" data-fmt="int">—</b> covered-area listings, <b data-source="rent_bound" data-field="supply_shock_pct" data-where="city=victoria" data-fmt="num">—</b>% of its <b data-source="rent_bound" data-field="renter_households" data-where="city=victoria" data-fmt="int">—</b> renter households. Even if every unit moved to long-term rental, the implied rent effect is a rounding error next to how rents actually moved.</p>
+      <div class="bc-chart bc-h200" id="bound-chart" data-source="rent_bound headline cpi_noise"></div>
+      <p class="bc-foot">Bound = −(units removed ÷ renter households) × conversion share [0.25, 1] × inverse demand elasticity [1, 2]. Noise band: ± one standard deviation of 3-month changes in Victoria CPI rent (<b data-source="cpi_noise" data-field="sd_3m_pct" data-row="0" data-fmt="num">—</b> pts).</p>
+    </div>
+    <div class="bc-cols">
+      <div class="bc-card" id="rate-card">
+        <h3>Bigger forces: the policy rate</h3>
+        <p class="bc-note">Bank of Canada overnight rate, monthly average, %.</p>
+        <div class="bc-chart bc-h200" id="rate-chart" data-source="macro"></div>
+      </div>
+      <div class="bc-card" id="vacancy-card">
+        <h3>Bigger forces: vacancy</h3>
+        <p class="bc-note">CMHC Rental Market Survey vacancy rate, %, by survey year.</p>
+        <div class="bc-chart bc-h200" id="vacancy-chart" data-source="macro"></div>
+      </div>
+    </div>
+    <div class="bc-card" id="rent-table-card">
+      <h3>Rent models</h3>
+      <p class="bc-note">Driscoll–Kraay standard errors. With three cities, none of these is credible evidence of a rent effect in either direction.</p>
+      <div class="bc-tablewrap">
+        <table class="bc-table" id="rent-table" data-source="rent_models" data-row-key="id">
+          <thead><tr>
+            <th data-field="label"><button>Model</button></th>
+            <th data-field="term"><button>Term</button></th>
+            <th data-field="estimate" class="bc-n"><button>Estimate</button></th>
+            <th data-field="se" class="bc-n bc-hide-sm"><button>SE</button></th>
+            <th data-field="p" class="bc-n"><button>p</button></th>
+            <th data-field="nobs" class="bc-n bc-hide-sm"><button>N</button></th>
+            <th data-field="r2" class="bc-n bc-hide-sm"><button>R²</button></th>
+          </tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ METHOD -->
+  <section class="bc-page" id="method" role="tabpanel" aria-labelledby="tab-method" hidden>
+    <div class="bc-section">
+      <h2 id="method-h">Data &amp; method</h2>
+      <p>Inside Airbnb publishes only the latest twelve months. The panel was rebuilt from public and unlisted archive snapshots, screened for truncated scrapes, and joined to price and macro series in a DuckDB SQL layer.</p>
+    </div>
+    <div class="bc-kpis">
+      <div class="bc-card bc-kpi" id="kpi-snaps"><div class="bc-kpi-l">Listing snapshots assembled</div><div class="bc-kpi-v" data-source="snap_summary" data-field="snapshots" data-row="0" data-fmt="int">—</div><div class="bc-kpi-s">four markets, Jun 2022 – Jun 2026</div></div>
+      <div class="bc-card bc-kpi" id="kpi-excl"><div class="bc-kpi-l">Truncated scrapes excluded</div><div class="bc-kpi-v" data-source="snap_summary" data-field="excluded" data-row="0" data-fmt="int">—</div><div class="bc-kpi-s">below 75% of neighbouring snapshots</div></div>
+      <div class="bc-card bc-kpi" id="kpi-listings"><div class="bc-kpi-l">Listing records across snapshots</div><div class="bc-kpi-v" data-source="snap_summary" data-field="records" data-row="0" data-fmt="compact">—</div><div class="bc-kpi-s">cleaned and aggregated in SQL</div></div>
+    </div>
+    <div class="bc-card" id="snap-card">
+      <h3>Snapshot coverage</h3>
+      <p class="bc-note">Each dot is one scrape, sized by listing count. Rings are truncated scrapes, excluded by rule.</p>
+      <div class="bc-chart bc-h240" id="snap-chart" data-source="snapshots"></div>
+    </div>
+    <div class="bc-card" id="designs-card">
+      <h3>Three identification strategies</h3>
+      <div class="bc-tablewrap" style="max-height:none">
+        <table class="bc-design">
+          <thead><tr><th>Design</th><th>Treated vs control</th><th>Strength</th><th>Weakness</th></tr></thead>
+          <tbody>
+            <tr><td><b>A · Room type</b></td><td>BC entire homes vs BC private rooms, same city and month</td><td>Removes every city-wide shock (tourism, scrape coverage)</td><td>Control is partly treated: the registry covers every rental, and covered-area private rooms in Victoria fell 25%. A lower bound.</td></tr>
+            <tr><td><b>B · Exempt areas</b> (preferred)</td><td>Victoria CRD covered neighbourhoods (including Metchosin and Highlands) vs Juan de Fuca, the Southern Gulf Islands and Salt Spring Island until its Nov 2025 opt-in</td><td>Same region, platforms and season; untreated by Phase 1; pre-trends match</td><td>Only three control areas, so inference compares against every alternative set of three (randomization inference); rural–urban differences.</td></tr>
+            <tr><td><b>C · Cross-market</b></td><td>BC entire homes vs Ottawa</td><td>Independent macro control</td><td>Fails the pre-trend test. Reported, not used for inference.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="bc-cols">
+      <div class="bc-card" id="pipeline-card">
+        <h3>Pipeline</h3>
+        <p class="bc-note">One command (<code>make all</code>) rebuilds every number from raw files.</p>
+        <div class="bc-flow">
+          <div class="bc-step"><h4>Acquire</h4><p>Inside Airbnb snapshots incl. recovered archives; StatCan CPI via WDS; Bank of Canada Valet; CMHC RMS.</p></div>
+          <div class="bc-step"><h4>Model in SQL</h4><p>DuckDB: clean listings, aggregate to neighbourhood × month, build the panel with policy timing.</p></div>
+          <div class="bc-step"><h4>Estimate</h4><p>pyfixest DiD, PPML and event studies; clustered, randomization and wild-bootstrap inference; synthetic-truth validation.</p></div>
+          <div class="bc-step"><h4>Communicate</h4><p>This dashboard, a Streamlit app and a two-page briefing note.</p></div>
+        </div>
+        <div class="bc-chips"><span>Python</span><span>DuckDB / SQL</span><span>pyfixest</span><span>statsmodels</span><span>pandas</span><span>Plotly</span><span>Streamlit</span><span>pytest</span></div>
+      </div>
+      <div class="bc-card" id="threats-card">
+        <h3>Threats to identification</h3>
+        <ul class="bc-list">
+          <li><b>Quebec contamination.</b> Montreal’s post-2023 crackdown is a parallel treatment, so Montreal is excluded from all controls.</li>
+          <li><b>Ottawa isn’t clean.</b> Its 2022 bylaw roll-out violates parallel trends; Seattle’s archive has no pre-period.</li>
+          <li><b>Truncated scrapes.</b> Spatially uneven truncation once inflated the Phase-2 estimate threefold; affected snapshots are dropped by rule.</li>
+          <li><b>Which areas are exempt.</b> Small municipalities within 15 km of a larger one (Metchosin, Highlands) are covered, and Salt Spring Island opted in from Nov 2025. An earlier version treated all three as exempt.</li>
+          <li><b>Partly treated control.</b> Private rooms fell too; design B and a triple difference bound design A.</li>
+          <li><b>Measurement changes.</b> Price fields changed in 2026, so nightly prices are not used as an outcome.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <p class="bc-colophon">Independent portfolio analysis; not commissioned by or prepared for the Government of British Columbia. Sources: Inside Airbnb listings; Statistics Canada Table 18-10-0004-01; Bank of Canada policy rate; CMHC Rental Market Survey. Click any number to see where it comes from.</p>
+</div>
+
+<footer class="site-foot">
+  <span>Code, data and method: <a href="https://github.com/haji5/bc-str-ban-analysis">github.com/haji5/bc-str-ban-analysis</a></span>
+  <span>Policy brief: <a href="https://github.com/haji5/bc-str-ban-analysis/blob/master/memo/bc_str_policy_memo.md">two-page memo</a></span>
+</footer>
+<noscript><p class="noscript">This dashboard draws its charts with JavaScript. The findings are also in the <a href="https://github.com/haji5/bc-str-ban-analysis#readme">project README</a>.</p></noscript>
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+<script src="js/host.js"></script>
+<script src="js/core.js"></script>
+<script src="js/charts.js"></script>
+<script src="js/pages.js"></script>
+</body>
+</html>

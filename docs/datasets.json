@@ -1,0 +1,62 @@
+{
+ "estimates": {
+  "title": "DiD estimates",
+  "description": "Difference-in-differences coefficients for every specification (real and synthetic data), with clustered SEs, CIs, randomization-inference p (preferred design), wild-bootstrap p and simulated truth. From model_results.json.",
+  "file": "data/estimates.json"
+ },
+ "event_study": {
+  "title": "Event-study coefficients",
+  "description": "Event-study coefficients by months relative to May 2024 for the exempt-area, room-type and cross-market designs, plus the reference point (0). From model_results.json.",
+  "file": "data/event_study.json"
+ },
+ "headline": {
+  "title": "Headline KPIs",
+  "description": "Before/after figures for the headline metrics (covered, never-covered and Salt Spring listings, Vancouver incl. same-season, multi-host share, registry numbers and 'Exempt' claims, CPI rent), computed from the panel; Victoria baseline Aug 2023, others Sep 2023.",
+  "file": "data/headline.json"
+ },
+ "macro": {
+  "title": "CPI, rates and vacancy",
+  "description": "Monthly StatCan CPI (rented accommodation, all items), Bank of Canada policy rate and CMHC vacancy / 2-bedroom rent (each survey from its publication) for Victoria, Vancouver and Ottawa. From str_rent_panel.",
+  "file": "data/macro.json"
+ },
+ "nbhd_change": {
+  "title": "Neighbourhood change",
+  "description": "Per neighbourhood: active entire homes at the last pre-announcement snapshot vs Jun 2026, principal-residence coverage, multi-host and licence-number shares. From str_nbhd_panel.",
+  "file": "data/nbhd_change.json"
+ },
+ "nbhd_series": {
+  "title": "Neighbourhood trends",
+  "description": "Active entire-home listings per neighbourhood and complete snapshot, Victoria CRD and Vancouver. From str_nbhd_panel.",
+  "file": "data/nbhd_series.json"
+ },
+ "pretrend": {
+  "title": "Pre-trend tests",
+  "description": "Joint Wald tests on pre-announcement leads for each event study, randomization-inference p for the exempt-area design (three control areas), and the differential linear pre-trend. From model_results.json.",
+  "file": "data/pretrend.json"
+ },
+ "rent_bound": {
+  "title": "Mechanical rent bound",
+  "description": "Upper bound on rent effects implied by units removed relative to renter households, by city. From model_results.json.",
+  "file": "data/rent_bound.json"
+ },
+ "rent_models": {
+  "title": "Rent regressions",
+  "description": "Rent models: BC vs Ottawa CPI rent DiD, reduced form, macro controls and rent on STR supply, Driscoll-Kraay SEs (descriptive: three cities). From model_results.json.",
+  "file": "data/rent_models.json"
+ },
+ "snapshots": {
+  "title": "Snapshot coverage",
+  "description": "Every Inside Airbnb snapshot used: date, listing count, completeness vs neighbouring snapshots, the truncation flag and the share of never-seen listing IDs. From snapshot_months.",
+  "file": "data/snapshots.json"
+ },
+ "supply": {
+  "title": "Listings by market",
+  "description": "Active Inside Airbnb listings per observed snapshot, by city and room type, with multi-listing-host share, provincial registry-number share and 'Exempt'-claim share. From str_rent_panel (live, observed months).",
+  "file": "data/supply.json"
+ },
+ "victoria_split": {
+  "title": "Victoria covered vs exempt",
+  "description": "Victoria CRD active listings summed over neighbourhoods covered by the principal-residence rule, never covered (Juan de Fuca, Southern Gulf Islands), or Salt Spring Island (exempt until its Nov 2025 opt-in), per snapshot and room type. From str_nbhd_panel.",
+  "file": "data/victoria_split.json"
+ }
+}
