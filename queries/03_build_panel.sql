@@ -12,8 +12,9 @@
 --   * StatCan CPI 'Rented accommodation' (the only rent series published for CMAs) is a *stock* measure (sitting
 --     tenants) and are bound by provincial rent-increase caps; they respond slowly
 --     to new-lease conditions by construction.
---   * CMHC RMS is an October survey. Each survey is joined as-of: months Oct(Y)..Sep(Y+1)
---     see survey Y, i.e. only information published by then.
+--   * CMHC RMS is an October survey published in Dec(Y)/Jan(Y+1). Each survey is joined
+--     as-of publication: months Jan(Y+1)..Dec(Y+1) see survey Y, so no month uses
+--     a survey before it was public.
 --   * Seattle has no StatCan geography -> rent columns are NULL there.
 
 CREATE OR REPLACE TABLE cpi_monthly AS
@@ -59,6 +60,7 @@ SELECT
     mc.n_listings, mc.n_active, mc.n_active_pr_covered, mc.n_reviewed_180d,
     mc.median_price, mc.mean_availability_365,
     mc.share_commercial_host, mc.share_licensed, mc.share_provincial_registration,
+    mc.share_provincial_exempt_claim,
     -- policy design
     (s.room_type = 'entire_home')                                    AS is_entire_home,
     datediff('month', getvariable('phase1_month'), s.year_month)     AS event_time,
@@ -84,8 +86,7 @@ LEFT JOIN ref_boc b
        ON CAST(b.ref_month AS DATE) = s.year_month
 LEFT JOIN cmhc cm
        ON cm.city = s.city
-      AND cm.survey_year = CASE WHEN month(s.year_month) >= 10 THEN year(s.year_month)
-                                ELSE year(s.year_month) - 1 END;
+      AND cm.survey_year = year(s.year_month) - 1;
 
 CREATE OR REPLACE TABLE str_nbhd_panel AS
 WITH months AS (
@@ -93,10 +94,13 @@ WITH months AS (
     FROM range(getvariable('panel_start'), getvariable('panel_end') + INTERVAL 1 MONTH, INTERVAL 1 MONTH) t(m)
 ),
 units AS (
-    SELECT DISTINCT data_source, city, neighbourhood, room_type, pr_exempt FROM monthly_nbhd
+    SELECT DISTINCT data_source, city, neighbourhood, room_type, pr_exempt, pr_exempt_until FROM monthly_nbhd
 )
 SELECT
     u.data_source, u.city, u.neighbourhood, u.room_type, u.pr_exempt, m.year_month,
+    -- still exempt this month (false once an opt-in takes effect)
+    (u.pr_exempt AND (u.pr_exempt_until IS NULL OR m.year_month < u.pr_exempt_until)) AS pr_exempt_now,
+    u.pr_exempt_until,
     mk.treated_market,
     u.city || '|' || u.neighbourhood                                 AS nbhd_id,
     u.city || '|' || u.neighbourhood || '|' || u.room_type           AS unit_id,

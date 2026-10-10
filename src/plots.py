@@ -122,14 +122,16 @@ def _es(results: dict, source: str, spec: str = "S3") -> dict | None:
 
 def fig2_event_study() -> str:
     res = json.loads(cfg.RESULTS_PATH.read_text())
-    panels = [(s, _es(res, s)) for s in ["live", "synthetic"] if _es(res, s)]
-    fig, axes = plt.subplots(1, len(panels), figsize=(6.4 * len(panels), 5.6), squeeze=False)
-    for ax, (src, r) in zip(axes[0], panels):
+    wanted = [("S2-ES", "live", "Victoria: covered vs exempt areas (preferred)"),
+              ("S3", "live", "BC: entire homes vs private rooms"),
+              ("S3", "synthetic", "SYNTHETIC panel: estimator recovers known truth")]
+    panels = [(src, r, title) for spec, src, title in wanted if (r := _es(res, src, spec))]
+    fig, axes = plt.subplots(1, len(panels), figsize=(6.0 * len(panels), 5.6), squeeze=False)
+    for ax, (src, r, title) in zip(axes[0], panels):
         c = pd.DataFrame(r["coefs"]).sort_values("event_time")
         ref_t = r["extra"]["ref"] * (3 if r["extra"]["freq"] == "Q" else 1)
         c = pd.concat([c, pd.DataFrame([{"event_time": ref_t, "estimate": 0.0, "ci_low": 0.0, "ci_high": 0.0}])]
                       ).sort_values("event_time")
-        pre = c.event_time < -7
         ax.axhline(0, color=MUTED, linewidth=1)
         for x, lab in [(-7, "Announced"), (0, "Enforced"), (12, "Registry")]:
             ax.axvline(x, color=INK2, linestyle="--", linewidth=1)
@@ -138,27 +140,26 @@ def fig2_event_study() -> str:
         ax.plot(c.event_time, c.estimate, color=BLUE, marker="o", markersize=5 if src == "live" else 3.5,
                 markeredgecolor=SURFACE, markeredgewidth=1.2, label="Estimate, 95% CI (clustered by neighbourhood)")
         ref_lab = ("Reference: Sep 2023 (t=-8)" if r["extra"]["freq"] == "M"
-                   else "Reference: quarter bin containing Aug-Sep 2023")
+                   else "Reference: last pre-announcement snapshot (Aug-Sep 2023)")
         ax.scatter([ref_t], [0], s=50, facecolors=SURFACE, edgecolors=INK, zorder=5, label=ref_lab)
         if src == "synthetic" and any(x.get("truth") is not None for x in r["coefs"]):
             t = pd.DataFrame(r["coefs"]).dropna(subset=["truth"]).sort_values("event_time")
             ax.plot(t.event_time, t.truth, color=INK, linestyle=":", linewidth=1.6, label="True DGP effect")
         pt = r["extra"]["pretrend_test"]
-        ptxt = f"Pre-announcement joint test: F={pt['F']:.2f}, p={pt['p']:.2f}" if pt["F"] is not None else ""
+        ptxt = (f"Pre-announcement leads, joint test: F={pt['F']:.2f}, p={pt['p']:.2f} ({pt['df']} leads)"
+                if pt["F"] is not None else "")
         ax.text(0.0, -0.30, ptxt, transform=ax.transAxes, fontsize=8, color=INK2)
-        ax.set_xlabel("Months relative to May 2024" + (" (quarterly bins)" if r["extra"]["freq"] == "Q" else ""))
-        ax.set_ylabel("Log-point difference, entire vs private")
-        ax.set_xlim(cfg.EVENT_MIN - 1.5, cfg.EVENT_MAX + 1.5)
-        ax.set_title("Inside Airbnb snapshots (empirical)" if src == "live"
-                     else "SYNTHETIC panel: estimator recovers known truth", loc="left")
-        ax.legend(loc="upper left", fontsize=7.5, bbox_to_anchor=(0, -0.33), ncol=2)
-        _ = pre
-    fig.suptitle("Dynamic DiD: BC entire-home vs private-room listings (PR-covered areas)", x=0.01, ha="left",
+        ax.set_xlabel("Months relative to May 2024" + (" (one bin per snapshot quarter)" if r["extra"]["freq"] == "Q" else ""))
+        ax.set_ylabel("Log-point difference, treated vs control")
+        ax.set_xlim(min(c.event_time.min(), cfg.EVENT_MIN) - 1.5, max(c.event_time.max(), cfg.EVENT_MAX) + 1.5)
+        ax.set_title(title, loc="left")
+        ax.legend(loc="upper left", fontsize=7.5, bbox_to_anchor=(0, -0.33), ncol=1)
+    fig.suptitle("Dynamic DiD: Bill 35 and short-term-rental supply", x=0.01, ha="left",
                  fontsize=13, fontweight="bold")
-    _footer(fig, "Unit and city x month fixed effects; endpoints binned at t=-12 and t=+24. "
-                 "Positive pre-period drift would indicate non-parallel trends.")
+    _footer(fig, "Inside Airbnb snapshots, neighbourhood x room type. Live panels: unit + month FE (room-type design: "
+                 "city x month), one coefficient per snapshot quarter, no pooled leads. Synthetic: monthly, endpoints binned.")
     fig.tight_layout(rect=(0, 0.03, 1, 0.95))
-    fig.subplots_adjust(bottom=0.30)
+    fig.subplots_adjust(bottom=0.32)
     path = cfg.ASSETS / "fig2_event_study.png"
     fig.savefig(path, dpi=200)
     plt.close(fig)
@@ -216,11 +217,15 @@ def fig3_rent_transmission() -> str:
     for city, col in [("vancouver", BLUE), ("victoria", ORANGE), ("ottawa", AQUA)]:
         s = cm[cm.city == city]
         ax_v.plot(s.survey_year, s.vacancy_rate, color=col, marker="o", markersize=5, markeredgecolor=SURFACE)
+        unv = s[s.source_quality.astype(str).str.contains("unverified")]
+        ax_v.scatter(unv.survey_year, unv.vacancy_rate, s=30, facecolors=SURFACE, edgecolors=col, zorder=4)
         ax_v.annotate(cfg.MARKETS[city].label.split(" ")[0], (s.survey_year.iloc[-1], s.vacancy_rate.iloc[-1]),
                       xytext=(4, 0), textcoords="offset points", fontsize=8, va="center")
     ax_v.set_xticks([2022, 2023, 2024, 2025])
     ax_v.set_xlim(2021.7, 2025.8)
-    ax_v.set_title("CMHC purpose-built vacancy (%, Oct)", loc="left")
+    ax_v.set_title("CMHC vacancy (%, Oct)", loc="left")
+    ax_v.text(0, -0.2, "Hollow = not yet verified against CMHC tables", transform=ax_v.transAxes,
+              fontsize=7.5, color=MUTED, va="top")
     fig.suptitle("STR contraction vs rents: CPI rent keeps rising everywhere, including the Ottawa control"
                  + _synthetic_tag(src),
                  x=0.01, ha="left", fontsize=13, fontweight="bold")
@@ -238,30 +243,37 @@ def fig3_rent_transmission() -> str:
 def fig4_victoria_exempt() -> str:
     src = _source_for_plots()
     df = db.query(f"""
-        SELECT pr_exempt, year_month, sum(n_active) n FROM str_nbhd_panel
+        SELECT CASE WHEN NOT pr_exempt THEN 'covered' WHEN pr_exempt_until IS NULL THEN 'never' ELSE 'optin' END AS geo,
+               year_month, sum(n_active) n FROM str_nbhd_panel
         WHERE data_source = '{src}' AND city = 'victoria' AND room_type = 'entire_home'
           AND is_observed AND NOT scrape_incomplete
         GROUP BY ALL ORDER BY year_month""")
     df["year_month"] = pd.to_datetime(df["year_month"])
-    fig, ax = plt.subplots(figsize=(8, 4.4))
-    for ex, col, lab in [(False, BLUE, "PR-covered (Victoria, Saanich, Langford, ...)"),
-                         (True, AQUA, "Exempt (Juan de Fuca, Gulf Islands, Metchosin, Highlands)")]:
-        s = df[df.pr_exempt == ex].set_index("year_month")["n"]
+    optin = min((d for d in cfg.PR_EXEMPT_NEIGHBOURHOODS.values() if d is not None), default=None)
+    fig, ax = plt.subplots(figsize=(8, 4.6))
+    for geo, col, ls, lab in [("covered", BLUE, "-", "Covered from May 2024 (Victoria, Saanich, Langford, Metchosin, ...)"),
+                              ("never", AQUA, "-", "Never covered (Juan de Fuca, Southern Gulf Islands)"),
+                              ("optin", YELLOW, "--", "Salt Spring Island (exempt until its Nov 2025 opt-in)")]:
+        s = df[df.geo == geo].set_index("year_month")["n"]
+        if s.empty:
+            continue
         b = s[s.index < pd.Timestamp(cfg.ANNOUNCE_MONTH)].iloc[-1]
-        ax.plot(s.index, 100 * s / b, color=col, marker="o" if src == "live" else None, markersize=5,
+        ax.plot(s.index, 100 * s / b, color=col, linestyle=ls, marker="o" if src == "live" else None, markersize=5,
                 markeredgecolor=SURFACE, label=lab)
         ax.annotate(f"{100 * s.iloc[-1] / b:.0f}", (s.index[-1], 100 * s.iloc[-1] / b), xytext=(4, 0),
                     textcoords="offset points", fontsize=8.5, va="center")
+    if optin is not None:
+        ax.axvline(pd.Timestamp(optin), color=YELLOW, linestyle=":", linewidth=1.2)
     ax.axhline(100, color=MUTED, linewidth=0.8)
     _policy_lines(ax)
     _date_axis(ax)
-    ax.set_ylabel("Active entire homes, index (Aug 2023 = 100)")
-    ax.legend(loc="lower left", fontsize=8)
-    ax.set_title("Victoria CRD: covered vs exempt areas (within-province placebo)" + _synthetic_tag(src), loc="left")
+    ax.set_ylabel("Active entire homes\n(index, last pre-announcement snapshot = 100)")
+    ax.legend(loc="lower left", fontsize=7.5)
+    ax.set_title("Victoria CRD: covered vs exempt areas (within-region control)" + _synthetic_tag(src), loc="left")
     _footer(fig, "Source: " + ("Inside Airbnb snapshots" if src == "live" else "SYNTHETIC panel")
-            + "; truncated scrapes excluded.")
+            + "; truncated scrapes excluded. Coverage per gov.bc.ca principal-residence community list.")
     fig.tight_layout(rect=(0, 0.03, 1, 1))
-    path = cfg.ASSETS / "fig4_victoria_exempt_placebo.png"
+    path = cfg.ASSETS / "fig4_victoria_covered_vs_exempt.png"
     fig.savefig(path, dpi=200)
     plt.close(fig)
     return str(path)

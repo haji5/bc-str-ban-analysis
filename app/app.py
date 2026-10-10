@@ -58,6 +58,13 @@ def saved_results() -> dict:
     return json.loads(cfg.RESULTS_PATH.read_text()) if cfg.RESULTS_PATH.exists() else {}
 
 
+def saved_extra(spec: str, source: str) -> dict:
+    """Resampling results from the full pipeline run (too slow to redo on every click)."""
+    r = next((x for x in saved_results().get("results", [])
+              if x["spec"] == spec and x["data_source"] == source), None)
+    return (r or {}).get("extra", {})
+
+
 def coef_table(r: models.ModelResult) -> pd.DataFrame:
     t = pd.DataFrame(r.coefs)[["term", "estimate", "se", "p", "ci_low", "ci_high"] +
                               (["truth"] if any(c.get("truth") is not None for c in r.coefs) else [])]
@@ -86,12 +93,14 @@ cities = st.sidebar.multiselect("Cities", list(cfg.MARKETS), default=list(cfg.MA
                                 format_func=lambda k: cfg.MARKETS[k].label)
 rooms = st.sidebar.multiselect("Room types", ["entire_home", "private_room"], default=["entire_home", "private_room"])
 window = st.sidebar.slider("Event-study window (months vs May 2024)", -28, 25, (cfg.EVENT_MIN, cfg.EVENT_MAX),
-                           help="Must include the reference month t=-8 (Sep 2023). Endpoints are binned.")
+                           help="Must include the reference month t=-8 (Sep 2023). Synthetic (monthly) endpoints "
+                                "are binned; live data use one bin per snapshot quarter and never pool leads.")
 drop_bad = st.sidebar.checkbox("Exclude truncated scrapes", value=True)
 
 st.title("British Columbia's Short-Term Rental Accommodations Act (Bill 35)")
 st.caption("Phase 1: principal-residence requirement (May 2024). Phase 2: provincial registry and platform "
-           "de-listing (May-Jun 2025). Treated: entire homes in BC; controls: BC private rooms, BC exempt areas, "
+           "de-listing (May-Jun 2025). Treated: entire homes in BC; controls: BC private rooms, Victoria-area "
+           "exempt areas (Juan de Fuca, Southern Gulf Islands; Salt Spring Island until its Nov 2025 opt-in), "
            "Ottawa, Seattle.")
 
 tab_trend, tab_reg, tab_rent, tab_data = st.tabs(["Listings vs rents", "Live regressions", "Rent transmission", "Data provenance"])
@@ -147,17 +156,23 @@ with tab_reg:
     with c2:
         st.subheader("Victoria: covered vs exempt areas")
         if "victoria" in cities:
-            r2 = models.did_victoria_exempt(df, source)[0]
+            r2 = models.did_victoria_exempt(df, source, inference=False)[0]
             st.dataframe(coef_table(r2).style.format(precision=3), hide_index=True, width="stretch")
-            wb = r2.extra.get("wild_bootstrap_p", {})
-            st.caption(f"N = {r2.nobs:,} | R² = {r2.r2:.3f} | clusters = {r2.n_clusters} | wild-bootstrap p: "
-                       + ", ".join(f"{k}={v:.3f}" for k, v in wb.items() if v is not None))
+            ex = saved_extra("S2a", source)
+            wb, ri = ex.get("wild_bootstrap_p", {}), ex.get("randomization_inference", {})
+            st.caption(f"N = {r2.nobs:,} | R² = {r2.r2:.3f} | clusters = {r2.n_clusters} "
+                       f"(controls: {', '.join(r2.extra.get('controls', []))}). Only 3 control areas, so the "
+                       f"clustered p-values above overstate precision. Saved full-sample run: "
+                       f"randomization-inference p ({ri.get('n_placebos', 0):,} placebo control groups) "
+                       + ", ".join(f"{k}={v:.3f}" for k, v in ri.get("p", {}).items())
+                       + "; wild-bootstrap p " + ", ".join(f"{k}={v:.3f}" for k, v in wb.items() if v is not None))
     st.subheader("Event study")
-    design = st.radio("Design", ["roomtype", "cross"], horizontal=True,
-                      format_func=lambda d: "Entire vs private (BC)" if d == "roomtype" else "BC vs control cities")
+    design = st.radio("Design", ["exempt", "roomtype", "cross"], horizontal=True,
+                      format_func={"exempt": "Victoria covered vs exempt", "roomtype": "Entire vs private (BC)",
+                                   "cross": "BC vs control cities"}.get)
     try:
         es = models.event_study(df[df.city.isin(cities)], source, design, window=tuple(window),
-                                controls=ctrl_sel or None)
+                                controls=ctrl_sel or None, inference=False)
         c = pd.DataFrame(es.coefs).sort_values("event_time")
         ref_t = es.extra["ref"] * (3 if es.extra["freq"] == "Q" else 1)
         c = pd.concat([c, pd.DataFrame([{"event_time": ref_t, "estimate": 0, "ci_low": 0, "ci_high": 0}])]).sort_values("event_time")
@@ -175,7 +190,13 @@ with tab_reg:
                         hovermode="x unified", margin=dict(t=30))
         st.plotly_chart(f, width="stretch")
         pt = es.extra["pretrend_test"]
-        st.caption(f"Pre-announcement joint Wald test: F = {pt['F'] if pt['F'] is None else round(pt['F'], 2)}, "
+        if design == "exempt":
+            jp = saved_extra("S2-ES", source).get("randomization_inference", {}).get("joint_p")
+            if jp is not None:
+                st.caption(f"With 3 control areas the Wald test over-rejects. Saved full-sample run: "
+                           f"randomization-inference pre-trend p = {jp:.3f}.")
+        st.caption(f"Pre-announcement joint Wald test ({pt['df']} leads): "
+                   f"F = {pt['F'] if pt['F'] is None else round(pt['F'], 2)}, "
                    f"p = {pt['p'] if pt['p'] is None else round(pt['p'], 3)} | N = {es.nobs:,} | "
                    f"R² = {es.r2:.3f} | {es.notes}")
     except Exception as exc:  # noqa: BLE001
@@ -200,5 +221,5 @@ with tab_data:
     st.json(man.get("insideairbnb", {}).get("coverage", {}))
     st.write({k: v.get("status") for k, v in man.items() if isinstance(v, dict) and "status" in v})
     snaps = db.query("""SELECT data_source, city, snapshot_date, n_total, round(completeness_ratio, 2) AS completeness,
-                               scrape_incomplete FROM snapshot_months WHERE data_source = 'live' ORDER BY city, snapshot_date""")
+                               scrape_incomplete, round(share_new_listings, 3) AS share_new_ids FROM snapshot_months WHERE data_source = 'live' ORDER BY city, snapshot_date""")
     st.dataframe(snaps, hide_index=True, width="stretch")

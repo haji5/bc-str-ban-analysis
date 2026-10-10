@@ -54,13 +54,21 @@ def months_between(a: date | pd.Timestamp, b: date | pd.Timestamp) -> int:
     return (b.year - a.year) * 12 + (b.month - a.month)
 
 
-def effect_segment(city: str, nbhd: str) -> str:
-    return f"{city}_exempt" if (city, nbhd) in C.PR_EXEMPT_NEIGHBOURHOODS else city
+def effect_segment(city: str, nbhd: str, month: date | pd.Timestamp | None = None) -> str:
+    """Effect segment of a neighbourhood. An exempt area that opts in to the principal-
+    residence requirement takes the covered segment from its opt-in month."""
+    key = (city, nbhd)
+    if key not in C.PR_EXEMPT_NEIGHBOURHOODS:
+        return city
+    until = C.PR_EXEMPT_NEIGHBOURHOODS[key]
+    if month is not None and until is not None and pd.Timestamp(month) >= pd.Timestamp(until):
+        return city
+    return f"{city}_exempt"
 
 
 def true_effect(params: dict, city: str, nbhd: str, rt: str, month: pd.Timestamp) -> float:
     """Ground-truth policy effect (log points) for a cell-month."""
-    seg = params["effects"].get(effect_segment(city, nbhd), {}).get(rt)
+    seg = params["effects"].get(effect_segment(city, nbhd, month), {}).get(rt)
     if seg is None:
         return 0.0
     m = pd.Timestamp(month)

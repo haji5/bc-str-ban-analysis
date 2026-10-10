@@ -13,29 +13,43 @@
 -- would be 4 clusters, far too few for cluster-robust inference. The neighbourhood
 -- grain (~50 BC neighbourhoods) is what the models estimate on.
 
--- Scrape completeness. Inside Airbnb scrapes are occasionally truncated (e.g. every
--- March-2026 file holds 35-65% of its neighbours' listings). Truncation is not
--- spatially uniform, so time fixed effects do not absorb it. A snapshot is flagged
--- when its listing count is < 75% of the larger of its adjacent snapshots.
+-- Scrape completeness. Inside Airbnb scrapes are occasionally truncated (the Mar-2026
+-- Victoria, Ottawa and Seattle files and Vancouver Mar-2025 hold 34-59% of their
+-- neighbours' listings). Truncation is not spatially uniform, so time fixed effects do
+-- not absorb it. A snapshot is flagged when its listing count is < 75% of the larger of
+-- its adjacent snapshots.
+-- share_new_listings (ids never seen in an earlier snapshot of the city) is a vintage
+-- diagnostic: a jump flags a change in scrape coverage rather than in supply.
 CREATE OR REPLACE TABLE snapshot_months AS
 WITH s AS (
     SELECT data_source, city, year_month, max(snapshot_date) AS snapshot_date
     FROM listings_clean
     GROUP BY ALL
 ),
+first_seen AS (
+    SELECT data_source, city, listing_id, min(snapshot_date) AS first_seen
+    FROM listings_clean
+    GROUP BY ALL
+),
 n AS (
-    SELECT s.*, (SELECT count(*) FROM listings_clean l
-                 WHERE l.data_source = s.data_source AND l.city = s.city
-                   AND l.snapshot_date = s.snapshot_date) AS n_total
+    SELECT s.data_source, s.city, s.year_month, s.snapshot_date,
+           count(*)                                 AS n_total,
+           avg((f.first_seen = s.snapshot_date)::INT) AS share_new_raw
     FROM s
+    JOIN listings_clean l
+      ON l.data_source = s.data_source AND l.city = s.city AND l.snapshot_date = s.snapshot_date
+    JOIN first_seen f
+      ON f.data_source = l.data_source AND f.city = l.city AND f.listing_id = l.listing_id
+    GROUP BY ALL
 )
-SELECT *,
+SELECT data_source, city, year_month, snapshot_date, n_total,
        n_total::DOUBLE / greatest(
            COALESCE(lag(n_total)  OVER w, n_total),
            COALESCE(lead(n_total) OVER w, n_total))       AS completeness_ratio,
        n_total::DOUBLE / greatest(
            COALESCE(lag(n_total)  OVER w, n_total),
-           COALESCE(lead(n_total) OVER w, n_total)) < 0.75 AS scrape_incomplete
+           COALESCE(lead(n_total) OVER w, n_total)) < 0.75 AS scrape_incomplete,
+       CASE WHEN lag(n_total) OVER w IS NOT NULL THEN share_new_raw END AS share_new_listings
 FROM n
 WINDOW w AS (PARTITION BY data_source, city ORDER BY year_month);
 
@@ -47,7 +61,7 @@ WITH lc AS (
     WHERE l.room_type IN ('entire_home', 'private_room')
 ),
 units AS (
-    SELECT DISTINCT data_source, city, neighbourhood, room_type, pr_exempt FROM lc
+    SELECT DISTINCT data_source, city, neighbourhood, room_type, pr_exempt, pr_exempt_until FROM lc
 ),
 cells AS (
     SELECT u.*, s.year_month, s.snapshot_date, s.scrape_incomplete
@@ -68,7 +82,7 @@ agg AS (
     GROUP BY ALL
 )
 SELECT
-    c.data_source, c.city, c.neighbourhood, c.room_type, c.pr_exempt,
+    c.data_source, c.city, c.neighbourhood, c.room_type, c.pr_exempt, c.pr_exempt_until,
     c.year_month, c.snapshot_date, c.scrape_incomplete,
     COALESCE(a.n_listings, 0)      AS n_listings,
     COALESCE(a.n_active, 0)        AS n_active,
@@ -93,7 +107,8 @@ SELECT
     avg(l.availability_365) FILTER (WHERE l.is_active)             AS mean_availability_365,
     avg(l.is_commercial_host::INT) FILTER (WHERE l.is_active)      AS share_commercial_host,
     avg(l.has_licence::INT) FILTER (WHERE l.is_active)             AS share_licensed,
-    avg(l.has_provincial_registration::INT) FILTER (WHERE l.is_active) AS share_provincial_registration
+    avg(l.has_provincial_registration::INT) FILTER (WHERE l.is_active) AS share_provincial_registration,
+    avg(l.claims_provincial_exemption::INT) FILTER (WHERE l.is_active) AS share_provincial_exempt_claim
 FROM listings_clean l
 JOIN snapshot_months s USING (data_source, city, year_month, snapshot_date)
 WHERE l.room_type IN ('entire_home', 'private_room')

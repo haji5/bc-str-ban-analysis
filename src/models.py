@@ -13,10 +13,13 @@ S1  Within-BC room-type DiD (primary).  log(1+active) on EntireHome x {Anticipat
     PostMay2024, PostMay2025} | unit FE + city x month FE, CRV1 by neighbourhood.
     PostMay2024 stays on after May 2025, so the Phase-2 term is *incremental*.
 S2  Victoria CRD spatial DiD. Entire homes in principal-residence-covered vs exempt
-    neighbourhoods (exempt areas are untreated by Phase 1) + a triple difference.
+    neighbourhoods (exempt areas are untreated by Phase 1; an area leaves the control
+    group when it opts in) + its event study + a triple difference. Only 2-3 control
+    clusters, so inference adds placebo-in-space randomization inference.
 S3  Dynamic event study, t in [-12, +24] around May 2024, reference t = -8 (Sep 2023,
-    last pre-announcement month); endpoints binned; joint pre-trend Wald test on
-    pre-announcement leads. Live data are binned to quarters (snapshots are quarterly).
+    last pre-announcement month); joint pre-trend Wald test on pre-announcement leads.
+    Synthetic (monthly) data bin the endpoints. Live data use one bin per snapshot
+    quarter and never pool leads, so each pre-announcement snapshot is its own lead.
 S4  Cross-market event study / DiD: BC vs Ottawa + Seattle entire homes, with a
     leave-one-control-out check and wild-cluster bootstrap p-values (few treated clusters).
 S5  Rent transmission (real data only - synthetic STR is never regressed on real rents):
@@ -26,8 +29,10 @@ S5  Rent transmission (real data only - synthetic STR is never regressed on real
 """
 from __future__ import annotations
 
+import itertools
 import json
 import logging
+import math
 import warnings
 from dataclasses import dataclass, field
 
@@ -56,14 +61,20 @@ def load_nbhd_panel(source: str, drop_incomplete: bool = True) -> pd.DataFrame:
     """Observed neighbourhood x room-type x month cells. Truncated scrapes are dropped by
     default: their truncation is spatially uneven, so time FE cannot absorb it."""
     flt = " AND NOT scrape_incomplete" if drop_incomplete else ""
-    df = db.query(f"SELECT * FROM str_nbhd_panel WHERE data_source = '{source}' AND is_observed{flt}")
+    # Sorted: cluster codes (and so wild-bootstrap draws) depend on row order, which DuckDB
+    # does not fix across rebuilds.
+    df = db.query(f"SELECT * FROM str_nbhd_panel WHERE data_source = '{source}' AND is_observed{flt} "
+                  "ORDER BY city, neighbourhood, room_type, year_month")
     if df.empty:
         return df
     df["year_month"] = pd.to_datetime(df["year_month"])
     df["y"] = np.log1p(df["n_active"].astype(float))
     df["y_reviewed"] = np.log1p(df["n_reviewed_180d"].astype(float))
     df["ent"] = df["is_entire_home"].astype(float)
+    # covered = under the principal-residence requirement from Phase 1 (fixed geography);
+    # opted_in = an exempt area after its opt-in, which leaves the exempt-area control.
     df["covered"] = (~df["pr_exempt"].astype(bool)).astype(float)
+    df["opted_in"] = (df["pr_exempt"].astype(bool) & ~df["pr_exempt_now"].astype(bool)).astype(float)
     df["bc"] = df["treated_market"].astype(float)
     for c in ["anticipation", "post_phase1", "post_phase2"]:
         df[c] = df[c].astype(float)
@@ -129,8 +140,9 @@ def _record(fit, spec, label, source, fe, terms=None, truth=None, notes="", extr
 
 
 def _wild_p(fit, param: str, seed: int = cfg.SEED) -> float | None:
+    # 9,999 draws: with 999 the p-value moved by ~0.015 when only the row order changed.
     try:
-        return float(fit.wildboottest(param=param, reps=999, seed=seed)["Pr(>|t|)"])
+        return float(fit.wildboottest(param=param, reps=9_999, seed=seed)["Pr(>|t|)"])
     except Exception as exc:  # noqa: BLE001
         log.warning("wild bootstrap failed for %s: %s", param, exc)
         return None
@@ -174,30 +186,109 @@ def did_bc_roomtype(df: pd.DataFrame, source: str, cities: list[str] | None = No
         fit, spec, label or f"Room-type DiD ({', '.join(c.title() for c in cities)})", source, fe,
         DID_TERMS, truth,
         notes="Treated: entire homes; control: private rooms in PR-covered neighbourhoods. "
-              "Phase-2 term is incremental to Phase 1. Control is partly treated (registry "
-              "applies to all STRs; ~75% of private-room listings belong to multi-listing hosts), "
-              "so estimates are a lower bound on the entire-home effect.",
+              "Phase-2 term is incremental to Phase 1. The control is partly treated: the "
+              "Phase-2 registry applies to every STR, and private rooms in Victoria's covered "
+              "areas fell ~25%. Renting rooms in one's own principal residence stays legal, so "
+              "the size of the Phase-1 spill-over is unknown; read as a lower bound.",
     )
 
 
 # =========================================================================== S2
-def did_victoria_exempt(df: pd.DataFrame, source: str) -> list[ModelResult]:
-    v = df[df.city == "victoria"]
+def _placebo_p(d: pd.DataFrame, treat: str, terms: dict[str, str], max_draws: int = 20_000,
+               seed: int = cfg.SEED, joint: list[str] | None = None) -> dict:
+    """Placebo-in-space randomization inference for a design with few control clusters.
+
+    Every set of as many neighbourhoods as there are real controls (all combinations when
+    feasible, else ``max_draws`` random sets) is relabelled as the control group and the
+    two-way FE regression is re-estimated; ``terms`` maps each coefficient to the period
+    column it interacts with treatment. p = share of placebo |estimates| >= the actual
+    |estimate| (the actual assignment is one of the draws). ``joint`` adds a p-value for the
+    sum of squared coefficients over those terms (a pre-trend test). Valid under the sharp
+    null with exchangeable neighbourhoods. With 2-3 control clusters, cluster-robust and
+    wild-bootstrap p-values are unreliable (CRV1 over-rejects), so this is the benchmark.
+    """
+    units = pd.factorize(d["nbhd_id"])[0]
+    times = pd.factorize(d["ym"])[0]
+    n_u = int(units.max()) + 1
+    base = np.hstack([np.eye(n_u)[units], np.eye(int(times.max()) + 1)[times][:, 1:]])
+    y = d["y"].to_numpy(float)
+    period = np.column_stack([d[c].to_numpy(float) for c in terms.values()])
+    is_ctrl = (pd.Series(d[treat].to_numpy()).groupby(units).first() == 0).to_numpy()
+
+    def est(ctrl: np.ndarray) -> np.ndarray:
+        x = (~ctrl[units]).astype(float)[:, None] * period
+        return np.linalg.lstsq(np.hstack([x, base]), y, rcond=None)[0][: period.shape[1]]
+
+    k = int(is_ctrl.sum())
+    n_comb = math.comb(n_u, k)
+    if n_comb <= max_draws:
+        draws = itertools.combinations(range(n_u), k)
+    else:
+        rng = np.random.default_rng(seed)
+        draws = (rng.choice(n_u, k, replace=False) for _ in range(max_draws))
+    actual = est(is_ctrl)
+    perm = []
+    for c in draws:
+        m = np.zeros(n_u, dtype=bool)
+        m[list(c)] = True
+        perm.append(est(m))
+    perm = np.array(perm)
+    hits = (np.abs(perm) >= np.abs(actual) - 1e-12).mean(axis=0)
+    out = {"p": {t: float(h) for t, h in zip(terms, hits)}, "n_placebos": len(perm),
+           "exhaustive": n_comb <= max_draws, "n_controls": k, "n_units": n_u}
+    if joint:
+        j = [list(terms).index(t) for t in joint]
+        ss = (perm[:, j] ** 2).sum(axis=1)
+        out["joint_p"] = float((ss >= (actual[j] ** 2).sum() - 1e-12).mean())
+        out["joint_terms"] = list(joint)
+    return out
+
+
+def _exempt_truth() -> dict:
+    p = syn.load_params()
+    e = p["effects"]
+    n_antic = (cfg.PHASE1_MONTH.year - cfg.ANNOUNCE_MONTH.year) * 12 + cfg.PHASE1_MONTH.month - cfg.ANNOUNCE_MONTH.month
+    ramp = np.mean([(i + 1) / (n_antic + 1) for i in range(n_antic)])  # mirrors syn.true_effect
+    gap = {ph: e["victoria"]["entire_home"][ph] - e["victoria_exempt"]["entire_home"][ph]
+           for ph in ("phase1", "phase2")}
+    return {"ent_antic": p["anticipation_share"] * gap["phase1"] * ramp,
+            "ent_p1": gap["phase1"], "ent_p2": gap["phase2"]}
+
+
+def did_victoria_exempt(df: pd.DataFrame, source: str, inference: bool = True) -> list[ModelResult]:
+    """Victoria entire homes, PR-covered vs exempt areas (preferred design), its
+    robustness variants, and the triple difference. An exempt area that opts in leaves
+    the control group from its opt-in month (Salt Spring Island, Nov 2025).
+    ``inference=False`` skips the resampling (randomization inference, wild bootstrap)
+    for interactive use."""
+    v = df[(df.city == "victoria") & (df.opted_in == 0)]
+    ent = v[v.room_type == "entire_home"]
+    truth = _exempt_truth() if source == "synthetic" else None
+    did_terms = {"ent_antic": "anticipation", "ent_p1": "post_phase1", "ent_p2": "post_phase2"}
+    never = ent[~((ent.covered == 0) & ent.pr_exempt_until.notna())]
+    variants = [
+        ("S2a", "Victoria entire homes: PR-covered vs exempt areas", ent, "y", False),
+        ("S2a-never", "Victoria: PR-covered vs never-covered areas only", never, "y", False),
+        ("S2a-reviewed", "Victoria covered vs exempt, reviewed-in-180d outcome", ent, "y_reviewed", False),
+        ("S2a-ppml", "Victoria covered vs exempt, PPML (counts)", ent, "n_active", True),
+    ]
     out = []
-    d = _did_cols(v[v.room_type == "entire_home"], "covered")
-    fit = pf.feols(f"y ~ {' + '.join(DID_TERMS)} | unit_id + ym", data=d, vcov={"CRV1": "nbhd_cl"})
-    truth = None
-    if source == "synthetic":
-        p = syn.load_params()["effects"]
-        truth = {f"ent_{k}": p["victoria"]["entire_home"][ph] - p["victoria_exempt"]["entire_home"][ph]
-                 for k, ph in [("p1", "phase1"), ("p2", "phase2")]}
-    wild = {t: _wild_p(fit, t) for t in ["ent_p1", "ent_p2"]}
-    out.append(_record(fit, "S2a", "Victoria entire homes: PR-covered vs exempt areas", source,
-                       "unit_id + month", DID_TERMS, truth,
-                       notes="Coefficients named ent_* for comparability; treatment here is "
-                             "'PR-covered neighbourhood'. Only 5 exempt (control) clusters -> "
-                             "see wild-bootstrap p-values.",
-                       extra={"wild_bootstrap_p": wild}))
+    for spec, label, sample, outcome, poisson in variants:
+        d = _did_cols(sample, "covered")
+        est = pf.fepois if poisson else pf.feols
+        fit = est(f"{outcome} ~ {' + '.join(DID_TERMS)} | unit_id + ym", data=d, vcov={"CRV1": "nbhd_cl"})
+        ctrl = sorted(d.loc[d.covered == 0, "neighbourhood"].unique())
+        extra: dict = {"controls": ctrl}
+        if inference and spec in ("S2a", "S2a-never"):
+            extra["wild_bootstrap_p"] = {t: _wild_p(fit, t) for t in ["ent_p1", "ent_p2"]}
+            extra["randomization_inference"] = _placebo_p(d, "covered", did_terms)
+        out.append(_record(
+            fit, spec, label, source, "unit_id + month", DID_TERMS, truth,
+            notes=f"Coefficients named ent_* for comparability; treatment is 'PR-covered "
+                  f"neighbourhood'. Controls: {', '.join(ctrl)} ({len(ctrl)} clusters). With this "
+                  f"few controls the CRV1 p-values overstate precision; read the "
+                  f"randomization-inference p-values.",
+            extra=extra))
     # Triple difference: (entire - private) x (covered - exempt) x post.
     d3 = v.copy()
     for k, col in [("antic", "anticipation"), ("p1", "post_phase1"), ("p2", "post_phase2")]:
@@ -208,7 +299,8 @@ def did_victoria_exempt(df: pd.DataFrame, source: str) -> list[ModelResult]:
     out.append(_record(fit3, "S2b", "Victoria triple difference (room x coverage x post)", source,
                        "unit_id + room_type x month", ["ddd_antic", "ddd_p1", "ddd_p2"],
                        notes="Differences out both the registry shock common to room types and the "
-                             "exempt-area trend."))
+                             "exempt-area trend. Private rooms are themselves partly treated, so this "
+                             "nets part of the effect out and is imprecise."))
     return out
 
 
@@ -217,8 +309,10 @@ def _bin(event_time: pd.Series, freq: str, window: tuple[int, int]) -> tuple[pd.
     lo, hi = window
     if freq == "M":
         return event_time.clip(lo, hi).astype(int), cfg.EVENT_REF
+    # Quarterly (live snapshots): one bin per snapshot quarter. Leads are never pooled into
+    # an endpoint bin, so every pre-announcement snapshot is its own pre-trend coefficient.
     q = np.round(event_time / 3).astype(int)
-    return q.clip(int(np.floor(lo / 3)), int(np.floor(hi / 3))), int(np.round(cfg.EVENT_REF / 3))
+    return q.clip(upper=int(np.floor(hi / 3))), int(np.round(cfg.EVENT_REF / 3))
 
 
 def _name(k: int) -> str:
@@ -238,10 +332,16 @@ def _joint_wald(fit, names: list[str]) -> dict:
     return {"F": F, "p": float(1 - stats.f.cdf(F, q, max(G - 1, 1))), "df": q}
 
 
+ES_LABEL = {"roomtype": "entire vs private, BC", "exempt": "Victoria covered vs exempt areas"}
+ES_SPEC = {"roomtype": "S3", "exempt": "S2-ES", "cross": "S4"}
+
+
 def event_study(df: pd.DataFrame, source: str, design: str = "roomtype",
                 window: tuple[int, int] = (cfg.EVENT_MIN, cfg.EVENT_MAX),
-                controls: list[str] | None = None) -> ModelResult:
+                controls: list[str] | None = None, inference: bool = True) -> ModelResult:
     """design='roomtype': entire vs private within BC (PR-covered areas), city x month FE.
+       design='exempt':   Victoria entire homes, PR-covered vs exempt areas, month FE
+                          (plus a randomization-inference pre-trend test if ``inference``).
        design='cross':    BC vs control-city entire homes, month FE."""
     freq = "M" if source == "synthetic" else "Q"
     if not window[0] < cfg.EVENT_REF < window[1]:
@@ -249,6 +349,9 @@ def event_study(df: pd.DataFrame, source: str, design: str = "roomtype",
     if design == "roomtype":
         d = df[df.city.isin(cfg.BC_MARKETS) & (df.covered == 1)].copy()
         treat, fe = "ent", "unit_id + city_month"
+    elif design == "exempt":
+        d = df[(df.city == "victoria") & (df.room_type == "entire_home") & (df.opted_in == 0)].copy()
+        treat, fe = "covered", "unit_id + ym"
     else:
         ctrl = controls or [k for k, m in cfg.MARKETS.items() if not m.treated]
         d = df[(df.room_type == "entire_home") & (df.city.isin(cfg.BC_MARKETS + ctrl)) & (df.covered == 1)].copy()
@@ -265,30 +368,47 @@ def event_study(df: pd.DataFrame, source: str, design: str = "roomtype",
     scale = 1 if freq == "M" else 3
     announce_k = (cfg.ANNOUNCE_MONTH.year - cfg.PHASE1_MONTH.year) * 12 + cfg.ANNOUNCE_MONTH.month - cfg.PHASE1_MONTH.month
     pre_names = [_name(k) for k in ks if k * scale < announce_k and k < ref]
+    extra_ri = {}
+    if inference and design == "exempt":
+        # Few control clusters: CRV1 Wald tests over-reject, so add a placebo-in-space test.
+        for k in ks:
+            d["_per_" + _name(k)] = (d["k"] == k).astype(float)
+        extra_ri["randomization_inference"] = _placebo_p(
+            d, treat, {n: "_per_" + n for n in names}, joint=pre_names)
     truth = None
-    if source == "synthetic" and design == "roomtype":
+    if source == "synthetic" and design in ("roomtype", "exempt"):
         p = syn.load_params()
         truth = {}
-        nb = {c: sorted(d.loc[d.city == c, "neighbourhood"].unique()) for c in cfg.BC_MARKETS}
         months_ = pd.date_range(cfg.PANEL_START.isoformat(), cfg.PANEL_END.isoformat(), freq="MS")
         ref_m = pd.Timestamp(cfg.PHASE1_MONTH) + pd.DateOffset(months=cfg.EVENT_REF)
+        if design == "roomtype":
+            nb = {c: sorted(d.loc[d.city == c, "neighbourhood"].unique()) for c in cfg.BC_MARKETS}
 
-        def gap(mm):
-            vals = [syn.true_effect(p, c, n, "entire_home", mm) - syn.true_effect(p, c, n, "private_room", mm)
-                    for c in cfg.BC_MARKETS for n in nb[c]]
-            return float(np.mean(vals))
+            def gap(mm):
+                return float(np.mean([syn.true_effect(p, c, n, "entire_home", mm)
+                                      - syn.true_effect(p, c, n, "private_room", mm)
+                                      for c in cfg.BC_MARKETS for n in nb[c]]))
+        else:
+            cov = sorted(d.loc[d.covered == 1, "neighbourhood"].unique())
+            exm = sorted(d.loc[d.covered == 0, "neighbourhood"].unique())
+
+            def gap(mm):
+                still = [n for n in exm if syn.effect_segment("victoria", n, mm).endswith("_exempt")]
+                return float(np.mean([syn.true_effect(p, "victoria", n, "entire_home", mm) for n in cov])
+                             - np.mean([syn.true_effect(p, "victoria", n, "entire_home", mm) for n in still]))
         g_ref = gap(ref_m)
         for mm in months_:
             k = (mm.year - cfg.PHASE1_MONTH.year) * 12 + mm.month - cfg.PHASE1_MONTH.month
             if window[0] < k < window[1] and k != ref:
                 truth[_name(k)] = gap(mm) - g_ref
-    rec = _record(fit, "S3" if design == "roomtype" else "S4",
-                  f"Event study ({'entire vs private, BC' if design == 'roomtype' else 'BC vs ' + '+'.join(controls or ['ottawa', 'seattle'])})",
-                  source, fe, names, truth,
-                  notes=f"Reference period {'t=' + str(ref) if freq == 'M' else 'quarter bin ' + str(ref)} "
-                        f"(Sep 2023); endpoints binned; {'monthly' if freq == 'M' else 'quarterly bins (k = round(t/3))'}.",
+    bins = ("monthly; endpoints binned" if freq == "M" else
+            "one bin per snapshot quarter (k = round(t/3)); leads not pooled")
+    label = ES_LABEL.get(design) or "BC vs " + "+".join(controls or ["ottawa", "seattle"])
+    rec = _record(fit, ES_SPEC[design], f"Event study ({label})", source, fe, names, truth,
+                  notes=f"Reference {'t=' + str(ref) if freq == 'M' else 'quarter bin ' + str(ref)} "
+                        f"(last pre-announcement snapshot, Aug-Sep 2023); {bins}.",
                   extra={"freq": freq, "ref": ref, "window": list(window), "pretrend_test": _joint_wald(fit, pre_names),
-                         "pre_terms": pre_names})
+                         "pre_terms": pre_names, **extra_ri})
     for c in rec.coefs:
         k = c["term"]
         kk = -int(k[4:]) if k.startswith("es_m") else int(k[4:])
@@ -339,7 +459,9 @@ def rent_models() -> dict:
           AND cpi_rent_yoy_log IS NOT NULL
         ORDER BY city, year_month
     """)
-    out: dict = {}
+    out: dict = {"note": "Three CMAs, two of them treated. Driscoll-Kraay SEs need many cross-sections "
+                         "or a long panel, so these p-values are not credible in either direction: the "
+                         "rent models are descriptive."}
     if p.empty:
         return {"note": "CPI not available"}
     p["year_month"] = pd.to_datetime(p["year_month"])
@@ -426,9 +548,78 @@ def rent_models() -> dict:
         "rows": rows,
         "assumptions": "Rent effect = -(units removed / renter households) x conversion share [0.25, 1] "
                        "x inverse demand elasticity [1, 2]. Upper bound: assumes every delisted unit "
-                       "enters the long-term market at once.",
+                       "enters the long-term market at once. Units removed are PR-covered areas only; "
+                       "renter households are approximate 2021 Census totals for the City of "
+                       "Vancouver and the whole CRD (including exempt areas).",
     }
     return out
+
+
+def _records(df: pd.DataFrame) -> list[dict]:
+    return json.loads(df.to_json(orient="records", date_format="iso"))
+
+
+def descriptives() -> dict:
+    """Descriptive figures the README and brief cite, computed from the live panel."""
+    if not _has_live():
+        return {}
+    ann = cfg.ANNOUNCE_MONTH.isoformat()
+    # Last pre-announcement and last clean snapshot per city, by room type (PR-covered areas).
+    city = db.query(f"""
+        WITH o AS (SELECT * FROM str_rent_panel
+                   WHERE data_source = 'live' AND is_observed AND NOT scrape_incomplete
+                     AND city IN ('vancouver', 'victoria')),
+        b0 AS (SELECT city, max(year_month) FILTER (WHERE year_month < DATE '{ann}') AS pre_month,
+                      max(year_month) AS post_month FROM o GROUP BY city),
+        -- Same calendar month before the announcement: review counts are seasonal.
+        b AS (SELECT b0.*, (SELECT max(o2.year_month) FROM o o2
+                            WHERE o2.city = b0.city AND o2.year_month < DATE '{ann}'
+                              AND month(o2.year_month) = month(b0.post_month)) AS same_season_pre_month
+              FROM b0)
+        SELECT o.city, o.room_type, b.pre_month, b.post_month, b.same_season_pre_month,
+               max(o.n_active_pr_covered) FILTER (WHERE o.year_month = b.pre_month)  AS active_pre,
+               max(o.n_active_pr_covered) FILTER (WHERE o.year_month = b.post_month) AS active_post,
+               max(o.n_active_pr_covered) FILTER (WHERE o.year_month = b.same_season_pre_month) AS active_same_season_pre,
+               max(o.n_reviewed_180d) FILTER (WHERE o.year_month = b.pre_month)      AS reviewed_pre,
+               max(o.n_reviewed_180d) FILTER (WHERE o.year_month = b.post_month)     AS reviewed_post,
+               max(o.n_reviewed_180d) FILTER (WHERE o.year_month = b.same_season_pre_month) AS reviewed_same_season_pre,
+               max(o.share_commercial_host) FILTER (WHERE o.year_month = b.pre_month)  AS mlh_share_pre,
+               max(o.share_commercial_host) FILTER (WHERE o.year_month = b.post_month) AS mlh_share_post,
+               max(o.share_provincial_registration) FILTER (WHERE o.year_month = b.post_month) AS prov_registered_post,
+               max(o.share_provincial_exempt_claim) FILTER (WHERE o.year_month = b.post_month) AS prov_exempt_claim_post
+        FROM o JOIN b USING (city) GROUP BY ALL ORDER BY ALL""")
+    # Victoria entire homes by principal-residence geography.
+    geo = db.query(f"""
+        WITH g AS (
+            SELECT CASE WHEN NOT pr_exempt THEN 'covered'
+                        WHEN pr_exempt_until IS NULL THEN 'never_covered'
+                        ELSE 'opted_in_' || strftime(pr_exempt_until, '%Y-%m') END AS geography,
+                   neighbourhood, year_month, n_active
+            FROM str_nbhd_panel
+            WHERE data_source = 'live' AND city = 'victoria' AND room_type = 'entire_home'
+              AND is_observed AND NOT scrape_incomplete),
+        areas AS (SELECT geography, string_agg(DISTINCT neighbourhood, ', ' ORDER BY neighbourhood) AS areas,
+                         count(DISTINCT neighbourhood) AS n_areas
+                  FROM g GROUP BY geography),
+        a AS (SELECT geography, year_month, sum(n_active) AS n FROM g GROUP BY geography, year_month)
+        SELECT a.geography, any_value(areas.n_areas) AS n_areas, any_value(areas.areas) AS areas,
+               arg_max(a.n, a.year_month) FILTER (WHERE a.year_month < DATE '{ann}') AS active_pre,
+               arg_max(a.n, a.year_month) AS active_post
+        FROM a JOIN areas USING (geography) GROUP BY a.geography ORDER BY a.geography""")
+    geo["pct_change"] = 100 * (geo["active_post"] / geo["active_pre"] - 1)
+    vintage = db.query("""
+        SELECT city, snapshot_date, n_total, round(completeness_ratio, 3) AS completeness_ratio,
+               scrape_incomplete, round(share_new_listings, 3) AS share_new_listings
+        FROM snapshot_months WHERE data_source = 'live' ORDER BY city, snapshot_date""")
+    cpi = db.query("""
+        SELECT city,
+               100 * (max(cpi_rent) FILTER (WHERE year_month = DATE '2026-06-01')
+                      / max(cpi_rent) FILTER (WHERE year_month = DATE '2023-09-01') - 1) AS pct_sep2023_jun2026,
+               100 * (max(cpi_rent) FILTER (WHERE year_month = DATE '2026-06-01')
+                      / max(cpi_rent) FILTER (WHERE year_month = DATE '2023-06-01') - 1) AS pct_jun2023_jun2026
+        FROM cpi_monthly WHERE city IN ('vancouver', 'victoria', 'ottawa') GROUP BY city ORDER BY city""")
+    return {"city_room": _records(city), "victoria_geography": _records(geo),
+            "vintages": _records(vintage), "cpi_rent_change": _records(cpi)}
 
 
 def _has_live() -> bool:
@@ -454,12 +645,13 @@ def run_all() -> dict:
             results.append(did_bc_roomtype(df, source, extra_fe="rt_cal_month", spec="S1-season",
                                            label="Room-type DiD + room-type x calendar-month FE"))
         results += did_victoria_exempt(df, source)
+        results.append(event_study(df, source, "exempt"))
         results.append(event_study(df, source, "roomtype"))
         diagnostics[f"pretrend_slope_{source}"] = pretrend_slope(df, source)
 
-        # A control market is eligible only with >= 3 pre-announcement snapshots inside the
-        # event window; a market observed only post-treatment would just add noise to the
-        # month FE (live Seattle archives start in 2025).
+        # A control market is eligible only with enough pre-announcement snapshots inside the
+        # event window (>= 3 monthly synthetic, >= 2 quarterly live); a market observed only
+        # post-treatment would just add noise to the month FE (live Seattle starts in 2025).
         win = df[(df.event_time >= cfg.EVENT_MIN) & (df.year_month < pd.Timestamp(cfg.ANNOUNCE_MONTH))]
         eligible = [c for c, m in cfg.MARKETS.items() if not m.treated
                     and win.loc[win.city == c, "ym"].nunique() >= (3 if source == "synthetic" else 2)]
@@ -475,6 +667,7 @@ def run_all() -> dict:
     payload = {
         "results": [r.__dict__ for r in results],
         "rent": rent,
+        "descriptives": descriptives(),
         "diagnostics": diagnostics,
         "manifest": json.loads(cfg.MANIFEST_PATH.read_text()) if cfg.MANIFEST_PATH.exists() else {},
     }
@@ -490,7 +683,7 @@ def main() -> None:
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(name)s %(levelname)s %(message)s")
     out = run_all()
     for r in out["results"]:
-        if r["spec"] in ("S3", "S4"):
+        if r["spec"] in ("S3", "S4", "S2-ES"):
             pt = r["extra"]["pretrend_test"]
             print(f"[{r['data_source']:9s}] {r['spec']:10s} {r['label']}: pre-trend F={pt['F']} p={pt['p']}")
             continue
@@ -501,7 +694,15 @@ def main() -> None:
     for k, v in out["rent"].items():
         if isinstance(v, dict) and "coefs" in v:
             print("RENT", k, [(c["term"], round(c["estimate"], 3), round(c["se"], 3)) for c in v["coefs"]])
+    for r in out["results"]:
+        ri = r["extra"].get("randomization_inference")
+        if ri:
+            ps = {k: round(v, 3) for k, v in ri["p"].items()} if r["spec"] != "S2-ES" else {}
+            print(f"[{r['data_source']:9s}] {r['spec']:10s} RI p={ps} joint pre-trend p={ri.get('joint_p')} "
+                  f"({ri['n_placebos']} placebos, {ri['n_controls']} controls) "
+                  f"wild p={r['extra'].get('wild_bootstrap_p')}")
     print(json.dumps(out["rent"].get("mechanical_bound", {}), indent=1, default=str))
+    print(json.dumps(out["descriptives"], indent=1, default=str))
     print(json.dumps(out["diagnostics"], indent=1, default=str))
 
 
