@@ -66,16 +66,18 @@ BC_MARKETS = [k for k, m in MARKETS.items() if m.treated]
 # contemporaneous treatment, so it cannot serve as an untreated control.
 
 # Inside Airbnb's "Victoria" file covers the whole Capital Regional District.
-# Bill 35's principal-residence requirement does NOT apply to regional-district
-# electoral areas or municipalities < 10,000 people (unless they opt in). These
-# neighbourhoods are therefore untreated by Phase 1 (but still subject to the
-# Phase-2 registry). Verify opt-in status against the current BC exemption list.
-PR_EXEMPT_NEIGHBOURHOODS = {
-    ("victoria", "Juan de Fuca"),
-    ("victoria", "Salt Spring Island"),
-    ("victoria", "Southern Gulf Islands"),
-    ("victoria", "Metchosin"),
-    ("victoria", "Highlands"),
+# Bill 35's principal-residence requirement (PRR) exempts most regional-district
+# electoral areas and Islands Trust areas, and municipalities under 10,000 people
+# only if they are NOT within 15 km of a larger municipality. So Metchosin and
+# Highlands (small, but next to Langford/Saanich) are covered from May 2024 and are
+# deliberately absent here. Exempt areas are still subject to the Phase-2 registry.
+# Value = first month the PRR applies after an opt-in (None = exempt throughout).
+# Source: gov.bc.ca "principal residence requirement" community list; Salt Spring
+# Local Trust Committee opt-in effective 1 Nov 2025 (Gulf Islands Driftwood, Mar 2025).
+PR_EXEMPT_NEIGHBOURHOODS: dict[tuple[str, str], date | None] = {
+    ("victoria", "Juan de Fuca"): None,                      # CRD electoral area
+    ("victoria", "Southern Gulf Islands"): None,             # Islands Trust area
+    ("victoria", "Salt Spring Island"): date(2025, 11, 1),   # Islands Trust; opted in
 }
 
 # --------------------------------------------------------------------------- sources

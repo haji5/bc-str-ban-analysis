@@ -7,38 +7,38 @@
       "coefs": [
         {
           "term": "ent_antic",
-          "estimate": -0.050273058642615026,
-          "se": 0.05560309728319399,
-          "p": 0.3706313747331804,
-          "ci_low": -0.16219628845024509,
-          "ci_high": 0.06165017116501502,
+          "estimate": -0.04817566367494359,
+          "se": 0.054214144896219424,
+          "p": 0.3786400510918442,
+          "ci_low": -0.15718050775815873,
+          "ci_high": 0.06082918040827156,
           "truth": null
         },
         {
           "term": "ent_p1",
-          "estimate": -0.13426793033309564,
-          "se": 0.07258692925227572,
-          "p": 0.07077942009521365,
-          "ci_low": -0.2803778407640774,
-          "ci_high": 0.011841980097886118,
+          "estimate": -0.13805835093330593,
+          "se": 0.07112479948138682,
+          "p": 0.05813356032320227,
+          "ci_low": -0.2810643448996363,
+          "ci_high": 0.00494764303302439,
           "truth": null
         },
         {
           "term": "ent_p2",
-          "estimate": 0.06411673267625792,
-          "se": 0.04364085463769731,
-          "p": 0.14858740193997622,
-          "ci_low": -0.023727751557045554,
-          "ci_high": 0.15196121690956138,
+          "estimate": 0.07263124599355515,
+          "se": 0.043298815846008656,
+          "p": 0.09995720539082953,
+          "ci_low": -0.014426858110400731,
+          "ci_high": 0.15968935009751103,
           "truth": null
         }
       ],
-      "nobs": 1305,
-      "r2": 0.9675221223722495,
-      "r2_within": 0.01340913160237811,
-      "n_clusters": 47,
+      "nobs": 1350,
+      "r2": 0.9680548756453449,
+      "r2_within": 0.014095223174297677,
+      "n_clusters": 49,
       "fe": "unit_id + city_month",
-      "notes": "Treated: entire homes; control: private rooms in PR-covered neighbourhoods. Phase-2 term is incremental to Phase 1. Control is partly treated (registry applies to all STRs; ~75% of private-room listings belong to multi-listing hosts), so estimates are a lower bound on the entire-home effect.",
+      "notes": "Treated: entire homes; control: private rooms in PR-covered neighbourhoods. Phase-2 term is incremental to Phase 1. The control is partly treated: the Phase-2 registry applies to every STR, and private rooms in Victoria's covered areas fell ~25%. Renting rooms in one's own principal residence stays legal, so the size of the Phase-1 spill-over is unknown; read as a lower bound.",
       "extra": {}
     },
     {
@@ -48,26 +48,26 @@
       "coefs": [
         {
           "term": "ent_antic",
-          "estimate": -0.10733239758912523,
-          "se": 0.05878764256742335,
-          "p": 0.0814911821778117,
-          "ci_low": -0.22925050623527277,
-          "ci_high": 0.014585711057022305,
+          "estimate": -0.1073323975891252,
+          "se": 0.058787642567423304,
+          "p": 0.08149118217781148,
+          "ci_low": -0.22925050623527266,
+          "ci_high": 0.014585711057022235,
           "truth": null
         },
         {
           "term": "ent_p1",
-          "estimate": -0.1226994493804531,
-          "se": 0.07115347056635722,
-          "p": 0.09865405763595869,
-          "ci_low": -0.2702627156759231,
-          "ci_high": 0.024863816915016906,
+          "estimate": -0.12269944938045306,
+          "se": 0.07115347056635711,
+          "p": 0.09865405763595847,
+          "ci_low": -0.27026271567592286,
+          "ci_high": 0.024863816915016726,
           "truth": null
         },
         {
           "term": "ent_p2",
-          "estimate": 0.08777225429455372,
-          "se": 0.05972991274943106,
+          "estimate": 0.08777225429455371,
+          "se": 0.059729912749431055,
           "p": 0.15585737254641407,
           "ci_low": -0.03610000310474863,
           "ci_high": 0.21164451169385606,
@@ -76,10 +76,10 @@
       ],
       "nobs": 675,
       "r2": 0.960532896609109,
-      "r2_within": 0.016268577399313533,
+      "r2_within": 0.016268577399313644,
       "n_clusters": 23,
       "fe": "unit_id + city_month",
-      "notes": "Treated: entire homes; control: private rooms in PR-covered neighbourhoods. Phase-2 term is incremental to Phase 1. Control is partly treated (registry applies to all STRs; ~75% of private-room listings belong to multi-listing hosts), so estimates are a lower bound on the entire-home effect.",
+      "notes": "Treated: entire homes; control: private rooms in PR-covered neighbourhoods. Phase-2 term is incremental to Phase 1. The control is partly treated: the Phase-2 registry applies to every STR, and private rooms in Victoria's covered areas fell ~25%. Renting rooms in one's own principal residence stays legal, so the size of the Phase-1 spill-over is unknown; read as a lower bound.",
       "extra": {}
     },
     {
@@ -89,38 +89,38 @@
       "coefs": [
         {
           "term": "ent_antic",
-          "estimate": 0.01210477424273664,
-          "se": 0.09652150572639766,
-          "p": 0.9012886262269109,
-          "ci_low": -0.1875651731472817,
-          "ci_high": 0.211774721632755,
+          "estimate": 0.012418075921363873,
+          "se": 0.09114309554499278,
+          "p": 0.8927163614145703,
+          "ci_low": -0.17529464317082602,
+          "ci_high": 0.20013079501355377,
           "truth": null
         },
         {
           "term": "ent_p1",
-          "estimate": -0.1455150269693029,
-          "se": 0.12798046295503082,
-          "p": 0.2672417926910835,
-          "ci_low": -0.41026278564618057,
-          "ci_high": 0.11923273170757476,
+          "estimate": -0.1512275532991892,
+          "se": 0.12165244407355866,
+          "p": 0.22535937245214788,
+          "ci_low": -0.4017754519053476,
+          "ci_high": 0.0993203453069692,
           "truth": null
         },
         {
           "term": "ent_p2",
-          "estimate": 0.028991808345732756,
-          "se": 0.06382821667124067,
-          "p": 0.6539307129914085,
-          "ci_low": -0.10304691783070527,
-          "ci_high": 0.16103053452217078,
+          "estimate": 0.04811965857578999,
+          "se": 0.0628472009455493,
+          "p": 0.45104670410456293,
+          "ci_low": -0.08131657470420225,
+          "ci_high": 0.17755589185578222,
           "truth": null
         }
       ],
-      "nobs": 630,
-      "r2": 0.9640770937163244,
-      "r2_within": 0.020000368720399453,
-      "n_clusters": 24,
+      "nobs": 675,
+      "r2": 0.964016145876481,
+      "r2_within": 0.020117994052192834,
+      "n_clusters": 26,
       "fe": "unit_id + city_month",
-      "notes": "Treated: entire homes; control: private rooms in PR-covered neighbourhoods. Phase-2 term is incremental to Phase 1. Control is partly treated (registry applies to all STRs; ~75% of private-room listings belong to multi-listing hosts), so estimates are a lower bound on the entire-home effect.",
+      "notes": "Treated: entire homes; control: private rooms in PR-covered neighbourhoods. Phase-2 term is incremental to Phase 1. The control is partly treated: the Phase-2 registry applies to every STR, and private rooms in Victoria's covered areas fell ~25%. Renting rooms in one's own principal residence stays legal, so the size of the Phase-1 spill-over is unknown; read as a lower bound.",
       "extra": {}
     },
     {
@@ -130,38 +130,38 @@
       "coefs": [
         {
           "term": "ent_antic",
-          "estimate": -0.06296590722532301,
-          "se": 0.04536675126014525,
-          "p": 0.1651581457859761,
-          "ci_low": -0.15188310579079484,
-          "ci_high": 0.025951291340148813,
+          "estimate": -0.06270663027947994,
+          "se": 0.04516615829400653,
+          "p": 0.1650291837097031,
+          "ci_low": -0.15123067385576783,
+          "ci_high": 0.025817413296807937,
           "truth": null
         },
         {
           "term": "ent_p1",
-          "estimate": -0.17851503078515688,
-          "se": 0.061031337575311866,
-          "p": 0.0034448581648127696,
-          "ci_low": -0.29813425436107427,
-          "ci_high": -0.05889580720923948,
+          "estimate": -0.17931179217740967,
+          "se": 0.0607798453720702,
+          "p": 0.003175836350328032,
+          "ci_low": -0.29843810009258076,
+          "ci_high": -0.06018548426223856,
           "truth": null
         },
         {
           "term": "ent_p2",
-          "estimate": 0.047870724654086,
-          "se": 0.05155883407164248,
-          "p": 0.35316488866154616,
-          "ci_low": -0.05318273321120992,
-          "ci_high": 0.14892418251938191,
+          "estimate": 0.04896970889058653,
+          "se": 0.051317691004059154,
+          "p": 0.33995906085471006,
+          "ci_low": -0.05161111724712456,
+          "ci_high": 0.14955053502829763,
           "truth": null
         }
       ],
-      "nobs": 1305,
+      "nobs": 1350,
       "r2": NaN,
       "r2_within": NaN,
-      "n_clusters": 47,
+      "n_clusters": 49,
       "fe": "unit_id + city_month",
-      "notes": "Treated: entire homes; control: private rooms in PR-covered neighbourhoods. Phase-2 term is incremental to Phase 1. Control is partly treated (registry applies to all STRs; ~75% of private-room listings belong to multi-listing hosts), so estimates are a lower bound on the entire-home effect.",
+      "notes": "Treated: entire homes; control: private rooms in PR-covered neighbourhoods. Phase-2 term is incremental to Phase 1. The control is partly treated: the Phase-2 registry applies to every STR, and private rooms in Victoria's covered areas fell ~25%. Renting rooms in one's own principal residence stays legal, so the size of the Phase-1 spill-over is unknown; read as a lower bound.",
       "extra": {}
     },
     {
@@ -171,38 +171,38 @@
       "coefs": [
         {
           "term": "ent_antic",
-          "estimate": -0.011112017297823627,
-          "se": 0.07021532023355467,
-          "p": 0.8749475495323507,
-          "ci_low": -0.15244812637266417,
-          "ci_high": 0.1302240917770169,
+          "estimate": -0.004158089554806716,
+          "se": 0.06859378323953953,
+          "p": 0.9519143038234636,
+          "ci_low": -0.1420751342931674,
+          "ci_high": 0.133758955183554,
           "truth": null
         },
         {
           "term": "ent_p1",
-          "estimate": -0.1961917481523934,
-          "se": 0.09307057273857167,
-          "p": 0.04051030821123769,
-          "ci_low": -0.3835330944067749,
-          "ci_high": -0.008850401898011895,
+          "estimate": -0.18837643902826598,
+          "se": 0.09012130010454596,
+          "p": 0.041915847801294426,
+          "ci_low": -0.36957745742075043,
+          "ci_high": -0.0071754206357815264,
           "truth": null
         },
         {
           "term": "ent_p2",
-          "estimate": 0.057239376880601336,
-          "se": 0.04727501223496358,
-          "p": 0.23216613539005038,
-          "ci_low": -0.03792028718601902,
-          "ci_high": 0.15239904094722168,
+          "estimate": 0.06186807669773261,
+          "se": 0.046285407823823996,
+          "p": 0.18763346464917063,
+          "ci_low": -0.0311949730436605,
+          "ci_high": 0.1549311264391257,
           "truth": null
         }
       ],
-      "nobs": 1305,
-      "r2": 0.9496699417184152,
-      "r2_within": 0.021516582784389615,
-      "n_clusters": 47,
+      "nobs": 1350,
+      "r2": 0.9509505547336903,
+      "r2_within": 0.019700409302468636,
+      "n_clusters": 49,
       "fe": "unit_id + city_month",
-      "notes": "Treated: entire homes; control: private rooms in PR-covered neighbourhoods. Phase-2 term is incremental to Phase 1. Control is partly treated (registry applies to all STRs; ~75% of private-room listings belong to multi-listing hosts), so estimates are a lower bound on the entire-home effect.",
+      "notes": "Treated: entire homes; control: private rooms in PR-covered neighbourhoods. Phase-2 term is incremental to Phase 1. The control is partly treated: the Phase-2 registry applies to every STR, and private rooms in Victoria's covered areas fell ~25%. Renting rooms in one's own principal residence stays legal, so the size of the Phase-1 spill-over is unknown; read as a lower bound.",
       "extra": {}
     },
     {
@@ -212,43 +212,214 @@
       "coefs": [
         {
           "term": "ent_antic",
-          "estimate": -0.10926533483313687,
-          "se": 0.033556746427035475,
-          "p": 0.002952996048064538,
-          "ci_low": -0.17800321386968843,
-          "ci_high": -0.04052745579658533,
+          "estimate": -0.12351408473148964,
+          "se": 0.03425603256139904,
+          "p": 0.0011965294567977125,
+          "ci_low": -0.19368438647982988,
+          "ci_high": -0.0533437829831494,
           "truth": null
         },
         {
           "term": "ent_p1",
-          "estimate": -0.31594030966724557,
-          "se": 0.07403153388386473,
-          "p": 0.00020424384511441573,
-          "ci_low": -0.46758703239301075,
-          "ci_high": -0.16429358694148039,
+          "estimate": -0.38998606273366976,
+          "se": 0.05418623198917508,
+          "p": 7.817332692283685e-08,
+          "ci_low": -0.50098152732727,
+          "ci_high": -0.27899059814006955,
           "truth": null
         },
         {
           "term": "ent_p2",
-          "estimate": -0.16012877594311162,
-          "se": 0.07081976205921306,
-          "p": 0.031715259049416744,
-          "ci_low": -0.3051964823254436,
-          "ci_high": -0.015061069560779655,
+          "estimate": -0.11496749684646874,
+          "se": 0.04546933486524012,
+          "p": 0.017374678694029644,
+          "ci_low": -0.20810720711710615,
+          "ci_high": -0.021827786575831343,
           "truth": null
         }
       ],
-      "nobs": 435,
-      "r2": 0.9842377329600054,
-      "r2_within": 0.18104064242406648,
+      "nobs": 433,
+      "r2": 0.9833756017655534,
+      "r2_within": 0.13406914084308086,
       "n_clusters": 29,
       "fe": "unit_id + month",
-      "notes": "Coefficients named ent_* for comparability; treatment here is 'PR-covered neighbourhood'. Only 5 exempt (control) clusters -> see wild-bootstrap p-values.",
+      "notes": "Coefficients named ent_* for comparability; treatment is 'PR-covered neighbourhood'. Controls: Juan de Fuca, Salt Spring Island, Southern Gulf Islands (3 clusters). With this few controls the CRV1 p-values overstate precision; read the randomization-inference p-values.",
       "extra": {
+        "controls": [
+          "Juan de Fuca",
+          "Salt Spring Island",
+          "Southern Gulf Islands"
+        ],
         "wild_bootstrap_p": {
-          "ent_p1": 0.006006006006006006,
-          "ent_p2": 0.04504504504504504
+          "ent_p1": 0.0501050105010501,
+          "ent_p2": 0.0928092809280928
+        },
+        "randomization_inference": {
+          "p": {
+            "ent_antic": 0.10645867542419267,
+            "ent_p1": 0.011220580186097428,
+            "ent_p2": 0.27285166940339356
+          },
+          "n_placebos": 3654,
+          "exhaustive": true,
+          "n_controls": 3,
+          "n_units": 29
         }
+      }
+    },
+    {
+      "spec": "S2a-never",
+      "label": "Victoria: PR-covered vs never-covered areas only",
+      "data_source": "live",
+      "coefs": [
+        {
+          "term": "ent_antic",
+          "estimate": -0.14212645696497508,
+          "se": 0.03431211650491796,
+          "p": 0.00030354019946177146,
+          "ci_low": -0.21252910469479258,
+          "ci_high": -0.07172380923515757,
+          "truth": null
+        },
+        {
+          "term": "ent_p1",
+          "estimate": -0.404212724181348,
+          "se": 0.056726472243594755,
+          "p": 1.1594888782440194e-07,
+          "ci_low": -0.5206058310230276,
+          "ci_high": -0.28781961733966843,
+          "truth": null
+        },
+        {
+          "term": "ent_p2",
+          "estimate": -0.11527917141205242,
+          "se": 0.0546500091401454,
+          "p": 0.044322103649597766,
+          "ci_low": -0.22741172789172923,
+          "ci_high": -0.003146614932375613,
+          "truth": null
+        }
+      ],
+      "nobs": 420,
+      "r2": 0.9825970726925867,
+      "r2_within": 0.10753272466166286,
+      "n_clusters": 28,
+      "fe": "unit_id + month",
+      "notes": "Coefficients named ent_* for comparability; treatment is 'PR-covered neighbourhood'. Controls: Juan de Fuca, Southern Gulf Islands (2 clusters). With this few controls the CRV1 p-values overstate precision; read the randomization-inference p-values.",
+      "extra": {
+        "controls": [
+          "Juan de Fuca",
+          "Southern Gulf Islands"
+        ],
+        "wild_bootstrap_p": {
+          "ent_p1": 0.1415141514151415,
+          "ent_p2": 0.20162016201620162
+        },
+        "randomization_inference": {
+          "p": {
+            "ent_antic": 0.13227513227513227,
+            "ent_p1": 0.03968253968253968,
+            "ent_p2": 0.37037037037037035
+          },
+          "n_placebos": 378,
+          "exhaustive": true,
+          "n_controls": 2,
+          "n_units": 28
+        }
+      }
+    },
+    {
+      "spec": "S2a-reviewed",
+      "label": "Victoria covered vs exempt, reviewed-in-180d outcome",
+      "data_source": "live",
+      "coefs": [
+        {
+          "term": "ent_antic",
+          "estimate": -0.06126337868550611,
+          "se": 0.035741658847490775,
+          "p": 0.09756879142137542,
+          "ci_low": -0.1344768479283154,
+          "ci_high": 0.011950090557303193,
+          "truth": null
+        },
+        {
+          "term": "ent_p1",
+          "estimate": -0.5015370314509308,
+          "se": 0.08513923165194794,
+          "p": 2.456161532826684e-06,
+          "ci_low": -0.6759368416137407,
+          "ci_high": -0.32713722128812084,
+          "truth": null
+        },
+        {
+          "term": "ent_p2",
+          "estimate": -0.17449383853763056,
+          "se": 0.05951815068975817,
+          "p": 0.006645485870015122,
+          "ci_low": -0.2964112434769768,
+          "ci_high": -0.05257643359828433,
+          "truth": null
+        }
+      ],
+      "nobs": 433,
+      "r2": 0.9630289848013895,
+      "r2_within": 0.0983667688143911,
+      "n_clusters": 29,
+      "fe": "unit_id + month",
+      "notes": "Coefficients named ent_* for comparability; treatment is 'PR-covered neighbourhood'. Controls: Juan de Fuca, Salt Spring Island, Southern Gulf Islands (3 clusters). With this few controls the CRV1 p-values overstate precision; read the randomization-inference p-values.",
+      "extra": {
+        "controls": [
+          "Juan de Fuca",
+          "Salt Spring Island",
+          "Southern Gulf Islands"
+        ]
+      }
+    },
+    {
+      "spec": "S2a-ppml",
+      "label": "Victoria covered vs exempt, PPML (counts)",
+      "data_source": "live",
+      "coefs": [
+        {
+          "term": "ent_antic",
+          "estimate": -0.09577840853820259,
+          "se": 0.02630769600530218,
+          "p": 0.00027189861914544977,
+          "ci_low": -0.14734054522482312,
+          "ci_high": -0.04421627185158205,
+          "truth": null
+        },
+        {
+          "term": "ent_p1",
+          "estimate": -0.3865948986810865,
+          "se": 0.09958161649974526,
+          "p": 0.00010351933039531858,
+          "ci_low": -0.5817712805428669,
+          "ci_high": -0.19141851681930613,
+          "truth": null
+        },
+        {
+          "term": "ent_p2",
+          "estimate": -0.11997468649102765,
+          "se": 0.06665960343713954,
+          "p": 0.07189048890489125,
+          "ci_low": -0.25062510845154357,
+          "ci_high": 0.010675735469488287,
+          "truth": null
+        }
+      ],
+      "nobs": 433,
+      "r2": NaN,
+      "r2_within": NaN,
+      "n_clusters": 29,
+      "fe": "unit_id + month",
+      "notes": "Coefficients named ent_* for comparability; treatment is 'PR-covered neighbourhood'. Controls: Juan de Fuca, Salt Spring Island, Southern Gulf Islands (3 clusters). With this few controls the CRV1 p-values overstate precision; read the randomization-inference p-values.",
+      "extra": {
+        "controls": [
+          "Juan de Fuca",
+          "Salt Spring Island",
+          "Southern Gulf Islands"
+        ]
       }
     },
     {
@@ -258,172 +429,192 @@
       "coefs": [
         {
           "term": "ddd_antic",
-          "estimate": -0.12007331075881654,
-          "se": 0.11245955744041511,
-          "p": 0.2947743561412419,
-          "ci_low": -0.3504362713828954,
-          "ci_high": 0.11028964986526234,
+          "estimate": -0.18007840629219343,
+          "se": 0.09992040855029685,
+          "p": 0.08228703419440597,
+          "ci_low": -0.38475608477772016,
+          "ci_high": 0.0245992721933333,
           "truth": null
         },
         {
           "term": "ddd_p1",
-          "estimate": -0.15867181330280888,
-          "se": 0.17429573417081387,
-          "p": 0.3704035634221656,
-          "ci_low": -0.5157004399627496,
-          "ci_high": 0.1983568133571318,
+          "estimate": -0.32579985748271956,
+          "se": 0.12991671675283267,
+          "p": 0.018223178080690294,
+          "ci_low": -0.5919221879178119,
+          "ci_high": -0.05967752704762719,
           "truth": null
         },
         {
           "term": "ddd_p2",
-          "estimate": -0.30729322690304534,
-          "se": 0.16605163023170008,
-          "p": 0.07480638499916581,
-          "ci_low": -0.647434572176403,
-          "ci_high": 0.03284811837031232,
+          "estimate": -0.27420010237340314,
+          "se": 0.24071882322026739,
+          "p": 0.2643180090848025,
+          "ci_low": -0.7672902590223459,
+          "ci_high": 0.21889005427553965,
           "truth": null
         }
       ],
-      "nobs": 765,
-      "r2": 0.9694761586067958,
-      "r2_within": 0.06390756662047448,
+      "nobs": 761,
+      "r2": 0.9688409205126374,
+      "r2_within": 0.046138625741996786,
       "n_clusters": 29,
       "fe": "unit_id + room_type x month",
-      "notes": "Differences out both the registry shock common to room types and the exempt-area trend.",
+      "notes": "Differences out both the registry shock common to room types and the exempt-area trend. Private rooms are themselves partly treated, so this nets part of the effect out and is imprecise.",
       "extra": {}
     },
     {
-      "spec": "S3",
-      "label": "Event study (entire vs private, BC)",
+      "spec": "S2-ES",
+      "label": "Event study (Victoria covered vs exempt areas)",
       "data_source": "live",
       "coefs": [
         {
+          "term": "es_m8",
+          "estimate": -0.016788837380581317,
+          "se": 0.04673122956415845,
+          "p": 0.722093016076661,
+          "ci_low": -0.11251342176467657,
+          "ci_high": 0.07893574700351394,
+          "truth": null,
+          "event_time": -24
+        },
+        {
+          "term": "es_m7",
+          "estimate": -0.0010663107300347596,
+          "se": 0.04801370265053096,
+          "p": 0.9824391771267766,
+          "ci_low": -0.09941792214341566,
+          "ci_high": 0.09728530068334615,
+          "truth": null,
+          "event_time": -21
+        },
+        {
+          "term": "es_m6",
+          "estimate": 0.044209900848430204,
+          "se": 0.041615852724210665,
+          "p": 0.29716154949302176,
+          "ci_low": -0.04103630908374203,
+          "ci_high": 0.12945611078060243,
+          "truth": null,
+          "event_time": -18
+        },
+        {
           "term": "es_m4",
-          "estimate": 0.048526892936008724,
-          "se": 0.04140407440897035,
-          "p": 0.24721883437999037,
-          "ci_low": -0.03481518621914025,
-          "ci_high": 0.1318689720911577,
+          "estimate": 0.03590669000488556,
+          "se": 0.016299459619999495,
+          "p": 0.03599600708468742,
+          "ci_low": 0.002518760511875384,
+          "ci_high": 0.06929461949789574,
           "truth": null,
           "event_time": -12
         },
         {
           "term": "es_m2",
-          "estimate": -0.025226861913507943,
-          "se": 0.03882442104846615,
-          "p": 0.5190739340534618,
-          "ci_low": -0.1033763681725603,
-          "ci_high": 0.05292264434554442,
+          "estimate": -0.07880171195831483,
+          "se": 0.03902314873845512,
+          "p": 0.05311539566549972,
+          "ci_low": -0.1587370085295044,
+          "ci_high": 0.001133584612874744,
           "truth": null,
           "event_time": -6
         },
         {
           "term": "es_m1",
-          "estimate": 0.002323773325891585,
-          "se": 0.048082008677814744,
-          "p": 0.9616629757086201,
-          "ci_low": -0.09446029032888752,
-          "ci_high": 0.09910783698067067,
+          "estimate": -0.14332188040758312,
+          "se": 0.03694100550562341,
+          "p": 0.0005795460144280007,
+          "ci_low": -0.21899209991039958,
+          "ci_high": -0.06765166090476667,
           "truth": null,
           "event_time": -3
         },
         {
           "term": "es_p0",
-          "estimate": -0.06540997236292605,
-          "se": 0.05359416025525324,
-          "p": 0.22850706916433605,
-          "ci_low": -0.17328942166850786,
-          "ci_high": 0.04246947694265578,
+          "estimate": -0.3432424858502551,
+          "se": 0.059263392351853635,
+          "p": 3.209107102941644e-06,
+          "ci_low": -0.4646380419908058,
+          "ci_high": -0.22184692970970438,
           "truth": null,
           "event_time": 0
         },
         {
           "term": "es_p1",
-          "estimate": -0.0691308453488702,
-          "se": 0.054842298630697825,
-          "p": 0.21383175903020213,
-          "ci_low": -0.1795226668972269,
-          "ci_high": 0.041260976199486474,
+          "estimate": -0.372766339734896,
+          "se": 0.059718818889958586,
+          "p": 9.566039000930004e-07,
+          "ci_low": -0.4950947948486639,
+          "ci_high": -0.25043788462112804,
           "truth": null,
           "event_time": 3
         },
         {
           "term": "es_p2",
-          "estimate": -0.11471568567940525,
-          "se": 0.06475358939960882,
-          "p": 0.08308996382087996,
-          "ci_low": -0.24505790079611361,
-          "ci_high": 0.015626529437303124,
+          "estimate": -0.3798527567598077,
+          "se": 0.059042707527071484,
+          "p": 5.746354376778839e-07,
+          "ci_low": -0.5007962605291888,
+          "ci_high": -0.25890925299042655,
           "truth": null,
           "event_time": 6
         },
         {
           "term": "es_p3",
-          "estimate": -0.18018772353444676,
-          "se": 0.09243695252035336,
-          "p": 0.0573715709526148,
-          "ci_low": -0.36625365844019026,
-          "ci_high": 0.005878211371296738,
+          "estimate": -0.41427351439555526,
+          "se": 0.06648516045064384,
+          "p": 9.850100082253732e-07,
+          "ci_low": -0.5504621918860568,
+          "ci_high": -0.27808483690505365,
           "truth": null,
           "event_time": 9
         },
         {
           "term": "es_p4",
-          "estimate": -0.05100915104244534,
-          "se": 0.0687586364074626,
-          "p": 0.46194446043131987,
-          "ci_low": -0.18941310765472802,
-          "ci_high": 0.08739480556983735,
+          "estimate": -0.4874762351799529,
+          "se": 0.06071382725197931,
+          "p": 9.619991692133567e-09,
+          "ci_low": -0.6118428725286301,
+          "ci_high": -0.3631095978312757,
           "truth": null,
           "event_time": 12
         },
         {
           "term": "es_p5",
-          "estimate": -0.08141741462496026,
-          "se": 0.06976399030431123,
-          "p": 0.24920827396576772,
-          "ci_low": -0.22184504367156604,
-          "ci_high": 0.05901021442164554,
+          "estimate": -0.4716959178505584,
+          "se": 0.06256662824865658,
+          "p": 3.2698584950807685e-08,
+          "ci_low": -0.5998578459931547,
+          "ci_high": -0.3435339897079622,
           "truth": null,
           "event_time": 15
         },
         {
           "term": "es_p6",
-          "estimate": -0.057440955757359045,
-          "se": 0.07316308788491455,
-          "p": 0.4364150756388485,
-          "ci_low": -0.20471061336425894,
-          "ci_high": 0.08982870184954084,
+          "estimate": -0.516517725025384,
+          "se": 0.08702152395561001,
+          "p": 2.1770655951325324e-06,
+          "ci_low": -0.6947732361859615,
+          "ci_high": -0.33826221386480637,
           "truth": null,
           "event_time": 18
         },
         {
-          "term": "es_p7",
-          "estimate": 0.08840402249587972,
-          "se": 0.08620106545549017,
-          "p": 0.31046390620208686,
-          "ci_low": -0.08510972278164206,
-          "ci_high": 0.2619177677734015,
-          "truth": null,
-          "event_time": 21
-        },
-        {
           "term": "es_p8",
-          "estimate": 0.00541724541585653,
-          "se": 0.07847287646748313,
-          "p": 0.9452622968043922,
-          "ci_low": -0.1525404622600883,
-          "ci_high": 0.16337495309180136,
+          "estimate": -0.5076757521218819,
+          "se": 0.08084684264654453,
+          "p": 8.656274872453906e-07,
+          "ci_low": -0.67328300199066,
+          "ci_high": -0.3420685022531037,
           "truth": null,
           "event_time": 24
         }
       ],
-      "nobs": 1305,
-      "r2": 0.9677487167059555,
-      "r2_within": 0.02029246009530783,
-      "n_clusters": 47,
-      "fe": "unit_id + city_month",
-      "notes": "Reference period quarter bin -3 (Sep 2023); endpoints binned; quarterly bins (k = round(t/3)).",
+      "nobs": 433,
+      "r2": 0.9834094061236724,
+      "r2_within": 0.13582994063002318,
+      "n_clusters": 29,
+      "fe": "unit_id + ym",
+      "notes": "Reference quarter bin -3 (last pre-announcement snapshot, Aug-Sep 2023); one bin per snapshot quarter (k = round(t/3)); leads not pooled.",
       "extra": {
         "freq": "Q",
         "ref": -3,
@@ -432,11 +623,236 @@
           24
         ],
         "pretrend_test": {
-          "F": 1.3736586013054124,
-          "p": 0.24721883437999048,
-          "df": 1
+          "F": 1.3154234787672545,
+          "p": 0.2884881090448077,
+          "df": 4
         },
         "pre_terms": [
+          "es_m8",
+          "es_m7",
+          "es_m6",
+          "es_m4"
+        ],
+        "randomization_inference": {
+          "p": {
+            "es_m8": 0.8954570333880679,
+            "es_m7": 0.9920634920634921,
+            "es_m6": 0.6527093596059114,
+            "es_m4": 0.39053092501368364,
+            "es_m2": 0.3196496989600438,
+            "es_m1": 0.1412151067323481,
+            "es_p0": 0.03886152162014231,
+            "es_p1": 0.020251778872468526,
+            "es_p2": 0.028735632183908046,
+            "es_p3": 0.019157088122605363,
+            "es_p4": 0.008483853311439518,
+            "es_p5": 0.012315270935960592,
+            "es_p6": 0.030925013683634373,
+            "es_p8": 0.026272577996715927
+          },
+          "n_placebos": 3654,
+          "exhaustive": true,
+          "n_controls": 3,
+          "n_units": 29,
+          "joint_p": 0.9241926655719759,
+          "joint_terms": [
+            "es_m8",
+            "es_m7",
+            "es_m6",
+            "es_m4"
+          ]
+        }
+      }
+    },
+    {
+      "spec": "S3",
+      "label": "Event study (entire vs private, BC)",
+      "data_source": "live",
+      "coefs": [
+        {
+          "term": "es_m8",
+          "estimate": -0.010272190740204924,
+          "se": 0.09455233849056047,
+          "p": 0.9139407150665266,
+          "ci_low": -0.20038240892397732,
+          "ci_high": 0.1798380274435675,
+          "truth": null,
+          "event_time": -24
+        },
+        {
+          "term": "es_m7",
+          "estimate": 0.06604479679508526,
+          "se": 0.07593787737786972,
+          "p": 0.3887811903850227,
+          "ci_low": -0.08663853888106648,
+          "ci_high": 0.218728132471237,
+          "truth": null,
+          "event_time": -21
+        },
+        {
+          "term": "es_m6",
+          "estimate": 0.07375090932774606,
+          "se": 0.04808953917330669,
+          "p": 0.13168944929263038,
+          "ci_low": -0.022939589612236466,
+          "ci_high": 0.17044140826772858,
+          "truth": null,
+          "event_time": -18
+        },
+        {
+          "term": "es_m5",
+          "estimate": 0.07409820020147782,
+          "se": 0.05961492974759269,
+          "p": 0.2199247947771621,
+          "ci_low": -0.04576564962235885,
+          "ci_high": 0.1939620500253145,
+          "truth": null,
+          "event_time": -15
+        },
+        {
+          "term": "es_m4",
+          "estimate": 0.057264088910100874,
+          "se": 0.02627355475234789,
+          "p": 0.034229982087699895,
+          "ci_low": 0.004437566518686882,
+          "ci_high": 0.11009061130151487,
+          "truth": null,
+          "event_time": -12
+        },
+        {
+          "term": "es_m2",
+          "estimate": -0.015577260312941215,
+          "se": 0.03863581434248157,
+          "p": 0.6886047666056889,
+          "ci_low": -0.09325977151905147,
+          "ci_high": 0.062105250893169046,
+          "truth": null,
+          "event_time": -6
+        },
+        {
+          "term": "es_m1",
+          "estimate": 0.011017541806741369,
+          "se": 0.04740333547586059,
+          "p": 0.8171990153988138,
+          "ci_low": -0.08429325212834576,
+          "ci_high": 0.10632833574182851,
+          "truth": null,
+          "event_time": -3
+        },
+        {
+          "term": "es_p0",
+          "estimate": -0.058489449247817495,
+          "se": 0.052418822151735156,
+          "p": 0.2700584655655165,
+          "ci_low": -0.16388455501981924,
+          "ci_high": 0.04690565652418426,
+          "truth": null,
+          "event_time": 0
+        },
+        {
+          "term": "es_p1",
+          "estimate": -0.06960774274277627,
+          "se": 0.05384826207653245,
+          "p": 0.20231502761983888,
+          "ci_low": -0.17787693011151123,
+          "ci_high": 0.03866144462595869,
+          "truth": null,
+          "event_time": 3
+        },
+        {
+          "term": "es_p2",
+          "estimate": -0.11252105407577631,
+          "se": 0.06325977293521894,
+          "p": 0.08162002994473383,
+          "ci_low": -0.23971335229874421,
+          "ci_high": 0.014671244147191592,
+          "truth": null,
+          "event_time": 6
+        },
+        {
+          "term": "es_p3",
+          "estimate": -0.17440740259702395,
+          "se": 0.08548369155181498,
+          "p": 0.04684852031378739,
+          "ci_low": -0.3462838840411321,
+          "ci_high": -0.0025309211529158104,
+          "truth": null,
+          "event_time": 9
+        },
+        {
+          "term": "es_p4",
+          "estimate": -0.038728080769124096,
+          "se": 0.06769361249957889,
+          "p": 0.5699184444163374,
+          "ci_low": -0.1748352109299236,
+          "ci_high": 0.09737904939167541,
+          "truth": null,
+          "event_time": 12
+        },
+        {
+          "term": "es_p5",
+          "estimate": -0.0679654494312549,
+          "se": 0.06884024711249186,
+          "p": 0.3284501457580662,
+          "ci_low": -0.20637804299907223,
+          "ci_high": 0.07044714413656242,
+          "truth": null,
+          "event_time": 15
+        },
+        {
+          "term": "es_p6",
+          "estimate": -0.044137257893403926,
+          "se": 0.07167880516571469,
+          "p": 0.5409590065115588,
+          "ci_low": -0.18825715494456524,
+          "ci_high": 0.0999826391577574,
+          "truth": null,
+          "event_time": 18
+        },
+        {
+          "term": "es_p7",
+          "estimate": 0.09946850731782803,
+          "se": 0.08597314093118434,
+          "p": 0.25300928264687306,
+          "ci_low": -0.07339207806053777,
+          "ci_high": 0.2723290926961938,
+          "truth": null,
+          "event_time": 21
+        },
+        {
+          "term": "es_p8",
+          "estimate": 0.01725124869552438,
+          "se": 0.07677112285448884,
+          "p": 0.8231586524057015,
+          "ci_low": -0.13710743929755093,
+          "ci_high": 0.1716099366885997,
+          "truth": null,
+          "event_time": 24
+        }
+      ],
+      "nobs": 1350,
+      "r2": 0.9683043084601937,
+      "r2_within": 0.021793330745464412,
+      "n_clusters": 49,
+      "fe": "unit_id + city_month",
+      "notes": "Reference quarter bin -3 (last pre-announcement snapshot, Aug-Sep 2023); one bin per snapshot quarter (k = round(t/3)); leads not pooled.",
+      "extra": {
+        "freq": "Q",
+        "ref": -3,
+        "window": [
+          -12,
+          24
+        ],
+        "pretrend_test": {
+          "F": 1.4292260703823667,
+          "p": 0.23087367297734307,
+          "df": 5
+        },
+        "pre_terms": [
+          "es_m8",
+          "es_m7",
+          "es_m6",
+          "es_m5",
           "es_m4"
         ]
       }
@@ -448,111 +864,111 @@
       "coefs": [
         {
           "term": "es_m4",
-          "estimate": 0.13110776632462748,
-          "se": 0.035408301200313096,
-          "p": 0.00042556417634687094,
-          "ci_low": 0.060470138188326764,
-          "ci_high": 0.2017453944609282,
+          "estimate": 0.12228902040192337,
+          "se": 0.03578834109812367,
+          "p": 0.0010514101342415927,
+          "ci_low": 0.05092909502312262,
+          "ci_high": 0.1936489457807241,
           "truth": null,
           "event_time": -12
         },
         {
           "term": "es_m2",
-          "estimate": -0.0010941498329147838,
-          "se": 0.02786285447444261,
-          "p": 0.9687892249073584,
-          "ci_low": -0.05667902361850425,
-          "ci_high": 0.05449072395267469,
+          "estimate": -0.0011201730053784452,
+          "se": 0.02757469155350713,
+          "p": 0.9677102837492395,
+          "ci_low": -0.056102546348882794,
+          "ci_high": 0.05386220033812591,
           "truth": null,
           "event_time": -6
         },
         {
           "term": "es_m1",
-          "estimate": -0.05581630514942285,
-          "se": 0.0359016058970651,
-          "p": 0.12459211352808852,
-          "ci_low": -0.12743804922875984,
-          "ci_high": 0.01580543892991413,
+          "estimate": -0.05845370450048979,
+          "se": 0.0356335735169132,
+          "p": 0.10534304703845176,
+          "ci_low": -0.12950503208717842,
+          "ci_high": 0.012597623086198835,
           "truth": null,
           "event_time": -3
         },
         {
           "term": "es_p0",
-          "estimate": -0.15290280283589816,
-          "se": 0.03873819420499483,
-          "p": 0.00018797162615635798,
-          "ci_low": -0.23018338575468636,
-          "ci_high": -0.07562221991710996,
+          "estimate": -0.15354864943286414,
+          "se": 0.03853757604778782,
+          "p": 0.00016189472192462695,
+          "ci_low": -0.23039039360619712,
+          "ci_high": -0.07670690525953117,
           "truth": null,
           "event_time": 0
         },
         {
           "term": "es_p1",
-          "estimate": -0.12273184048252098,
-          "se": 0.04151018657624217,
-          "p": 0.004254159174437833,
-          "ci_low": -0.2055423968730413,
-          "ci_high": -0.03992128409200066,
+          "estimate": -0.12470436588752837,
+          "se": 0.041431736519828156,
+          "p": 0.003616388587565522,
+          "ci_low": -0.20731690213956716,
+          "ci_high": -0.04209182963548959,
           "truth": null,
           "event_time": 3
         },
         {
           "term": "es_p2",
-          "estimate": -0.14948970116595378,
-          "se": 0.04717207607763605,
-          "p": 0.002280364318900885,
-          "ci_low": -0.24359541805812363,
-          "ci_high": -0.05538398427378394,
+          "estimate": -0.14929240332805074,
+          "se": 0.04688356381931754,
+          "p": 0.002155249182369756,
+          "ci_low": -0.24277557446654613,
+          "ci_high": -0.05580923218955537,
           "truth": null,
           "event_time": 6
         },
         {
           "term": "es_p3",
-          "estimate": -0.20018275637367888,
-          "se": 0.057288040042311375,
-          "p": 0.0008346880127902967,
-          "ci_low": -0.3144692691965678,
-          "ci_high": -0.08589624355078997,
+          "estimate": -0.19761283902103904,
+          "se": 0.05623289680633072,
+          "p": 0.0007721839509542416,
+          "ci_low": -0.3097380506627697,
+          "ci_high": -0.0854876273793084,
           "truth": null,
           "event_time": 9
         },
         {
           "term": "es_p4",
-          "estimate": -0.2751670645668287,
-          "se": 0.0533575050754401,
-          "p": 2.2874917977588893e-06,
-          "ci_low": -0.38161237467863907,
-          "ci_high": -0.16872175445501833,
+          "estimate": -0.2698224304931344,
+          "se": 0.0532907492073485,
+          "p": 3.1258200761108412e-06,
+          "ci_low": -0.37608116644265155,
+          "ci_high": -0.16356369454361733,
           "truth": null,
           "event_time": 12
         },
         {
           "term": "es_p5",
-          "estimate": -0.19775182466549562,
-          "se": 0.052536318116214946,
-          "p": 0.00034755736657521297,
-          "ci_low": -0.3025589116180539,
-          "ci_high": -0.0929447377129373,
+          "estimate": -0.1941886231265184,
+          "se": 0.052280793416460296,
+          "p": 0.00040251718602313247,
+          "ci_low": -0.2984335644249767,
+          "ci_high": -0.08994368182806013,
           "truth": null,
           "event_time": 15
         },
         {
           "term": "es_p6",
-          "estimate": -0.2810342966246191,
-          "se": 0.060502175818130235,
-          "p": 1.577520382323172e-05,
-          "ci_low": -0.40173283487701,
-          "ci_high": -0.1603357583722282,
+          "estimate": -0.27603888962229595,
+          "se": 0.05976811574259874,
+          "p": 1.6783762770478106e-05,
+          "ci_low": -0.39521312761588046,
+          "ci_high": -0.15686465162871144,
           "truth": null,
           "event_time": 18
         }
       ],
-      "nobs": 770,
-      "r2": 0.983774779145108,
-      "r2_within": 0.1544297700865389,
-      "n_clusters": 70,
+      "nobs": 792,
+      "r2": 0.9836945289223858,
+      "r2_within": 0.1419129348378554,
+      "n_clusters": 72,
       "fe": "unit_id + ym",
-      "notes": "Reference period quarter bin -3 (Sep 2023); endpoints binned; quarterly bins (k = round(t/3)).",
+      "notes": "Reference quarter bin -3 (last pre-announcement snapshot, Aug-Sep 2023); one bin per snapshot quarter (k = round(t/3)); leads not pooled.",
       "extra": {
         "freq": "Q",
         "ref": -3,
@@ -561,8 +977,8 @@
           24
         ],
         "pretrend_test": {
-          "F": 13.710290438295718,
-          "p": 0.0004255641763466489,
+          "F": 11.675938432773421,
+          "p": 0.0010514101342415927,
           "df": 1
         },
         "pre_terms": [
@@ -577,42 +993,42 @@
       "coefs": [
         {
           "term": "ent_antic",
-          "estimate": -0.0947893558997345,
-          "se": 0.02598833841918233,
-          "p": 0.000510050379441962,
-          "ci_low": -0.14663467247533757,
-          "ci_high": -0.04294403932413143,
+          "estimate": -0.09154769007782888,
+          "se": 0.02595822842866451,
+          "p": 0.0007417444639781223,
+          "ci_low": -0.14330692749418628,
+          "ci_high": -0.03978845266147149,
           "truth": null
         },
         {
           "term": "ent_p1",
-          "estimate": -0.2158663360933718,
-          "se": 0.04635518246889229,
-          "p": 1.510545890859305e-05,
-          "ci_low": -0.3083423948261479,
-          "ci_high": -0.12339027736059573,
+          "estimate": -0.21187787204294248,
+          "se": 0.04582013030303149,
+          "p": 1.6437841842575907e-05,
+          "ci_low": -0.3032406169744945,
+          "ci_high": -0.12051512711139044,
           "truth": null
         },
         {
           "term": "ent_p2",
-          "estimate": -0.062100595494907256,
-          "se": 0.0318769821744991,
-          "p": 0.05546776532503528,
-          "ci_low": -0.12569343493137938,
-          "ci_high": 0.001492243941564865,
+          "estimate": -0.058002311154616217,
+          "se": 0.031660113953741964,
+          "p": 0.07114092232349423,
+          "ci_low": -0.12113078539791677,
+          "ci_high": 0.005126163088684334,
           "truth": null
         }
       ],
-      "nobs": 840,
-      "r2": 0.9802049722814772,
-      "r2_within": 0.09066088298512698,
-      "n_clusters": 70,
+      "nobs": 864,
+      "r2": 0.980327931069102,
+      "r2_within": 0.08395492390954018,
+      "n_clusters": 72,
       "fe": "unit_id + month",
       "notes": "Sample starts May 2023 (t=-12) so Ottawa's 2022 bylaw roll-out does not contaminate the pre-period. Treatment varies by province -> effectively 2 treated clusters; rely on wild-bootstrap p-values and leave-one-out.",
       "extra": {
         "wild_bootstrap_p": {
-          "ent_p1": 0.0,
-          "ent_p2": 0.05305305305305305
+          "ent_p1": 0.00010001000100010001,
+          "ent_p2": 0.0713071307130713
         }
       }
     },
@@ -623,38 +1039,38 @@
       "coefs": [
         {
           "term": "ent_antic",
-          "estimate": -0.003822657337112593,
-          "se": 0.02113525988960511,
-          "p": 0.8572846238219225,
-          "ci_low": -0.046391255905643664,
-          "ci_high": 0.038745941231418474,
-          "truth": -0.013500000000000002
+          "estimate": -0.039269942325032885,
+          "se": 0.01946325977635949,
+          "p": 0.04923772082739952,
+          "ci_low": -0.07840344892805093,
+          "ci_high": -0.00013643572201484794,
+          "truth": -0.013959183673469386
         },
         {
           "term": "ent_p1",
-          "estimate": -0.06998151948296472,
-          "se": 0.021528650285673086,
-          "p": 0.002183705267494007,
-          "ci_low": -0.11334244698136947,
-          "ci_high": -0.026620591984559953,
-          "truth": -0.09000000000000001
+          "estimate": -0.08650909385719435,
+          "se": 0.021901716298309015,
+          "p": 0.00025537177062973093,
+          "ci_low": -0.1305454458981996,
+          "ci_high": -0.04247274181618911,
+          "truth": -0.09306122448979591
         },
         {
           "term": "ent_p2",
-          "estimate": -0.014321995487523694,
-          "se": 0.024683558473100758,
-          "p": 0.5646577699163307,
-          "ci_low": -0.06403723425783446,
-          "ci_high": 0.03539324328278707,
-          "truth": -0.020000000000000004
+          "estimate": 0.01587217783013912,
+          "se": 0.017712346599924263,
+          "p": 0.37466724025813947,
+          "ci_low": -0.019740881882755995,
+          "ci_high": 0.05148523754303423,
+          "truth": -0.020612244897959184
         }
       ],
-      "nobs": 4482,
-      "r2": 0.9727053410314526,
-      "r2_within": 0.009790499829181787,
-      "n_clusters": 46,
+      "nobs": 4644,
+      "r2": 0.9698501066194403,
+      "r2_within": 0.007640207129631871,
+      "n_clusters": 49,
       "fe": "unit_id + city_month",
-      "notes": "Treated: entire homes; control: private rooms in PR-covered neighbourhoods. Phase-2 term is incremental to Phase 1. Control is partly treated (registry applies to all STRs; ~75% of private-room listings belong to multi-listing hosts), so estimates are a lower bound on the entire-home effect.",
+      "notes": "Treated: entire homes; control: private rooms in PR-covered neighbourhoods. Phase-2 term is incremental to Phase 1. The control is partly treated: the Phase-2 registry applies to every STR, and private rooms in Victoria's covered areas fell ~25%. Renting rooms in one's own principal residence stays legal, so the size of the Phase-1 spill-over is unknown; read as a lower bound.",
       "extra": {}
     },
     {
@@ -664,38 +1080,38 @@
       "coefs": [
         {
           "term": "ent_antic",
-          "estimate": -0.05225308298917755,
-          "se": 0.026070918571862965,
-          "p": 0.05750461035279253,
-          "ci_low": -0.10632085887088302,
-          "ci_high": 0.0018146928925279263,
+          "estimate": -0.04530393649833063,
+          "se": 0.026530104973606593,
+          "p": 0.10177791683668502,
+          "ci_low": -0.10032400669175998,
+          "ci_high": 0.009716133695098716,
           "truth": -0.006000000000000001
         },
         {
           "term": "ent_p1",
-          "estimate": -0.0497925470486203,
-          "se": 0.023718891317726757,
-          "p": 0.047487415101257424,
-          "ci_low": -0.09898251695299645,
-          "ci_high": -0.0006025771442441583,
+          "estimate": -0.03849661442135402,
+          "se": 0.024065319007961005,
+          "p": 0.12393518821861504,
+          "ci_low": -0.08840503138248317,
+          "ci_high": 0.011411802539775126,
           "truth": -0.04000000000000001
         },
         {
           "term": "ent_p2",
-          "estimate": 0.01459316704985273,
-          "se": 0.018371700041217156,
-          "p": 0.4354894808653931,
-          "ci_low": -0.023507406877238804,
-          "ci_high": 0.052693740976944264,
+          "estimate": 0.02213495110150734,
+          "se": 0.01897408633407901,
+          "p": 0.25586716617241523,
+          "ci_low": -0.017214895534824932,
+          "ci_high": 0.06148479773783962,
           "truth": -0.010000000000000004
         }
       ],
       "nobs": 2430,
-      "r2": 0.9755439225298956,
-      "r2_within": 0.005199389572166924,
+      "r2": 0.9749120411921285,
+      "r2_within": 0.003201201863012093,
       "n_clusters": 23,
       "fe": "unit_id + city_month",
-      "notes": "Treated: entire homes; control: private rooms in PR-covered neighbourhoods. Phase-2 term is incremental to Phase 1. Control is partly treated (registry applies to all STRs; ~75% of private-room listings belong to multi-listing hosts), so estimates are a lower bound on the entire-home effect.",
+      "notes": "Treated: entire homes; control: private rooms in PR-covered neighbourhoods. Phase-2 term is incremental to Phase 1. The control is partly treated: the Phase-2 registry applies to every STR, and private rooms in Victoria's covered areas fell ~25%. Renting rooms in one's own principal residence stays legal, so the size of the Phase-1 spill-over is unknown; read as a lower bound.",
       "extra": {}
     },
     {
@@ -705,38 +1121,38 @@
       "coefs": [
         {
           "term": "ent_antic",
-          "estimate": 0.056159321692704246,
-          "se": 0.03130098618039704,
-          "p": 0.08654198984616435,
-          "ci_low": -0.00875495054565726,
-          "ci_high": 0.12107359393106576,
-          "truth": -0.021000000000000005
+          "estimate": -0.03213710795926461,
+          "se": 0.029269471395041206,
+          "p": 0.28267876654246504,
+          "ci_low": -0.0924187127160618,
+          "ci_high": 0.028144496797532573,
+          "truth": -0.021
         },
         {
           "term": "ent_p1",
-          "estimate": -0.09498593571276018,
-          "se": 0.0376070265459515,
-          "p": 0.01925137682178657,
-          "ci_low": -0.17297813523036074,
-          "ci_high": -0.01699373619515962,
-          "truth": -0.14000000000000004
+          "estimate": -0.14326504248260413,
+          "se": 0.03452493226192571,
+          "p": 0.0003371029950227644,
+          "ci_low": -0.2143704715072362,
+          "ci_high": -0.07215961345797205,
+          "truth": -0.14
         },
         {
           "term": "ent_p2",
-          "estimate": -0.05013395975603722,
-          "se": 0.049857747302266935,
-          "p": 0.32556927475743014,
-          "ci_low": -0.1535325991125732,
-          "ci_high": 0.05326467960049875,
-          "truth": -0.030000000000000006
+          "estimate": 0.0084689018023438,
+          "se": 0.03183511556477629,
+          "p": 0.7924024782025518,
+          "ci_low": -0.05709674603466951,
+          "ci_high": 0.07403454963935711,
+          "truth": -0.030000000000000002
         }
       ],
-      "nobs": 2052,
-      "r2": 0.9646845248188062,
-      "r2_within": 0.023415961439189892,
-      "n_clusters": 23,
+      "nobs": 2214,
+      "r2": 0.9586765566577629,
+      "r2_within": 0.01644973905924807,
+      "n_clusters": 26,
       "fe": "unit_id + city_month",
-      "notes": "Treated: entire homes; control: private rooms in PR-covered neighbourhoods. Phase-2 term is incremental to Phase 1. Control is partly treated (registry applies to all STRs; ~75% of private-room listings belong to multi-listing hosts), so estimates are a lower bound on the entire-home effect.",
+      "notes": "Treated: entire homes; control: private rooms in PR-covered neighbourhoods. Phase-2 term is incremental to Phase 1. The control is partly treated: the Phase-2 registry applies to every STR, and private rooms in Victoria's covered areas fell ~25%. Renting rooms in one's own principal residence stays legal, so the size of the Phase-1 spill-over is unknown; read as a lower bound.",
       "extra": {}
     },
     {
@@ -746,38 +1162,38 @@
       "coefs": [
         {
           "term": "ent_antic",
-          "estimate": -0.03192405498889559,
-          "se": 0.022186265686669607,
-          "p": 0.15017582680841124,
-          "ci_low": -0.07540833668620484,
-          "ci_high": 0.011560226708413661,
-          "truth": -0.013500000000000002
+          "estimate": -0.04178798834705232,
+          "se": 0.0194573326952329,
+          "p": 0.031739740638586644,
+          "ci_low": -0.07992365966492247,
+          "ci_high": -0.0036523170291821727,
+          "truth": -0.013959183673469386
         },
         {
           "term": "ent_p1",
-          "estimate": -0.07992593464772074,
-          "se": 0.014792670605660365,
-          "p": 6.550741260547e-08,
-          "ci_low": -0.10891903626997937,
-          "ci_high": -0.050932833025462115,
-          "truth": -0.09000000000000001
+          "estimate": -0.08408890851909154,
+          "se": 0.014440501060723216,
+          "p": 5.7755749072185836e-09,
+          "ci_low": -0.11239177051682149,
+          "ci_high": -0.055786046521361585,
+          "truth": -0.09306122448979591
         },
         {
           "term": "ent_p2",
-          "estimate": -0.0064229235350534266,
-          "se": 0.021509759262055537,
-          "p": 0.7652413836072554,
-          "ci_low": -0.04858127700480914,
-          "ci_high": 0.03573542993470228,
-          "truth": -0.020000000000000004
+          "estimate": 0.015213679559591502,
+          "se": 0.021185565441869943,
+          "p": 0.47268617158868476,
+          "ci_low": -0.026309265698589993,
+          "ci_high": 0.056736624817773,
+          "truth": -0.020612244897959184
         }
       ],
-      "nobs": 4482,
+      "nobs": 4644,
       "r2": NaN,
       "r2_within": NaN,
-      "n_clusters": 46,
+      "n_clusters": 49,
       "fe": "unit_id + city_month",
-      "notes": "Treated: entire homes; control: private rooms in PR-covered neighbourhoods. Phase-2 term is incremental to Phase 1. Control is partly treated (registry applies to all STRs; ~75% of private-room listings belong to multi-listing hosts), so estimates are a lower bound on the entire-home effect.",
+      "notes": "Treated: entire homes; control: private rooms in PR-covered neighbourhoods. Phase-2 term is incremental to Phase 1. The control is partly treated: the Phase-2 registry applies to every STR, and private rooms in Victoria's covered areas fell ~25%. Renting rooms in one's own principal residence stays legal, so the size of the Phase-1 spill-over is unknown; read as a lower bound.",
       "extra": {}
     },
     {
@@ -787,38 +1203,38 @@
       "coefs": [
         {
           "term": "ent_antic",
-          "estimate": -0.0043556321849207436,
-          "se": 0.023062432293821235,
-          "p": 0.8510496788134749,
-          "ci_low": -0.05080575522374116,
-          "ci_high": 0.04209449085389967,
-          "truth": -0.013500000000000002
+          "estimate": -0.035616949429529456,
+          "se": 0.02005011743943575,
+          "p": 0.08200594094519165,
+          "ci_low": -0.07593041244770675,
+          "ci_high": 0.004696513588647838,
+          "truth": -0.013959183673469386
         },
         {
           "term": "ent_p1",
-          "estimate": -0.06850127645889544,
-          "se": 0.023327827719224047,
-          "p": 0.005215504194863385,
-          "ci_low": -0.11548593332341313,
-          "ci_high": -0.021516619594377742,
-          "truth": -0.09000000000000001
+          "estimate": -0.08737027956711844,
+          "se": 0.024666354186347026,
+          "p": 0.0008951641314962622,
+          "ci_low": -0.13696530863805778,
+          "ci_high": -0.03777525049617912,
+          "truth": -0.09306122448979591
         },
         {
           "term": "ent_p2",
-          "estimate": -0.026064116965730983,
-          "se": 0.026661158323338218,
-          "p": 0.333495610250353,
-          "ci_low": -0.07976244629625527,
-          "ci_high": 0.0276342123647933,
-          "truth": -0.020000000000000004
+          "estimate": 0.017460860334321485,
+          "se": 0.020012772025022604,
+          "p": 0.38728704187028606,
+          "ci_low": -0.02277751469559885,
+          "ci_high": 0.05769923536424182,
+          "truth": -0.020612244897959184
         }
       ],
-      "nobs": 4482,
-      "r2": 0.9683287874507607,
-      "r2_within": 0.009849139073010882,
-      "n_clusters": 46,
+      "nobs": 4644,
+      "r2": 0.9658767168532204,
+      "r2_within": 0.006834902103193485,
+      "n_clusters": 49,
       "fe": "unit_id + city_month",
-      "notes": "Treated: entire homes; control: private rooms in PR-covered neighbourhoods. Phase-2 term is incremental to Phase 1. Control is partly treated (registry applies to all STRs; ~75% of private-room listings belong to multi-listing hosts), so estimates are a lower bound on the entire-home effect.",
+      "notes": "Treated: entire homes; control: private rooms in PR-covered neighbourhoods. Phase-2 term is incremental to Phase 1. The control is partly treated: the Phase-2 registry applies to every STR, and private rooms in Victoria's covered areas fell ~25%. Renting rooms in one's own principal residence stays legal, so the size of the Phase-1 spill-over is unknown; read as a lower bound.",
       "extra": {}
     },
     {
@@ -828,38 +1244,38 @@
       "coefs": [
         {
           "term": "ent_antic",
-          "estimate": 0.013303508966090423,
-          "se": 0.021153576869656843,
-          "p": 0.5325933987057174,
-          "ci_low": -0.029301981894036905,
-          "ci_high": 0.05590899982621775,
-          "truth": -0.013500000000000002
+          "estimate": -0.0160260824094491,
+          "se": 0.021392898609755892,
+          "p": 0.45743393768883056,
+          "ci_low": -0.05903938792055541,
+          "ci_high": 0.02698722310165721,
+          "truth": -0.013959183673469386
         },
         {
           "term": "ent_p1",
-          "estimate": -0.06808066405268674,
-          "se": 0.021092453375099546,
-          "p": 0.002330227825056541,
-          "ci_low": -0.11056304587528598,
-          "ci_high": -0.025598282230087505,
-          "truth": -0.09000000000000001
+          "estimate": -0.08540536183394298,
+          "se": 0.02136638326808097,
+          "p": 0.0002199632638539839,
+          "ci_low": -0.1283653546774674,
+          "ci_high": -0.04244536899041855,
+          "truth": -0.09306122448979591
         },
         {
           "term": "ent_p2",
-          "estimate": -0.015257785317146114,
-          "se": 0.02534873011975082,
-          "p": 0.5502514352106478,
-          "ci_low": -0.06631274855516221,
-          "ci_high": 0.03579717792086999,
-          "truth": -0.020000000000000004
+          "estimate": 0.013785029575902531,
+          "se": 0.017910738744238458,
+          "p": 0.4452777622010011,
+          "ci_low": -0.022226924277990306,
+          "ci_high": 0.04979698342979537,
+          "truth": -0.020612244897959184
         }
       ],
-      "nobs": 4482,
-      "r2": 0.9727888442204623,
-      "r2_within": 0.010360927325154257,
-      "n_clusters": 46,
+      "nobs": 4644,
+      "r2": 0.9700504538351978,
+      "r2_within": 0.008006169468275037,
+      "n_clusters": 49,
       "fe": "unit_id + city_month + rt_cal_month",
-      "notes": "Treated: entire homes; control: private rooms in PR-covered neighbourhoods. Phase-2 term is incremental to Phase 1. Control is partly treated (registry applies to all STRs; ~75% of private-room listings belong to multi-listing hosts), so estimates are a lower bound on the entire-home effect.",
+      "notes": "Treated: entire homes; control: private rooms in PR-covered neighbourhoods. Phase-2 term is incremental to Phase 1. The control is partly treated: the Phase-2 registry applies to every STR, and private rooms in Victoria's covered areas fell ~25%. Renting rooms in one's own principal residence stays legal, so the size of the Phase-1 spill-over is unknown; read as a lower bound.",
       "extra": {}
     },
     {
@@ -869,43 +1285,214 @@
       "coefs": [
         {
           "term": "ent_antic",
-          "estimate": -0.018368627149179508,
-          "se": 0.03691280780110868,
-          "p": 0.6227791523372899,
-          "ci_low": -0.0941074526444658,
-          "ci_high": 0.057370198346106786,
-          "truth": null
+          "estimate": -0.027086670984045116,
+          "se": 0.031312772202995574,
+          "p": 0.3943702210577036,
+          "ci_low": -0.09122797719406887,
+          "ci_high": 0.03705463522597864,
+          "truth": -0.039
         },
         {
           "term": "ent_p1",
-          "estimate": -0.26102981188024527,
-          "se": 0.022185032989542452,
-          "p": 3.888889210656998e-12,
-          "ci_low": -0.3065497395773103,
-          "ci_high": -0.21550988418318023,
+          "estimate": -0.2606798237159053,
+          "se": 0.03074396978100549,
+          "p": 3.2141591610468367e-09,
+          "ci_low": -0.3236559909824541,
+          "ci_high": -0.19770365644935647,
           "truth": -0.26
         },
         {
           "term": "ent_p2",
-          "estimate": -0.16707782270877328,
-          "se": 0.030440236841379288,
-          "p": 8.217980636437971e-06,
-          "ci_low": -0.22953602958880273,
-          "ci_high": -0.10461961582874382,
+          "estimate": -0.16513161644367266,
+          "se": 0.022237610763100754,
+          "p": 4.357936123078332e-08,
+          "ci_low": -0.21068329714727105,
+          "ci_high": -0.11957993574007428,
+          "truth": -0.15
+        }
+      ],
+      "nobs": 1558,
+      "r2": 0.9720790103480117,
+      "r2_within": 0.05309885266589842,
+      "n_clusters": 29,
+      "fe": "unit_id + month",
+      "notes": "Coefficients named ent_* for comparability; treatment is 'PR-covered neighbourhood'. Controls: Juan de Fuca, Salt Spring Island, Southern Gulf Islands (3 clusters). With this few controls the CRV1 p-values overstate precision; read the randomization-inference p-values.",
+      "extra": {
+        "controls": [
+          "Juan de Fuca",
+          "Salt Spring Island",
+          "Southern Gulf Islands"
+        ],
+        "wild_bootstrap_p": {
+          "ent_p1": 0.019201920192019203,
+          "ent_p2": 0.052505250525052505
+        },
+        "randomization_inference": {
+          "p": {
+            "ent_antic": 0.6039956212370006,
+            "ent_p1": 0.0010946907498631637,
+            "ent_p2": 0.004652435686918446
+          },
+          "n_placebos": 3654,
+          "exhaustive": true,
+          "n_controls": 3,
+          "n_units": 29
+        }
+      }
+    },
+    {
+      "spec": "S2a-never",
+      "label": "Victoria: PR-covered vs never-covered areas only",
+      "data_source": "synthetic",
+      "coefs": [
+        {
+          "term": "ent_antic",
+          "estimate": -0.02540871600797181,
+          "se": 0.04267275212159603,
+          "p": 0.5565132864970077,
+          "ci_low": -0.11296597103326136,
+          "ci_high": 0.06214853901731774,
+          "truth": -0.039
+        },
+        {
+          "term": "ent_p1",
+          "estimate": -0.289565147919255,
+          "se": 0.01872116101756183,
+          "p": 6.217248937900877e-15,
+          "ci_low": -0.32797779739902944,
+          "ci_high": -0.2511524984394805,
+          "truth": -0.26
+        },
+        {
+          "term": "ent_p2",
+          "estimate": -0.1643034973384644,
+          "se": 0.02253192376120102,
+          "p": 7.639509558288182e-08,
+          "ci_low": -0.21053518610670388,
+          "ci_high": -0.1180718085702249,
           "truth": -0.15
         }
       ],
       "nobs": 1512,
-      "r2": 0.9771898812988464,
-      "r2_within": 0.1200258119077503,
+      "r2": 0.9704348204324171,
+      "r2_within": 0.047907949386079896,
       "n_clusters": 28,
       "fe": "unit_id + month",
-      "notes": "Coefficients named ent_* for comparability; treatment here is 'PR-covered neighbourhood'. Only 5 exempt (control) clusters -> see wild-bootstrap p-values.",
+      "notes": "Coefficients named ent_* for comparability; treatment is 'PR-covered neighbourhood'. Controls: Juan de Fuca, Southern Gulf Islands (2 clusters). With this few controls the CRV1 p-values overstate precision; read the randomization-inference p-values.",
       "extra": {
+        "controls": [
+          "Juan de Fuca",
+          "Southern Gulf Islands"
+        ],
         "wild_bootstrap_p": {
-          "ent_p1": 0.0,
-          "ent_p2": 0.002002002002002002
+          "ent_p1": 0.071007100710071,
+          "ent_p2": 0.1326132613261326
+        },
+        "randomization_inference": {
+          "p": {
+            "ent_antic": 0.7063492063492064,
+            "ent_p1": 0.007936507936507936,
+            "ent_p2": 0.026455026455026454
+          },
+          "n_placebos": 378,
+          "exhaustive": true,
+          "n_controls": 2,
+          "n_units": 28
         }
+      }
+    },
+    {
+      "spec": "S2a-reviewed",
+      "label": "Victoria covered vs exempt, reviewed-in-180d outcome",
+      "data_source": "synthetic",
+      "coefs": [
+        {
+          "term": "ent_antic",
+          "estimate": -0.01888440606886066,
+          "se": 0.03205434267946636,
+          "p": 0.5604928778493847,
+          "ci_low": -0.08454475053903168,
+          "ci_high": 0.04677593840131036,
+          "truth": -0.039
+        },
+        {
+          "term": "ent_p1",
+          "estimate": -0.25508450535529553,
+          "se": 0.03173078554712542,
+          "p": 9.387105981417676e-09,
+          "ci_low": -0.3200820730848006,
+          "ci_high": -0.1900869376257905,
+          "truth": -0.26
+        },
+        {
+          "term": "ent_p2",
+          "estimate": -0.16158989674011562,
+          "se": 0.027071292529380453,
+          "p": 1.9890308529113554e-06,
+          "ci_low": -0.2170429256949268,
+          "ci_high": -0.10613686778530443,
+          "truth": -0.15
+        }
+      ],
+      "nobs": 1558,
+      "r2": 0.9696464388002258,
+      "r2_within": 0.04787916188697283,
+      "n_clusters": 29,
+      "fe": "unit_id + month",
+      "notes": "Coefficients named ent_* for comparability; treatment is 'PR-covered neighbourhood'. Controls: Juan de Fuca, Salt Spring Island, Southern Gulf Islands (3 clusters). With this few controls the CRV1 p-values overstate precision; read the randomization-inference p-values.",
+      "extra": {
+        "controls": [
+          "Juan de Fuca",
+          "Salt Spring Island",
+          "Southern Gulf Islands"
+        ]
+      }
+    },
+    {
+      "spec": "S2a-ppml",
+      "label": "Victoria covered vs exempt, PPML (counts)",
+      "data_source": "synthetic",
+      "coefs": [
+        {
+          "term": "ent_antic",
+          "estimate": 0.013871232026252654,
+          "se": 0.02764896521546452,
+          "p": 0.6158850230636896,
+          "ci_low": -0.040319744005858554,
+          "ci_high": 0.06806220805836385,
+          "truth": -0.039
+        },
+        {
+          "term": "ent_p1",
+          "estimate": -0.25150164821606574,
+          "se": 0.025626810087559203,
+          "p": 0.0,
+          "ci_low": -0.30172927302632957,
+          "ci_high": -0.20127402340580194,
+          "truth": -0.26
+        },
+        {
+          "term": "ent_p2",
+          "estimate": -0.1651094453195651,
+          "se": 0.017317082127462212,
+          "p": 0.0,
+          "ci_low": -0.1990503026067133,
+          "ci_high": -0.13116858803241688,
+          "truth": -0.15
+        }
+      ],
+      "nobs": 1558,
+      "r2": NaN,
+      "r2_within": NaN,
+      "n_clusters": 29,
+      "fe": "unit_id + month",
+      "notes": "Coefficients named ent_* for comparability; treatment is 'PR-covered neighbourhood'. Controls: Juan de Fuca, Salt Spring Island, Southern Gulf Islands (3 clusters). With this few controls the CRV1 p-values overstate precision; read the randomization-inference p-values.",
+      "extra": {
+        "controls": [
+          "Juan de Fuca",
+          "Salt Spring Island",
+          "Southern Gulf Islands"
+        ]
       }
     },
     {
@@ -915,412 +1502,412 @@
       "coefs": [
         {
           "term": "ddd_antic",
-          "estimate": -0.04894864139401927,
-          "se": 0.06692525853281038,
-          "p": 0.4708399229990674,
-          "ci_low": -0.18626792917497217,
-          "ci_high": 0.08837064638693362,
+          "estimate": 0.051513596671669805,
+          "se": 0.07813455333582532,
+          "p": 0.5150935798995775,
+          "ci_low": -0.10853778040241627,
+          "ci_high": 0.21156497374575586,
           "truth": null
         },
         {
           "term": "ddd_p1",
-          "estimate": -0.15047125075999632,
-          "se": 0.046246165914589486,
-          "p": 0.0030579299054662723,
-          "ci_low": -0.2453605452537614,
-          "ci_high": -0.05558195626623123,
+          "estimate": -0.1100601075784395,
+          "se": 0.06383167511905057,
+          "p": 0.09569294043305976,
+          "ci_low": -0.2408133667650565,
+          "ci_high": 0.020693151608177515,
           "truth": null
         },
         {
           "term": "ddd_p2",
-          "estimate": -0.06493225229711726,
-          "se": 0.06785399333009783,
-          "p": 0.3470878187068305,
-          "ci_low": -0.20415714647686167,
-          "ci_high": 0.07429264188262714,
+          "estimate": 0.04119220572618104,
+          "se": 0.05494548333302538,
+          "p": 0.4596931167634677,
+          "ci_low": -0.07135851474257975,
+          "ci_high": 0.15374292619494184,
           "truth": null
         }
       ],
-      "nobs": 2484,
-      "r2": 0.9690206189730397,
-      "r2_within": 0.06906993184669863,
-      "n_clusters": 28,
+      "nobs": 2522,
+      "r2": 0.964781740711544,
+      "r2_within": 0.045314116315975816,
+      "n_clusters": 29,
       "fe": "unit_id + room_type x month",
-      "notes": "Differences out both the registry shock common to room types and the exempt-area trend.",
+      "notes": "Differences out both the registry shock common to room types and the exempt-area trend. Private rooms are themselves partly treated, so this nets part of the effect out and is imprecise.",
       "extra": {}
     },
     {
-      "spec": "S3",
-      "label": "Event study (entire vs private, BC)",
+      "spec": "S2-ES",
+      "label": "Event study (Victoria covered vs exempt areas)",
       "data_source": "synthetic",
       "coefs": [
         {
           "term": "es_m12",
-          "estimate": -0.043119713516320164,
-          "se": 0.048216900211436,
-          "p": 0.37592703572386155,
-          "ci_low": -0.140233535633503,
-          "ci_high": 0.05399410860086267,
+          "estimate": 0.07567806446887208,
+          "se": 0.060788857867759685,
+          "p": 0.22347547972893267,
+          "ci_low": -0.048842266129022927,
+          "ci_high": 0.2001983950667671,
           "truth": null,
           "event_time": -12
         },
         {
           "term": "es_m11",
-          "estimate": -0.06766723290483982,
-          "se": 0.05699902268722343,
-          "p": 0.241391829665202,
-          "ci_low": -0.18246915766207278,
-          "ci_high": 0.04713469185239312,
+          "estimate": -0.0278332812529966,
+          "se": 0.08946074815111253,
+          "p": 0.7580117971333882,
+          "ci_low": -0.21108531667608127,
+          "ci_high": 0.15541875417008805,
           "truth": 0.0,
           "event_time": -11
         },
         {
           "term": "es_m10",
-          "estimate": 0.004417772466883815,
-          "se": 0.06719185429966736,
-          "p": 0.9478691891685416,
-          "ci_low": -0.13091356898326426,
-          "ci_high": 0.1397491139170319,
+          "estimate": 0.1410820592528772,
+          "se": 0.06396671829239292,
+          "p": 0.03579268983741035,
+          "ci_low": 0.010052176665535012,
+          "ci_high": 0.27211194184021936,
           "truth": 0.0,
           "event_time": -10
         },
         {
           "term": "es_m9",
-          "estimate": 0.02400457506300551,
-          "se": 0.06624627968220456,
-          "p": 0.7187841077758366,
-          "ci_low": -0.10942228134567103,
-          "ci_high": 0.15743143147168207,
+          "estimate": 0.14914014284657606,
+          "se": 0.0559698513172092,
+          "p": 0.012643314655414128,
+          "ci_low": 0.03449109968318674,
+          "ci_high": 0.26378918600996537,
           "truth": 0.0,
           "event_time": -9
         },
         {
           "term": "es_m7",
-          "estimate": -0.022047550827624777,
-          "se": 0.07759591667834691,
-          "p": 0.7776119021940691,
-          "ci_low": -0.17833374957279904,
-          "ci_high": 0.1342386479175495,
-          "truth": -0.0033750000000000004,
+          "estimate": 0.03565199152842935,
+          "se": 0.06268632426648667,
+          "p": 0.5740689553880709,
+          "ci_low": -0.09275512279193451,
+          "ci_high": 0.1640591058487932,
+          "truth": -0.00975,
           "event_time": -7
         },
         {
           "term": "es_m6",
-          "estimate": -0.07402371543303203,
-          "se": 0.061981322555673485,
-          "p": 0.23862168395449856,
-          "ci_low": -0.1988605072397308,
-          "ci_high": 0.05081307637366676,
-          "truth": -0.006750000000000001,
+          "estimate": 0.09687724774272483,
+          "se": 0.02953176827183071,
+          "p": 0.002775662666299583,
+          "ci_low": 0.03638416270486458,
+          "ci_high": 0.15737033278058507,
+          "truth": -0.0195,
           "event_time": -6
         },
         {
           "term": "es_m5",
-          "estimate": -0.05979117825455092,
-          "se": 0.07939317024825306,
-          "p": 0.45531055965072453,
-          "ci_low": -0.21969723150555137,
-          "ci_high": 0.10011487499644954,
-          "truth": -0.010124999999999997,
+          "estimate": -0.004625842481037605,
+          "se": 0.057003749724090294,
+          "p": 0.9359001154526418,
+          "ci_low": -0.12139273052497289,
+          "ci_high": 0.11214104556289768,
+          "truth": -0.029249999999999998,
           "event_time": -5
         },
         {
           "term": "es_m4",
-          "estimate": -0.03379988873377163,
-          "se": 0.06298139031512015,
-          "p": 0.5941427206809649,
-          "ci_low": -0.16065092040388243,
-          "ci_high": 0.09305114293633918,
-          "truth": -0.013500000000000002,
+          "estimate": 0.05186045509518617,
+          "se": 0.08652794281579324,
+          "p": 0.5537592177288759,
+          "ci_low": -0.12538400093353524,
+          "ci_high": 0.22910491112390757,
+          "truth": -0.039,
           "event_time": -4
         },
         {
           "term": "es_m3",
-          "estimate": -0.0021993102167212272,
-          "se": 0.05778324612644896,
-          "p": 0.9698070955933185,
-          "ci_low": -0.11858074206053809,
-          "ci_high": 0.11418212162709565,
-          "truth": -0.016875,
+          "estimate": 0.13028381004258696,
+          "se": 0.06829386498132897,
+          "p": 0.06673520396102783,
+          "ci_low": -0.009609830725967494,
+          "ci_high": 0.2701774508111414,
+          "truth": -0.04875,
           "event_time": -3
         },
         {
           "term": "es_m2",
-          "estimate": -0.08003789290260088,
-          "se": 0.05387733240686419,
-          "p": 0.14436866411574711,
-          "ci_low": -0.18855241068712586,
-          "ci_high": 0.02847662488192411,
-          "truth": -0.020249999999999994,
+          "estimate": -0.014026841838067612,
+          "se": 0.060330718211970766,
+          "p": 0.8178414144360193,
+          "ci_low": -0.13760871589310497,
+          "ci_high": 0.10955503221696976,
+          "truth": -0.058499999999999996,
           "event_time": -2
         },
         {
           "term": "es_m1",
-          "estimate": -0.012285736708949219,
-          "se": 0.05831697009327927,
-          "p": 0.8340945172199177,
-          "ci_low": -0.12974214380308594,
-          "ci_high": 0.1051706703851875,
-          "truth": -0.023625000000000007,
+          "estimate": 0.03067782196095587,
+          "se": 0.062464278675148116,
+          "p": 0.6271650204926174,
+          "ci_low": -0.09727445258430595,
+          "ci_high": 0.15863009650621768,
+          "truth": -0.06825,
           "event_time": -1
         },
         {
           "term": "es_p0",
-          "estimate": 0.0057391339778670725,
-          "se": 0.07856124075757971,
-          "p": 0.9420876978356985,
-          "ci_low": -0.1524913272666583,
-          "ci_high": 0.16396959522239243,
-          "truth": -0.09000000000000001,
+          "estimate": -0.2505528129965091,
+          "se": 0.05023971873965791,
+          "p": 2.8725504347404396e-05,
+          "ci_low": -0.3534642116646088,
+          "ci_high": -0.14764141432840944,
+          "truth": -0.26,
           "event_time": 0
         },
         {
           "term": "es_p1",
-          "estimate": -0.08214878200994982,
-          "se": 0.08149185799321025,
-          "p": 0.31881498892205395,
-          "ci_low": -0.24628180936027125,
-          "ci_high": 0.0819842453403716,
-          "truth": -0.09000000000000001,
+          "estimate": -0.11192303317453806,
+          "se": 0.06420618313140682,
+          "p": 0.09227518562112547,
+          "ci_low": -0.24344343724832515,
+          "ci_high": 0.01959737089924904,
+          "truth": -0.26,
           "event_time": 1
         },
         {
           "term": "es_p2",
-          "estimate": -0.09273702578880616,
-          "se": 0.05481288511354384,
-          "p": 0.09758280054115964,
-          "ci_low": -0.2031358434503313,
-          "ci_high": 0.017661791872718977,
-          "truth": -0.09000000000000001,
+          "estimate": -0.19861784822873632,
+          "se": 0.06888555348757733,
+          "p": 0.007481664788536069,
+          "ci_low": -0.339723507959208,
+          "ci_high": -0.05751218849826459,
+          "truth": -0.26,
           "event_time": 2
         },
         {
           "term": "es_p3",
-          "estimate": -0.14476606515889637,
-          "se": 0.06433178393738222,
-          "p": 0.029364399275097597,
-          "ci_low": -0.27433692919992825,
-          "ci_high": -0.01519520111786446,
-          "truth": -0.09000000000000001,
+          "estimate": -0.18878267391962267,
+          "se": 0.0508480117889507,
+          "p": 0.0009028026943853629,
+          "ci_low": -0.2929401044141981,
+          "ci_high": -0.08462524342504724,
+          "truth": -0.26,
           "event_time": 3
         },
         {
           "term": "es_p4",
-          "estimate": -0.18015752702530338,
-          "se": 0.05787592810059785,
-          "p": 0.003216894125362968,
-          "ci_low": -0.2967256299473417,
-          "ci_high": -0.06358942410326505,
-          "truth": -0.09000000000000001,
+          "estimate": -0.23968352901546996,
+          "se": 0.07304102210791162,
+          "p": 0.0027682362708483232,
+          "ci_low": -0.3893012803453405,
+          "ci_high": -0.09006577768559942,
+          "truth": -0.26,
           "event_time": 4
         },
         {
           "term": "es_p5",
-          "estimate": -0.08642606144340832,
-          "se": 0.07954690412658819,
-          "p": 0.28305276049096095,
-          "ci_low": -0.24664175061974936,
-          "ci_high": 0.0737896277329327,
-          "truth": -0.09000000000000001,
+          "estimate": -0.23153810199912636,
+          "se": 0.053351700984778316,
+          "p": 0.00016793764957845347,
+          "ci_low": -0.3408241073232707,
+          "ci_high": -0.12225209667498205,
+          "truth": -0.26,
           "event_time": 5
         },
         {
           "term": "es_p6",
-          "estimate": -0.09530387810843485,
-          "se": 0.08350567308297871,
-          "p": 0.2597880159171495,
-          "ci_low": -0.2634929372556383,
-          "ci_high": 0.07288518103876862,
-          "truth": -0.09000000000000001,
+          "estimate": -0.18649816811600195,
+          "se": 0.10609200816627481,
+          "p": 0.08969503229667275,
+          "ci_low": -0.40381779533119877,
+          "ci_high": 0.030821459099194842,
+          "truth": -0.26,
           "event_time": 6
         },
         {
           "term": "es_p7",
-          "estimate": -0.14413667708013186,
-          "se": 0.07339096429933097,
-          "p": 0.055730534923666086,
-          "ci_low": -0.29195366698864755,
-          "ci_high": 0.003680312828383825,
-          "truth": -0.09000000000000001,
+          "estimate": -0.15691545781328733,
+          "se": 0.08497194477782405,
+          "p": 0.07538926511134258,
+          "ci_low": -0.33097259634841325,
+          "ci_high": 0.01714168072183861,
+          "truth": -0.26,
           "event_time": 7
         },
         {
           "term": "es_p8",
-          "estimate": -0.10796014844016509,
-          "se": 0.0697311838612259,
-          "p": 0.1285709452267274,
-          "ci_low": -0.24840596216573352,
-          "ci_high": 0.03248566528540335,
-          "truth": -0.09000000000000001,
+          "estimate": -0.12143666530445422,
+          "se": 0.07149003521584504,
+          "p": 0.10047195359498362,
+          "ci_low": -0.2678773640077848,
+          "ci_high": 0.025004033398876316,
+          "truth": -0.26,
           "event_time": 8
         },
         {
           "term": "es_p9",
-          "estimate": -0.10237967329011395,
-          "se": 0.06032690193068297,
-          "p": 0.09658849707696038,
-          "ci_low": -0.223884290909385,
-          "ci_high": 0.01912494432915708,
-          "truth": -0.09000000000000001,
+          "estimate": -0.14941254347089197,
+          "se": 0.07456115086160499,
+          "p": 0.054842755869466187,
+          "ci_low": -0.3021441373962763,
+          "ci_high": 0.0033190504544923782,
+          "truth": -0.26,
           "event_time": 9
         },
         {
           "term": "es_p10",
-          "estimate": -0.14246952150813594,
-          "se": 0.0682441656465341,
-          "p": 0.042521853685539845,
-          "ci_low": -0.2799203268081661,
-          "ci_high": -0.005018716208105789,
-          "truth": -0.09000000000000001,
+          "estimate": -0.20398175701627627,
+          "se": 0.0992298814166072,
+          "p": 0.04924897921296667,
+          "ci_low": -0.4072449547895497,
+          "ci_high": -0.0007185592430028198,
+          "truth": -0.26,
           "event_time": 10
         },
         {
           "term": "es_p11",
-          "estimate": -0.10833487372145933,
-          "se": 0.06145336959085008,
-          "p": 0.08471115720233202,
-          "ci_low": -0.23210831367253762,
-          "ci_high": 0.01543856622961895,
-          "truth": -0.09000000000000001,
+          "estimate": -0.20372042678320165,
+          "se": 0.08184925099550747,
+          "p": 0.01902612694766348,
+          "ci_low": -0.3713810170729907,
+          "ci_high": -0.0360598364934126,
+          "truth": -0.26,
           "event_time": 11
         },
         {
           "term": "es_p12",
-          "estimate": -0.12664638214890894,
-          "se": 0.07661291008287892,
-          "p": 0.10527789227549866,
-          "ci_low": -0.2809527039788589,
-          "ci_high": 0.027659939681041024,
-          "truth": -0.10999999999999999,
+          "estimate": -0.3847503317960944,
+          "se": 0.09297277627869462,
+          "p": 0.0002896937616001516,
+          "ci_low": -0.575196430717904,
+          "ci_high": -0.19430423287428483,
+          "truth": -0.41000000000000003,
           "event_time": 12
         },
         {
           "term": "es_p13",
-          "estimate": -0.1460987702958163,
-          "se": 0.06187870915764879,
-          "p": 0.022614427053697206,
-          "ci_low": -0.270728888109809,
-          "ci_high": -0.021468652481823627,
-          "truth": -0.10999999999999999,
+          "estimate": -0.39700096101659327,
+          "se": 0.097612581722989,
+          "p": 0.0003509183123311388,
+          "ci_low": -0.5969512705470359,
+          "ci_high": -0.19705065148615059,
+          "truth": -0.41000000000000003,
           "event_time": 13
         },
         {
           "term": "es_p14",
-          "estimate": 0.01725175493736291,
-          "se": 0.0788664753433627,
-          "p": 0.8278367139162812,
-          "ci_low": -0.1415934803207916,
-          "ci_high": 0.17609699019551744,
-          "truth": -0.10999999999999999,
+          "estimate": -0.35476797978805147,
+          "se": 0.0725982631494314,
+          "p": 3.7802064108749533e-05,
+          "ci_low": -0.5034787805052773,
+          "ci_high": -0.20605717907082566,
+          "truth": -0.41000000000000003,
           "event_time": 14
         },
         {
           "term": "es_p15",
-          "estimate": -0.058665444865975996,
-          "se": 0.06823757306689188,
-          "p": 0.3944985528760856,
-          "ci_low": -0.19610297202900728,
-          "ci_high": 0.07877208229705529,
-          "truth": -0.10999999999999999,
+          "estimate": -0.29266609126625953,
+          "se": 0.08359010931550133,
+          "p": 0.0015715403836462638,
+          "ci_low": -0.4638926681715777,
+          "ci_high": -0.12143951436094139,
+          "truth": -0.41000000000000003,
           "event_time": 15
         },
         {
           "term": "es_p16",
-          "estimate": -0.11942422250194798,
-          "se": 0.07717077430482598,
-          "p": 0.12873979551903236,
-          "ci_low": -0.2748541405518569,
-          "ci_high": 0.03600569554796096,
-          "truth": -0.10999999999999999,
+          "estimate": -0.3191778313231715,
+          "se": 0.12615044569824502,
+          "p": 0.01730768578255204,
+          "ci_low": -0.5775853052321098,
+          "ci_high": -0.0607703574142332,
+          "truth": -0.41000000000000003,
           "event_time": 16
         },
         {
           "term": "es_p17",
-          "estimate": -0.1305323139236299,
-          "se": 0.07209687116604725,
-          "p": 0.07689611398900165,
-          "ci_low": -0.2757428664668714,
-          "ci_high": 0.014678238619611622,
-          "truth": -0.10999999999999999,
+          "estimate": -0.1997508813292038,
+          "se": 0.11231098279453046,
+          "p": 0.08617451606937854,
+          "ci_low": -0.42980950058756284,
+          "ci_high": 0.030307737929155282,
+          "truth": -0.41000000000000003,
           "event_time": 17
         },
         {
           "term": "es_p18",
-          "estimate": -0.07217119760145561,
-          "se": 0.07233786290343121,
-          "p": 0.3237616412660991,
-          "ci_low": -0.21786713241965444,
-          "ci_high": 0.07352473721674323,
-          "truth": -0.10999999999999999,
+          "estimate": -0.39331871277711494,
+          "se": 0.09691635286689118,
+          "p": 0.00035929691581659817,
+          "ci_low": -0.5918428621464029,
+          "ci_high": -0.19479456340782697,
+          "truth": -0.41000000000000003,
           "event_time": 18
         },
         {
           "term": "es_p19",
-          "estimate": -0.2385186583182278,
-          "se": 0.07287055780626464,
-          "p": 0.0020479009898413114,
-          "ci_low": -0.385287495745463,
-          "ci_high": -0.0917498208909926,
-          "truth": -0.10999999999999999,
+          "estimate": -0.3460669970825496,
+          "se": 0.07934853959983118,
+          "p": 0.0001584142082105,
+          "ci_low": -0.5086051122898666,
+          "ci_high": -0.1835288818752326,
+          "truth": -0.41000000000000003,
           "event_time": 19
         },
         {
           "term": "es_p20",
-          "estimate": -0.20773611797592365,
-          "se": 0.07104590339808084,
-          "p": 0.005394084396426413,
-          "ci_low": -0.3508299127760995,
-          "ci_high": -0.0646423231757478,
-          "truth": -0.10999999999999999,
+          "estimate": -0.3884401376689582,
+          "se": 0.07798096402724235,
+          "p": 2.9194968892420903e-05,
+          "ci_low": -0.5481769013064395,
+          "ci_high": -0.22870337403147686,
+          "truth": -0.41000000000000003,
           "event_time": 20
         },
         {
           "term": "es_p21",
-          "estimate": -0.222234998242353,
-          "se": 0.07790974278418626,
-          "p": 0.006530928182769902,
-          "ci_low": -0.3791532752108176,
-          "ci_high": -0.06531672127388838,
-          "truth": -0.10999999999999999,
+          "estimate": -0.5520761536450144,
+          "se": 0.09133634665780829,
+          "p": 1.624016906287551e-06,
+          "ci_low": -0.7391701784443552,
+          "ci_high": -0.3649821288456736,
+          "truth": -0.41000000000000003,
           "event_time": 21
         },
         {
           "term": "es_p22",
-          "estimate": -0.060487370216757624,
-          "se": 0.0626592730309556,
-          "p": 0.33953502202074115,
-          "ci_low": -0.1866896243732155,
-          "ci_high": 0.06571488393970026,
-          "truth": -0.10999999999999999,
+          "estimate": -0.3943068804625149,
+          "se": 0.07753894115691441,
+          "p": 2.1965900409481875e-05,
+          "ci_low": -0.5531382012955797,
+          "ci_high": -0.23547555962945016,
+          "truth": -0.41000000000000003,
           "event_time": 22
         },
         {
           "term": "es_p23",
-          "estimate": -0.1166230524766065,
-          "se": 0.07063652249028404,
-          "p": 0.10569529417915313,
-          "ci_low": -0.25889231180304567,
-          "ci_high": 0.025646206849832695,
-          "truth": -0.10999999999999999,
+          "estimate": -0.2565978778955377,
+          "se": 0.06650076133244695,
+          "p": 0.0006131874704597973,
+          "ci_low": -0.3928185123437431,
+          "ci_high": -0.12037724344733228,
+          "truth": -0.41000000000000003,
           "event_time": 23
         },
         {
           "term": "es_p24",
-          "estimate": -0.10660788969576038,
-          "se": 0.053242624970489046,
-          "p": 0.051300447938502636,
-          "ci_low": -0.21384404108173433,
-          "ci_high": 0.0006282616902135718,
+          "estimate": -0.3681202484422711,
+          "se": 0.10748456748122427,
+          "p": 0.0019155152122212193,
+          "ci_low": -0.5882924041035839,
+          "ci_high": -0.14794809278095836,
           "truth": null,
           "event_time": 24
         }
       ],
-      "nobs": 4482,
-      "r2": 0.9730374948676841,
-      "r2_within": 0.02184054539061242,
-      "n_clusters": 46,
-      "fe": "unit_id + city_month",
-      "notes": "Reference period t=-8 (Sep 2023); endpoints binned; monthly.",
+      "nobs": 1558,
+      "r2": 0.9722103341820159,
+      "r2_within": 0.05755251604390599,
+      "n_clusters": 29,
+      "fe": "unit_id + ym",
+      "notes": "Reference t=-8 (last pre-announcement snapshot, Aug-Sep 2023); monthly; endpoints binned.",
       "extra": {
         "freq": "M",
         "ref": -8,
@@ -1329,8 +1916,451 @@
           24
         ],
         "pretrend_test": {
-          "F": 2.4236109089530364,
-          "p": 0.06187161318673795,
+          "F": 3.9741465892018972,
+          "p": 0.011203790360462262,
+          "df": 4
+        },
+        "pre_terms": [
+          "es_m12",
+          "es_m11",
+          "es_m10",
+          "es_m9"
+        ],
+        "randomization_inference": {
+          "p": {
+            "es_m12": 0.5021893814997264,
+            "es_m11": 0.8327859879584018,
+            "es_m10": 0.30569239189928843,
+            "es_m9": 0.2594417077175698,
+            "es_m7": 0.7829775588396278,
+            "es_m6": 0.19731800766283525,
+            "es_m5": 0.9718117131910236,
+            "es_m4": 0.7345374931581828,
+            "es_m3": 0.35933223864258346,
+            "es_m2": 0.9017515051997811,
+            "es_m1": 0.7690202517788725,
+            "es_p0": 0.04707170224411604,
+            "es_p1": 0.44389709906951286,
+            "es_p2": 0.15763546798029557,
+            "es_p3": 0.17788724685276408,
+            "es_p4": 0.14887794198139026,
+            "es_p5": 0.046798029556650245,
+            "es_p6": 0.2884510125889436,
+            "es_p7": 0.3399014778325123,
+            "es_p8": 0.3910782703886152,
+            "es_p9": 0.3609742747673782,
+            "es_p10": 0.270935960591133,
+            "es_p11": 0.1713191023535851,
+            "es_p12": 0.06896551724137931,
+            "es_p13": 0.03804050355774494,
+            "es_p14": 0.019430760810071154,
+            "es_p15": 0.09906951286261631,
+            "es_p16": 0.07662835249042145,
+            "es_p17": 0.2947454844006568,
+            "es_p18": 0.12643678160919541,
+            "es_p19": 0.12178434592227695,
+            "es_p20": 0.12014230979748221,
+            "es_p21": 0.013136288998357963,
+            "es_p22": 0.07690202517788725,
+            "es_p23": 0.2071702244116037,
+            "es_p24": 0.09742747673782157
+          },
+          "n_placebos": 3654,
+          "exhaustive": true,
+          "n_controls": 3,
+          "n_units": 29,
+          "joint_p": 0.4904214559386973,
+          "joint_terms": [
+            "es_m12",
+            "es_m11",
+            "es_m10",
+            "es_m9"
+          ]
+        }
+      }
+    },
+    {
+      "spec": "S3",
+      "label": "Event study (entire vs private, BC)",
+      "data_source": "synthetic",
+      "coefs": [
+        {
+          "term": "es_m12",
+          "estimate": -0.008848391498218233,
+          "se": 0.04267967820181244,
+          "p": 0.8366362716709892,
+          "ci_low": -0.09466163593499961,
+          "ci_high": 0.07696485293856316,
+          "truth": null,
+          "event_time": -12
+        },
+        {
+          "term": "es_m11",
+          "estimate": 0.009169006985778128,
+          "se": 0.05300283638604218,
+          "p": 0.8633860195118588,
+          "ci_low": -0.09740033810466862,
+          "ci_high": 0.11573835207622489,
+          "truth": 0.0,
+          "event_time": -11
+        },
+        {
+          "term": "es_m10",
+          "estimate": 0.06640103924002755,
+          "se": 0.0556227729643888,
+          "p": 0.23843287492506415,
+          "ci_low": -0.04543604139761402,
+          "ci_high": 0.17823811987766913,
+          "truth": 0.0,
+          "event_time": -10
+        },
+        {
+          "term": "es_m9",
+          "estimate": 0.04724270177879353,
+          "se": 0.05423405130940458,
+          "p": 0.3880414049305314,
+          "ci_low": -0.061802166830671315,
+          "ci_high": 0.15628757038825836,
+          "truth": 0.0,
+          "event_time": -9
+        },
+        {
+          "term": "es_m7",
+          "estimate": -0.019004642389646883,
+          "se": 0.05981927689419916,
+          "p": 0.7520897729823777,
+          "ci_low": -0.13927935968907185,
+          "ci_high": 0.10127007490977807,
+          "truth": -0.0034897959183673474,
+          "event_time": -7
+        },
+        {
+          "term": "es_m6",
+          "estimate": -0.034537883432703455,
+          "se": 0.049458129733263606,
+          "p": 0.48834308292208406,
+          "ci_low": -0.13398011812149177,
+          "ci_high": 0.06490435125608485,
+          "truth": -0.006979591836734695,
+          "event_time": -6
+        },
+        {
+          "term": "es_m5",
+          "estimate": -0.003877302163913818,
+          "se": 0.07860505876191727,
+          "p": 0.9608638882057923,
+          "ci_low": -0.1619233654357199,
+          "ci_high": 0.15416876110789224,
+          "truth": -0.010469387755102042,
+          "event_time": -5
+        },
+        {
+          "term": "es_m4",
+          "estimate": -0.03141855178158945,
+          "se": 0.05824055525603053,
+          "p": 0.5920620767369082,
+          "ci_low": -0.1485190364826991,
+          "ci_high": 0.0856819329195202,
+          "truth": -0.01395918367346939,
+          "event_time": -4
+        },
+        {
+          "term": "es_m3",
+          "estimate": -0.07316311283977038,
+          "se": 0.05086639903327273,
+          "p": 0.15682654184267553,
+          "ci_low": -0.1754368627312522,
+          "ci_high": 0.02911063705171142,
+          "truth": -0.017448979591836736,
+          "event_time": -3
+        },
+        {
+          "term": "es_m2",
+          "estimate": -0.12934696576244956,
+          "se": 0.05532613727791505,
+          "p": 0.02360800737229063,
+          "ci_low": -0.24058762037851528,
+          "ci_high": -0.018106311146383836,
+          "truth": -0.020938775510204084,
+          "event_time": -2
+        },
+        {
+          "term": "es_m1",
+          "estimate": 0.007255559606473461,
+          "se": 0.05632890490030886,
+          "p": 0.8980485382621144,
+          "ci_low": -0.10600129444499748,
+          "ci_high": 0.1205124136579444,
+          "truth": -0.02442857142857143,
+          "event_time": -1
+        },
+        {
+          "term": "es_p0",
+          "estimate": 0.02164863882629829,
+          "se": 0.05383015076652226,
+          "p": 0.68934740658785,
+          "ci_low": -0.08658413331302407,
+          "ci_high": 0.12988141096562067,
+          "truth": -0.09306122448979591,
+          "event_time": 0
+        },
+        {
+          "term": "es_p1",
+          "estimate": -0.016840422271985275,
+          "se": 0.06021272878398329,
+          "p": 0.7809231162631232,
+          "ci_low": -0.13790622761646315,
+          "ci_high": 0.1042253830724926,
+          "truth": -0.09306122448979591,
+          "event_time": 1
+        },
+        {
+          "term": "es_p2",
+          "estimate": -0.020659698941987357,
+          "se": 0.052118122069514106,
+          "p": 0.693565702010873,
+          "ci_low": -0.125450206677055,
+          "ci_high": 0.0841308087930803,
+          "truth": -0.09306122448979591,
+          "event_time": 2
+        },
+        {
+          "term": "es_p3",
+          "estimate": -0.07538830011193118,
+          "se": 0.05580419965424066,
+          "p": 0.18304773749822556,
+          "ci_low": -0.18759016355814961,
+          "ci_high": 0.03681356333428726,
+          "truth": -0.09306122448979591,
+          "event_time": 3
+        },
+        {
+          "term": "es_p4",
+          "estimate": -0.2008088814234457,
+          "se": 0.05183994821119248,
+          "p": 0.0003243205443570485,
+          "ci_low": -0.30504008313030945,
+          "ci_high": -0.09657767971658195,
+          "truth": -0.09306122448979591,
+          "event_time": 4
+        },
+        {
+          "term": "es_p5",
+          "estimate": -0.09497438111408844,
+          "se": 0.05365844637516823,
+          "p": 0.08308201432092321,
+          "ci_low": -0.20286191843611767,
+          "ci_high": 0.012913156207940799,
+          "truth": -0.09306122448979591,
+          "event_time": 5
+        },
+        {
+          "term": "es_p6",
+          "estimate": -0.1242033111328103,
+          "se": 0.07476829452810696,
+          "p": 0.10319699040238928,
+          "ci_low": -0.27453504287930786,
+          "ci_high": 0.026128420613687253,
+          "truth": -0.09306122448979591,
+          "event_time": 6
+        },
+        {
+          "term": "es_p7",
+          "estimate": -0.09257571828616508,
+          "se": 0.08387363739582379,
+          "p": 0.27520336641440246,
+          "ci_low": -0.26121496888258,
+          "ci_high": 0.07606353231024983,
+          "truth": -0.09306122448979591,
+          "event_time": 7
+        },
+        {
+          "term": "es_p8",
+          "estimate": -0.07626472205282835,
+          "se": 0.0660151246706725,
+          "p": 0.25370202970153066,
+          "ci_low": -0.20899702624457944,
+          "ci_high": 0.05646758213892274,
+          "truth": -0.09306122448979591,
+          "event_time": 8
+        },
+        {
+          "term": "es_p9",
+          "estimate": -0.13299277980969043,
+          "se": 0.05476291863465378,
+          "p": 0.018956865104686083,
+          "ci_low": -0.24310100744547308,
+          "ci_high": -0.022884552173907766,
+          "truth": -0.09306122448979591,
+          "event_time": 9
+        },
+        {
+          "term": "es_p10",
+          "estimate": -0.14707471358976393,
+          "se": 0.05848652525906182,
+          "p": 0.015318552229070859,
+          "ci_low": -0.26466975412830124,
+          "ci_high": -0.029479673051226632,
+          "truth": -0.09306122448979591,
+          "event_time": 10
+        },
+        {
+          "term": "es_p11",
+          "estimate": -0.09375192635799443,
+          "se": 0.07044342449785465,
+          "p": 0.18951522835935064,
+          "ci_low": -0.23538792409945933,
+          "ci_high": 0.04788407138347048,
+          "truth": -0.09306122448979591,
+          "event_time": 11
+        },
+        {
+          "term": "es_p12",
+          "estimate": -0.09281427523072071,
+          "se": 0.06605644896999043,
+          "p": 0.16643806507285097,
+          "ci_low": -0.2256296674950149,
+          "ci_high": 0.040001117033573466,
+          "truth": -0.11367346938775509,
+          "event_time": 12
+        },
+        {
+          "term": "es_p13",
+          "estimate": -0.05008277449351447,
+          "se": 0.05891120154250242,
+          "p": 0.39946796221658887,
+          "ci_low": -0.1685316839282761,
+          "ci_high": 0.06836613494124719,
+          "truth": -0.11367346938775509,
+          "event_time": 13
+        },
+        {
+          "term": "es_p14",
+          "estimate": -0.0021249210305946628,
+          "se": 0.07263509745275465,
+          "p": 0.9767827214679556,
+          "ci_low": -0.1481675725925265,
+          "ci_high": 0.14391773053133716,
+          "truth": -0.11367346938775509,
+          "event_time": 14
+        },
+        {
+          "term": "es_p15",
+          "estimate": -0.021875355360312886,
+          "se": 0.0589376409417812,
+          "p": 0.7121508236053318,
+          "ci_low": -0.14037742477023515,
+          "ci_high": 0.09662671404960939,
+          "truth": -0.11367346938775509,
+          "event_time": 15
+        },
+        {
+          "term": "es_p16",
+          "estimate": 0.006725597895154822,
+          "se": 0.07716602743146882,
+          "p": 0.9309089100865164,
+          "ci_low": -0.14842709896634135,
+          "ci_high": 0.16187829475665097,
+          "truth": -0.11367346938775509,
+          "event_time": 16
+        },
+        {
+          "term": "es_p17",
+          "estimate": -0.029677317572327347,
+          "se": 0.07313767683192166,
+          "p": 0.6867123617739785,
+          "ci_low": -0.17673047270247755,
+          "ci_high": 0.11737583755782287,
+          "truth": -0.11367346938775509,
+          "event_time": 17
+        },
+        {
+          "term": "es_p18",
+          "estimate": -0.03833643226597341,
+          "se": 0.06645116962235405,
+          "p": 0.5666953443607814,
+          "ci_low": -0.171945463593462,
+          "ci_high": 0.09527259906151517,
+          "truth": -0.11367346938775509,
+          "event_time": 18
+        },
+        {
+          "term": "es_p19",
+          "estimate": -0.12235123330593684,
+          "se": 0.07347136048670504,
+          "p": 0.10236927159261744,
+          "ci_low": -0.2700753043904456,
+          "ci_high": 0.02537283777857194,
+          "truth": -0.11367346938775509,
+          "event_time": 19
+        },
+        {
+          "term": "es_p20",
+          "estimate": -0.1524383537905935,
+          "se": 0.06606416880072909,
+          "p": 0.025387612192050213,
+          "ci_low": -0.2852692678148938,
+          "ci_high": -0.0196074397662932,
+          "truth": -0.11367346938775509,
+          "event_time": 20
+        },
+        {
+          "term": "es_p21",
+          "estimate": -0.17653728151266457,
+          "se": 0.06737286593829883,
+          "p": 0.01172825824263346,
+          "ci_low": -0.31199950748896593,
+          "ci_high": -0.0410750555363632,
+          "truth": -0.11367346938775509,
+          "event_time": 21
+        },
+        {
+          "term": "es_p22",
+          "estimate": -0.07015800892636527,
+          "se": 0.05898997223630774,
+          "p": 0.24016352873651292,
+          "ci_low": -0.1887652974559741,
+          "ci_high": 0.048449279603243536,
+          "truth": -0.11367346938775509,
+          "event_time": 22
+        },
+        {
+          "term": "es_p23",
+          "estimate": -0.037493046391587875,
+          "se": 0.06252475358797925,
+          "p": 0.5515589777997647,
+          "ci_low": -0.16320748916746938,
+          "ci_high": 0.08822139638429363,
+          "truth": -0.11367346938775509,
+          "event_time": 23
+        },
+        {
+          "term": "es_p24",
+          "estimate": -0.11008001368503774,
+          "se": 0.06425017311651926,
+          "p": 0.09310949450362616,
+          "ci_low": -0.2392636449364854,
+          "ci_high": 0.019103617566409922,
+          "truth": null,
+          "event_time": 24
+        }
+      ],
+      "nobs": 4644,
+      "r2": 0.9701845548261909,
+      "r2_within": 0.01864830420605168,
+      "n_clusters": 49,
+      "fe": "unit_id + city_month",
+      "notes": "Reference t=-8 (last pre-announcement snapshot, Aug-Sep 2023); monthly; endpoints binned.",
+      "extra": {
+        "freq": "M",
+        "ref": -8,
+        "window": [
+          -12,
+          24
+        ],
+        "pretrend_test": {
+          "F": 0.806282467156917,
+          "p": 0.527289767987733,
           "df": 4
         },
         "pre_terms": [
@@ -1348,371 +2378,371 @@
       "coefs": [
         {
           "term": "es_m12",
-          "estimate": -0.08237931139329173,
-          "se": 0.046950833162097715,
-          "p": 0.08133188566243077,
-          "ci_low": -0.17513492266975927,
-          "ci_high": 0.010376299883175816,
+          "estimate": -0.0027860670914471204,
+          "se": 0.0373853721417027,
+          "p": 0.9406897800774519,
+          "ci_low": -0.07663292565379698,
+          "ci_high": 0.07106079147090275,
           "truth": null,
           "event_time": -12
         },
         {
           "term": "es_m11",
-          "estimate": -0.07505112410021633,
-          "se": 0.030560041459919383,
-          "p": 0.015173926769295853,
-          "ci_low": -0.13542524603459194,
-          "ci_high": -0.01467700216584071,
+          "estimate": -0.05344500983387802,
+          "se": 0.03336515159102746,
+          "p": 0.11121813471579012,
+          "ci_low": -0.11935077696426641,
+          "ci_high": 0.012460757296510368,
           "truth": null,
           "event_time": -11
         },
         {
           "term": "es_m10",
-          "estimate": -0.05758184081080977,
-          "se": 0.04085344048919801,
-          "p": 0.16072457382594774,
-          "ci_low": -0.13829150217591268,
-          "ci_high": 0.023127820554293153,
+          "estimate": 0.05658471207853862,
+          "se": 0.03972499516689752,
+          "p": 0.15632493232963296,
+          "ci_low": -0.021883574618213934,
+          "ci_high": 0.13505299877529117,
           "truth": null,
           "event_time": -10
         },
         {
           "term": "es_m9",
-          "estimate": 0.01409478233317998,
-          "se": 0.03747311762125343,
-          "p": 0.7073409244562425,
-          "ci_low": -0.05993674591242085,
-          "ci_high": 0.08812631057878081,
+          "estimate": 0.013040667791165222,
+          "se": 0.03546249512571408,
+          "p": 0.7135720749773462,
+          "ci_low": -0.05700795582265224,
+          "ci_high": 0.08308929140498268,
           "truth": null,
           "event_time": -9
         },
         {
           "term": "es_m7",
-          "estimate": -0.03818857948676746,
-          "se": 0.046306929709560275,
-          "p": 0.4108349275740366,
-          "ci_low": -0.1296721013386036,
-          "ci_high": 0.05329494236506868,
+          "estimate": -0.042959222563677124,
+          "se": 0.04033616108087204,
+          "p": 0.2885079988084347,
+          "ci_low": -0.1226347376554377,
+          "ci_high": 0.03671629252808345,
           "truth": null,
           "event_time": -7
         },
         {
           "term": "es_m6",
-          "estimate": -0.0557873089739064,
-          "se": 0.04071134567340233,
-          "p": 0.17259630252193348,
-          "ci_low": -0.13621624919711092,
-          "ci_high": 0.024641631249298114,
+          "estimate": -0.030874803341386706,
+          "se": 0.0325409324527915,
+          "p": 0.3441903741822592,
+          "ci_low": -0.09515250070440749,
+          "ci_high": 0.033402894021634086,
           "truth": null,
           "event_time": -6
         },
         {
           "term": "es_m5",
-          "estimate": -0.02773353606059527,
-          "se": 0.04378586275876579,
-          "p": 0.5274245286809622,
-          "ci_low": -0.114236462460962,
-          "ci_high": 0.058769390339771466,
+          "estimate": -0.01024590044733273,
+          "se": 0.04106029991689372,
+          "p": 0.8032767740347593,
+          "ci_low": -0.09135179793572985,
+          "ci_high": 0.0708599970410644,
           "truth": null,
           "event_time": -5
         },
         {
           "term": "es_m4",
-          "estimate": -0.13732674310871337,
-          "se": 0.03720530852500191,
-          "p": 0.00031003303426424544,
-          "ci_low": -0.2108291902974894,
-          "ci_high": -0.06382429591993735,
+          "estimate": -0.13039197786821125,
+          "se": 0.04378663351033785,
+          "p": 0.003366251021566846,
+          "ci_low": -0.21688316804557078,
+          "ci_high": -0.04390078769085169,
           "truth": null,
           "event_time": -4
         },
         {
           "term": "es_m3",
-          "estimate": -0.06566803750335723,
-          "se": 0.03624821586926689,
-          "p": 0.07200594764905155,
-          "ci_low": -0.1372796617109005,
-          "ci_high": 0.00594358670418603,
+          "estimate": -0.04958222044214492,
+          "se": 0.039966726081756485,
+          "p": 0.21662071547198147,
+          "ci_low": -0.1285279951952441,
+          "ci_high": 0.029363554310954255,
           "truth": null,
           "event_time": -3
         },
         {
           "term": "es_m2",
-          "estimate": -0.08096976841657703,
-          "se": 0.03484552324093781,
-          "p": 0.021459011370038583,
-          "ci_low": -0.1498102466526641,
-          "ci_high": -0.012129290180489971,
+          "estimate": -0.035098253296931926,
+          "se": 0.041244824569851346,
+          "p": 0.3960883798916608,
+          "ci_low": -0.11656864002717957,
+          "ci_high": 0.046372133433315706,
           "truth": null,
           "event_time": -2
         },
         {
           "term": "es_m1",
-          "estimate": -0.09114022404381639,
-          "se": 0.0374794233992846,
-          "p": 0.01618117294303456,
-          "ci_low": -0.1651842099234242,
-          "ci_high": -0.01709623816420859,
+          "estimate": -0.028524561027603604,
+          "se": 0.04129187347468257,
+          "p": 0.49071578642522207,
+          "ci_low": -0.11008788287181548,
+          "ci_high": 0.05303876081660827,
           "truth": null,
           "event_time": -1
         },
         {
           "term": "es_p0",
-          "estimate": -0.17214096746682228,
-          "se": 0.03632728274119126,
-          "p": 4.878288417886623e-06,
-          "ci_low": -0.2439087954207771,
-          "ci_high": -0.10037313951286748,
+          "estimate": -0.16718596830288787,
+          "se": 0.037379980408063215,
+          "p": 1.4808241444841386e-05,
+          "ci_low": -0.2410221766411348,
+          "ci_high": -0.09334975996464094,
           "truth": null,
           "event_time": 0
         },
         {
           "term": "es_p1",
-          "estimate": -0.10410646537718982,
-          "se": 0.03941630149018017,
-          "p": 0.00911873157867693,
-          "ci_low": -0.18197692885451675,
-          "ci_high": -0.026236001899862887,
+          "estimate": -0.10120580546073465,
+          "se": 0.03987654782060626,
+          "p": 0.012129980130399565,
+          "ci_low": -0.17997345222111738,
+          "ci_high": -0.02243815870035193,
           "truth": null,
           "event_time": 1
         },
         {
           "term": "es_p2",
-          "estimate": -0.15768060523220273,
-          "se": 0.03918472428077991,
-          "p": 8.969109979939383e-05,
-          "ci_low": -0.23509356701746256,
-          "ci_high": -0.0802676434469429,
+          "estimate": -0.12391961086674161,
+          "se": 0.03745170386142636,
+          "p": 0.0011635804738714395,
+          "ci_low": -0.19789749364642611,
+          "ci_high": -0.049941728087057116,
           "truth": null,
           "event_time": 2
         },
         {
           "term": "es_p3",
-          "estimate": -0.23448376949648886,
-          "se": 0.0415384406152225,
-          "p": 7.806534507714957e-08,
-          "ci_low": -0.31654671047634314,
-          "ci_high": -0.15242082851663458,
+          "estimate": -0.14106782240916263,
+          "se": 0.03924453199548016,
+          "p": 0.00043528320188301883,
+          "ci_low": -0.2185870562055029,
+          "ci_high": -0.06354858861282237,
           "truth": null,
           "event_time": 3
         },
         {
           "term": "es_p4",
-          "estimate": -0.18958120736836737,
-          "se": 0.03883762638678381,
-          "p": 2.6238472377038136e-06,
-          "ci_low": -0.2663084459158898,
-          "ci_high": -0.11285396882084493,
+          "estimate": -0.13743934340886768,
+          "se": 0.040709497412600236,
+          "p": 0.0009280418993697914,
+          "ci_low": -0.2178523050928628,
+          "ci_high": -0.057026381724872566,
           "truth": null,
           "event_time": 4
         },
         {
           "term": "es_p5",
-          "estimate": -0.17479276344890787,
-          "se": 0.04222372661966199,
-          "p": 5.727017593804007e-05,
-          "ci_low": -0.2582095488221414,
-          "ci_high": -0.0913759780756743,
+          "estimate": -0.16865558486571833,
+          "se": 0.03740816548412245,
+          "p": 1.275496597497039e-05,
+          "ci_low": -0.24254746683260875,
+          "ci_high": -0.09476370289882792,
           "truth": null,
           "event_time": 5
         },
         {
           "term": "es_p6",
-          "estimate": -0.28368257966647736,
-          "se": 0.05351716876582432,
-          "p": 3.961324646084563e-07,
-          "ci_low": -0.38941057996674133,
-          "ci_high": -0.1779545793662134,
+          "estimate": -0.16917578588984697,
+          "se": 0.04840040049530293,
+          "p": 0.000616602930082033,
+          "ci_low": -0.26478049235606266,
+          "ci_high": -0.0735710794236313,
           "truth": null,
           "event_time": 6
         },
         {
           "term": "es_p7",
-          "estimate": -0.2350659707831036,
-          "se": 0.03846299717948682,
-          "p": 7.848058425352633e-09,
-          "ci_low": -0.311053095496972,
-          "ci_high": -0.1590788460692352,
+          "estimate": -0.20532001010691325,
+          "se": 0.041316051789078566,
+          "p": 1.7485582108900388e-06,
+          "ci_low": -0.2869310910735089,
+          "ci_high": -0.12370892914031764,
           "truth": null,
           "event_time": 7
         },
         {
           "term": "es_p8",
-          "estimate": -0.26389453477454106,
-          "se": 0.044419885016699086,
-          "p": 1.8402509960324664e-08,
-          "ci_low": -0.3516500294071786,
-          "ci_high": -0.17613904014190354,
+          "estimate": -0.14664212275250985,
+          "se": 0.04052188148839345,
+          "p": 0.00039934148792575286,
+          "ci_low": -0.22668448904517308,
+          "ci_high": -0.06659975645984663,
           "truth": null,
           "event_time": 8
         },
         {
           "term": "es_p9",
-          "estimate": -0.2552749820161551,
-          "se": 0.0398960893338333,
-          "p": 1.8152626068967948e-09,
-          "ci_low": -0.3340933097106604,
-          "ci_high": -0.1764566543216498,
+          "estimate": -0.24126561283549608,
+          "se": 0.048124447441145225,
+          "p": 1.4376027739348984e-06,
+          "ci_low": -0.33632523268112147,
+          "ci_high": -0.14620599298987072,
           "truth": null,
           "event_time": 9
         },
         {
           "term": "es_p10",
-          "estimate": -0.24119221461772813,
-          "se": 0.04605823797302313,
-          "p": 5.322709673016845e-07,
-          "ci_low": -0.33218442348343963,
-          "ci_high": -0.15020000575201664,
+          "estimate": -0.23283953437199045,
+          "se": 0.04777265635123529,
+          "p": 2.668440001851735e-06,
+          "ci_low": -0.32720426567239536,
+          "ci_high": -0.13847480307158558,
           "truth": null,
           "event_time": 10
         },
         {
           "term": "es_p11",
-          "estimate": -0.19006365828046093,
-          "se": 0.038973122554144375,
-          "p": 2.677216938140603e-06,
-          "ci_low": -0.2670585817439412,
-          "ci_high": -0.11306873481698064,
+          "estimate": -0.14708730635237013,
+          "se": 0.038744137346614554,
+          "p": 0.0002097929985496183,
+          "ci_low": -0.2236181168498845,
+          "ci_high": -0.07055649585485577,
           "truth": null,
           "event_time": 11
         },
         {
           "term": "es_p12",
-          "estimate": -0.36282192736885094,
-          "se": 0.05277381350077957,
-          "p": 1.4780465740216187e-10,
-          "ci_low": -0.46708136220688434,
-          "ci_high": -0.25856249253081753,
+          "estimate": -0.3140140316257421,
+          "se": 0.05321304773353629,
+          "p": 2.1731895394339062e-08,
+          "ci_low": -0.41912510006062365,
+          "ci_high": -0.20890296319086055,
           "truth": null,
           "event_time": 12
         },
         {
           "term": "es_p13",
-          "estimate": -0.397902788717858,
-          "se": 0.051282186844150736,
-          "p": 1.1290968160437842e-12,
-          "ci_low": -0.4992153803794518,
-          "ci_high": -0.2965901970562642,
+          "estimate": -0.4001220088119464,
+          "se": 0.05127121267589292,
+          "p": 8.104628079763643e-13,
+          "ci_low": -0.5013973947154444,
+          "ci_high": -0.2988466229084484,
           "truth": null,
           "event_time": 13
         },
         {
           "term": "es_p14",
-          "estimate": -0.2904029060377469,
-          "se": 0.05038818927484105,
-          "p": 4.403321618440259e-08,
-          "ci_low": -0.3899493247597743,
-          "ci_high": -0.1908564873157195,
+          "estimate": -0.3209706592476472,
+          "se": 0.04584585700752692,
+          "p": 7.103451160617169e-11,
+          "ci_low": -0.41152940787457376,
+          "ci_high": -0.2304119106207207,
           "truth": null,
           "event_time": 14
         },
         {
           "term": "es_p15",
-          "estimate": -0.34238728241155736,
-          "se": 0.04529972269953921,
-          "p": 3.495204126124918e-12,
-          "ci_low": -0.4318809758491905,
-          "ci_high": -0.2528935889739242,
+          "estimate": -0.2843995117023792,
+          "se": 0.04625297509782044,
+          "p": 6.276179354003375e-09,
+          "ci_low": -0.3757624356072226,
+          "ci_high": -0.1930365877975358,
           "truth": null,
           "event_time": 15
         },
         {
           "term": "es_p16",
-          "estimate": -0.403705454806583,
-          "se": 0.05128272015278518,
-          "p": 5.946354519892338e-13,
-          "ci_low": -0.5050191000675499,
-          "ci_high": -0.30239180954561606,
+          "estimate": -0.2415000660796424,
+          "se": 0.04672281647059134,
+          "p": 7.119869627203457e-07,
+          "ci_low": -0.3337910617787224,
+          "ci_high": -0.1492090703805624,
           "truth": null,
           "event_time": 16
         },
         {
           "term": "es_p17",
-          "estimate": -0.3704189157908427,
-          "se": 0.043869981724241766,
-          "p": 2.19824158875781e-14,
-          "ci_low": -0.457088026804712,
-          "ci_high": -0.28374980477697337,
+          "estimate": -0.2941567032832128,
+          "se": 0.047058554709277375,
+          "p": 3.7304606070875934e-09,
+          "ci_low": -0.3871108785310277,
+          "ci_high": -0.2012025280353979,
           "truth": null,
           "event_time": 17
         },
         {
           "term": "es_p18",
-          "estimate": -0.3513176436623726,
-          "se": 0.04448254981821975,
-          "p": 5.135891711915974e-13,
-          "ci_low": -0.43919693826998607,
-          "ci_high": -0.26343834905475916,
+          "estimate": -0.33072713650480295,
+          "se": 0.06040077634296225,
+          "p": 1.709066907995549e-07,
+          "ci_low": -0.4500360354706463,
+          "ci_high": -0.2114182375389596,
           "truth": null,
           "event_time": 18
         },
         {
           "term": "es_p19",
-          "estimate": -0.3566927378170268,
-          "se": 0.05496295203045076,
-          "p": 1.1314242875926084e-09,
-          "ci_low": -0.46527701353248346,
-          "ci_high": -0.24810846210157017,
+          "estimate": -0.2160380636577533,
+          "se": 0.05133635159774103,
+          "p": 4.329031879057865e-05,
+          "ci_low": -0.31744211765984315,
+          "ci_high": -0.11463400965566346,
           "truth": null,
           "event_time": 19
         },
         {
           "term": "es_p20",
-          "estimate": -0.3287908493390447,
-          "se": 0.04787621738132619,
-          "p": 1.5387824348067625e-10,
-          "ci_low": -0.4233746407166787,
-          "ci_high": -0.23420705796141067,
+          "estimate": -0.28202538954804585,
+          "se": 0.0563101618983098,
+          "p": 1.4697422514586833e-06,
+          "ci_low": -0.3932541489025359,
+          "ci_high": -0.1707966301935558,
           "truth": null,
           "event_time": 20
         },
         {
           "term": "es_p21",
-          "estimate": -0.41134535803359157,
-          "se": 0.05768978933902049,
-          "p": 3.7190250878893494e-11,
-          "ci_low": -0.5253167471264536,
-          "ci_high": -0.2973739689407296,
+          "estimate": -0.39200940891625585,
+          "se": 0.0586037270142855,
+          "p": 3.793028113818764e-10,
+          "ci_low": -0.5077686187924371,
+          "ci_high": -0.2762501990400746,
           "truth": null,
           "event_time": 21
         },
         {
           "term": "es_p22",
-          "estimate": -0.3023517000884302,
-          "se": 0.049798213400564124,
-          "p": 9.593359884263464e-09,
-          "ci_low": -0.4007325681871493,
-          "ci_high": -0.20397083198971108,
+          "estimate": -0.2939692576277542,
+          "se": 0.051697900389209316,
+          "p": 6.226264792630332e-08,
+          "ci_low": -0.39608747444105663,
+          "ci_high": -0.1918510408144518,
           "truth": null,
           "event_time": 22
         },
         {
           "term": "es_p23",
-          "estimate": -0.336266230833941,
-          "se": 0.04926801664320045,
-          "p": 1.9290724573295392e-10,
-          "ci_low": -0.43359964735376527,
-          "ci_high": -0.23893281431411678,
+          "estimate": -0.2312977485135111,
+          "se": 0.045573464649071194,
+          "p": 1.088461168752275e-06,
+          "ci_low": -0.3213184439175861,
+          "ci_high": -0.14127705310943603,
           "truth": null,
           "event_time": 23
         },
         {
           "term": "es_p24",
-          "estimate": -0.286852652180439,
-          "se": 0.045844658585132286,
-          "p": 3.7520404561064424e-09,
-          "ci_low": -0.3774229156759486,
-          "ci_high": -0.19628238868492937,
+          "estimate": -0.30420943567953346,
+          "se": 0.05451547091621958,
+          "p": 1.0379305881436096e-07,
+          "ci_low": -0.4118931643569127,
+          "ci_high": -0.19652570700215424,
           "truth": null,
           "event_time": 24
         }
       ],
-      "nobs": 5698,
-      "r2": 0.9649982045094335,
-      "r2_within": 0.09908819848927086,
-      "n_clusters": 154,
+      "nobs": 5809,
+      "r2": 0.9639835978005095,
+      "r2_within": 0.0881232643216775,
+      "n_clusters": 157,
       "fe": "unit_id + ym",
-      "notes": "Reference period t=-8 (Sep 2023); endpoints binned; monthly.",
+      "notes": "Reference t=-8 (last pre-announcement snapshot, Aug-Sep 2023); monthly; endpoints binned.",
       "extra": {
         "freq": "M",
         "ref": -8,
@@ -1721,8 +2751,8 @@
           24
         ],
         "pretrend_test": {
-          "F": 3.2310750416099885,
-          "p": 0.014070642993040283,
+          "F": 2.143854871006122,
+          "p": 0.07794168238136556,
           "df": 4
         },
         "pre_terms": [
@@ -1740,36 +2770,36 @@
       "coefs": [
         {
           "term": "ent_antic",
-          "estimate": -0.030789958004877032,
-          "se": 0.022548347312285243,
-          "p": 0.17409750915965994,
-          "ci_low": -0.0753362545744024,
-          "ci_high": 0.013756338564648345,
+          "estimate": -0.049489851872773834,
+          "se": 0.016844189263899176,
+          "p": 0.0038036220311703506,
+          "ci_low": -0.08276196850314643,
+          "ci_high": -0.016217735242401242,
           "truth": null
         },
         {
           "term": "ent_p1",
-          "estimate": -0.16831314441647582,
-          "se": 0.025191916110187763,
-          "p": 4.144629084379403e-10,
-          "ci_low": -0.21808204990018748,
-          "ci_high": -0.11854423893276417,
-          "truth": -0.15999999999999998
+          "estimate": -0.16782923622414594,
+          "se": 0.024564056472693465,
+          "p": 1.76670233997811e-10,
+          "ci_low": -0.2163503101131794,
+          "ci_high": -0.1193081623351125,
+          "truth": -0.16612244897959186
         },
         {
           "term": "ent_p2",
-          "estimate": -0.14115301707632513,
-          "se": 0.015161610108791291,
-          "p": 2.220446049250313e-16,
-          "ci_low": -0.1711061471671389,
-          "ci_high": -0.11119988698551136,
-          "truth": -0.10999999999999997
+          "estimate": -0.13965956752992614,
+          "se": 0.017283741575510388,
+          "p": 1.6586731987899839e-13,
+          "ci_low": -0.17379992635040653,
+          "ci_high": -0.10551920870944576,
+          "truth": -0.11428571428571428
         }
       ],
-      "nobs": 5852,
-      "r2": 0.9648617865422161,
-      "r2_within": 0.08970193974841434,
-      "n_clusters": 154,
+      "nobs": 5966,
+      "r2": 0.9631529170807929,
+      "r2_within": 0.07868950131628805,
+      "n_clusters": 157,
       "fe": "unit_id + month",
       "notes": "Sample starts May 2023 (t=-12) so Ottawa's 2022 bylaw roll-out does not contaminate the pre-period. Treatment varies by province -> effectively 2 treated clusters; rely on wild-bootstrap p-values and leave-one-out.",
       "extra": {
@@ -1786,36 +2816,36 @@
       "coefs": [
         {
           "term": "ent_antic",
-          "estimate": -0.0070030041839767845,
-          "se": 0.028289069429847102,
-          "p": 0.8052273194981527,
-          "ci_low": -0.06345296333029846,
-          "ci_high": 0.049446954962344886,
+          "estimate": -0.051248545989644144,
+          "se": 0.026765110393251426,
+          "p": 0.05955356526089717,
+          "ci_low": -0.10461666034792386,
+          "ci_high": 0.0021195683686355757,
           "truth": null
         },
         {
           "term": "ent_p1",
-          "estimate": -0.1517350071954352,
-          "se": 0.029300432774528054,
-          "p": 2.161836897496272e-06,
-          "ci_low": -0.21020311047445467,
-          "ci_high": -0.09326690391641572,
-          "truth": -0.15999999999999998
+          "estimate": -0.12220779874047659,
+          "se": 0.029233225150295722,
+          "p": 8.180514213873558e-05,
+          "ci_low": -0.1804971941496467,
+          "ci_high": -0.06391840333130647,
+          "truth": -0.16612244897959186
         },
         {
           "term": "ent_p2",
-          "estimate": -0.10811915063270101,
-          "se": 0.019012459979836627,
-          "p": 2.972068557927088e-07,
-          "ci_low": -0.14605792383251828,
-          "ci_high": -0.07018037743288374,
-          "truth": -0.10999999999999997
+          "estimate": -0.11394523805648336,
+          "se": 0.018333273562259424,
+          "p": 3.1137553646587435e-08,
+          "ci_low": -0.1505007472868501,
+          "ci_high": -0.07738972882611664,
+          "truth": -0.11428571428571428
         }
       ],
-      "nobs": 2622,
-      "r2": 0.9724449003355561,
-      "r2_within": 0.07591351686968151,
-      "n_clusters": 69,
+      "nobs": 2736,
+      "r2": 0.9696654308034419,
+      "r2_within": 0.04295886779852043,
+      "n_clusters": 72,
       "fe": "unit_id + month",
       "notes": "Sample starts May 2023 (t=-12) so Ottawa's 2022 bylaw roll-out does not contaminate the pre-period. Treatment varies by province -> effectively 2 treated clusters; rely on wild-bootstrap p-values and leave-one-out.",
       "extra": {
@@ -1832,36 +2862,36 @@
       "coefs": [
         {
           "term": "ent_antic",
-          "estimate": -0.0372264278622977,
-          "se": 0.023655836178664544,
-          "p": 0.11799487848313572,
-          "ci_low": -0.0840266706326324,
-          "ci_high": 0.009573814908037007,
+          "estimate": -0.049013969935268985,
+          "se": 0.017353823548179274,
+          "p": 0.005466758632068025,
+          "ci_low": -0.08333916069876932,
+          "ci_high": -0.014688779171768654,
           "truth": null
         },
         {
           "term": "ent_p1",
-          "estimate": -0.17279899331158138,
-          "se": 0.025973431573540647,
-          "p": 7.257723311226982e-10,
-          "ci_low": -0.22418432139889322,
-          "ci_high": -0.12141366522426955,
-          "truth": -0.15999999999999998
+          "estimate": -0.1801738604844339,
+          "se": 0.025073389605465467,
+          "p": 4.3048009601420745e-11,
+          "ci_low": -0.2297680538854303,
+          "ci_high": -0.1305796670834375,
+          "truth": -0.16612244897959186
         },
         {
           "term": "ent_p2",
-          "estimate": -0.15009159270224715,
-          "se": 0.015373944018965267,
-          "p": 0.0,
-          "ci_low": -0.18050710230380748,
-          "ci_high": -0.11967608310068681,
-          "truth": -0.10999999999999997
+          "estimate": -0.14661756256391661,
+          "se": 0.018044719230021912,
+          "p": 2.7045032879868813e-13,
+          "ci_low": -0.18230931822368243,
+          "ci_high": -0.1109258069041508,
+          "truth": -0.11428571428571428
         }
       ],
-      "nobs": 4978,
-      "r2": 0.9671854734060796,
-      "r2_within": 0.10002107659294845,
-      "n_clusters": 131,
+      "nobs": 5092,
+      "r2": 0.9655004276333786,
+      "r2_within": 0.09237853976346178,
+      "n_clusters": 134,
       "fe": "unit_id + month",
       "notes": "Sample starts May 2023 (t=-12) so Ottawa's 2022 bylaw roll-out does not contaminate the pre-period. Treatment varies by province -> effectively 2 treated clusters; rely on wild-bootstrap p-values and leave-one-out.",
       "extra": {
@@ -1873,6 +2903,7 @@
     }
   ],
   "rent": {
+    "note": "Three CMAs, two of them treated. Driscoll-Kraay SEs need many cross-sections or a long panel, so these p-values are not credible in either direction: the rent models are descriptive.",
     "rent_level_did": {
       "label": "100 x ln CPI rented accommodation: BC CMAs vs Ottawa (level DiD)",
       "coefs": [
@@ -1974,39 +3005,39 @@
       "coefs": [
         {
           "term": "policy_rate",
-          "estimate": 1.0713752651457977,
-          "se": 0.42014346732567287,
-          "p": 0.010771598896173648,
-          "ci_low": 0.24790920084769796,
-          "ci_high": 1.8948413294438975
+          "estimate": 0.9490033202861862,
+          "se": 0.6231215648367256,
+          "p": 0.1277630509265089,
+          "ci_low": -0.2722925047840362,
+          "ci_high": 2.1702991453564087
         },
         {
           "term": "cmhc_vacancy_rate",
-          "estimate": -0.03660262169864108,
-          "se": 0.2926676372122027,
-          "p": 0.9004717030729722,
-          "ci_low": -0.6102206500749928,
-          "ci_high": 0.5370154066777107
+          "estimate": -0.2666997784517609,
+          "se": 0.8050018463135784,
+          "p": 0.7404153892660057,
+          "ci_low": -1.8444744047146222,
+          "ci_high": 1.3110748478111005
         },
         {
           "term": "bc_p1",
-          "estimate": -0.8603708624801627,
-          "se": 0.6504759813067161,
-          "p": 0.18594217969641214,
-          "ci_low": -2.135280358649676,
-          "ci_high": 0.4145386336893504
+          "estimate": -0.9934680358806434,
+          "se": 0.7500025542747958,
+          "p": 0.1852973728028633,
+          "ci_low": -2.4634460305722903,
+          "ci_high": 0.47650995881100355
         },
         {
           "term": "bc_p2",
-          "estimate": 0.8179875282303523,
-          "se": 0.8792254786425582,
-          "p": 0.35218983627419065,
-          "ci_low": -0.9052627441990523,
-          "ci_high": 2.541237800659757
+          "estimate": 0.9095818374062126,
+          "se": 0.8058670056091752,
+          "p": 0.25902454117084217,
+          "ci_low": -0.6698884699169085,
+          "ci_high": 2.4890521447293334
         }
       ],
-      "nobs": 135,
-      "r2": 0.2753082418554663,
+      "nobs": 126,
+      "r2": 0.27939847699596754,
       "se_type": "Driscoll-Kraay (HAC group-sum, 12 lags)"
     },
     "rent_on_str_live": {
@@ -2014,43 +3045,57 @@
       "coefs": [
         {
           "term": "ln_str",
-          "estimate": -0.02168845131775421,
-          "se": 0.015331977957954834,
-          "p": 0.15718896026632972,
-          "ci_low": -0.05173857592710765,
-          "ci_high": 0.008361673291599227
+          "estimate": -0.021813248174855637,
+          "se": 0.01563497848572637,
+          "p": 0.16296852966774822,
+          "ci_low": -0.05245724290593791,
+          "ci_high": 0.008830746556226638
         },
         {
           "term": "policy_rate",
-          "estimate": 0.9394122106954477,
-          "se": 0.48216324932440335,
-          "p": 0.051375716110851954,
-          "ci_low": -0.0056103926491894995,
-          "ci_high": 1.8844348140400848
+          "estimate": 0.9390778029633502,
+          "se": 0.4827478219207274,
+          "p": 0.05174175636423458,
+          "ci_low": -0.00709054161643119,
+          "ci_high": 1.8852461475431315
         },
         {
           "term": "t",
-          "estimate": 0.44093664153791035,
-          "se": 0.029258996557218326,
-          "p": 2.546432088909523e-51,
-          "ci_low": 0.383590062061981,
-          "ci_high": 0.4982832210138397
+          "estimate": 0.44090469024706413,
+          "se": 0.0293249941538488,
+          "p": 4.3229010993107374e-51,
+          "ci_low": 0.38342875785867286,
+          "ci_high": 0.4983806226354554
         },
         {
           "term": "trend_city",
-          "estimate": 0.10513929659080556,
-          "se": 0.04917591358930552,
-          "p": 0.032514773762518524,
-          "ci_low": 0.008756277048912922,
-          "ci_high": 0.20152231613269822
+          "estimate": 0.10543208810228322,
+          "se": 0.0493354316356665,
+          "p": 0.03259424829413096,
+          "ci_low": 0.008736418934638876,
+          "ci_high": 0.20212775726992754
         }
       ],
       "nobs": 32,
-      "r2": 0.9282188514230939,
+      "r2": 0.9282062070316164,
       "se_type": "Driscoll-Kraay (HAC group-sum, 12 lags)"
     },
     "mechanical_bound": {
       "rows": [
+        {
+          "city": "victoria",
+          "pre_month": "2023-08",
+          "post_month": "2026-06",
+          "active_pre": 3133,
+          "active_post": 2033,
+          "units_removed": 1100.0,
+          "renter_households": 66000,
+          "supply_shock_pct": 1.6666666666666667,
+          "rent_effect_pct_range": [
+            -0.4166666666666667,
+            -3.3333333333333335
+          ]
+        },
         {
           "city": "vancouver",
           "pre_month": "2023-09",
@@ -2064,39 +3109,558 @@
             -0.0,
             -0.0
           ]
-        },
-        {
-          "city": "victoria",
-          "pre_month": "2023-08",
-          "post_month": "2026-06",
-          "active_pre": 3083,
-          "active_post": 1988,
-          "units_removed": 1095.0,
-          "renter_households": 66000,
-          "supply_shock_pct": 1.659090909090909,
-          "rent_effect_pct_range": [
-            -0.41477272727272724,
-            -3.318181818181818
-          ]
         }
       ],
-      "assumptions": "Rent effect = -(units removed / renter households) x conversion share [0.25, 1] x inverse demand elasticity [1, 2]. Upper bound: assumes every delisted unit enters the long-term market at once."
+      "assumptions": "Rent effect = -(units removed / renter households) x conversion share [0.25, 1] x inverse demand elasticity [1, 2]. Upper bound: assumes every delisted unit enters the long-term market at once. Units removed are PR-covered areas only; renter households are approximate 2021 Census totals for the City of Vancouver and the whole CRD (including exempt areas)."
     }
+  },
+  "descriptives": {
+    "city_room": [
+      {
+        "city": "vancouver",
+        "room_type": "entire_home",
+        "pre_month": "2023-09-01T00:00:00.000",
+        "post_month": "2026-06-01T00:00:00.000",
+        "same_season_pre_month": "2023-06-01T00:00:00.000",
+        "active_pre": 4795,
+        "active_post": 5032,
+        "active_same_season_pre": 4600,
+        "reviewed_pre": 3733,
+        "reviewed_post": 3413,
+        "reviewed_same_season_pre": 3207,
+        "mlh_share_pre": 0.3935349322,
+        "mlh_share_post": 0.3567170111,
+        "prov_registered_post": 0.7337042925,
+        "prov_exempt_claim_post": 0.0586248013
+      },
+      {
+        "city": "vancouver",
+        "room_type": "private_room",
+        "pre_month": "2023-09-01T00:00:00.000",
+        "post_month": "2026-06-01T00:00:00.000",
+        "same_season_pre_month": "2023-06-01T00:00:00.000",
+        "active_pre": 1075,
+        "active_post": 1100,
+        "active_same_season_pre": 954,
+        "reviewed_pre": 748,
+        "reviewed_post": 549,
+        "reviewed_same_season_pre": 642,
+        "mlh_share_pre": 0.7562790698,
+        "mlh_share_post": 0.7363636364,
+        "prov_registered_post": 0.5181818182,
+        "prov_exempt_claim_post": 0.1418181818
+      },
+      {
+        "city": "victoria",
+        "room_type": "entire_home",
+        "pre_month": "2023-08-01T00:00:00.000",
+        "post_month": "2026-06-01T00:00:00.000",
+        "same_season_pre_month": "2023-06-01T00:00:00.000",
+        "active_pre": 3133,
+        "active_post": 2033,
+        "active_same_season_pre": 3066,
+        "reviewed_pre": 3193,
+        "reviewed_post": 1994,
+        "reviewed_same_season_pre": 2851,
+        "mlh_share_pre": 0.4605499871,
+        "mlh_share_post": 0.3759318424,
+        "prov_registered_post": 0.7003904863,
+        "prov_exempt_claim_post": 0.0937167199
+      },
+      {
+        "city": "victoria",
+        "room_type": "private_room",
+        "pre_month": "2023-08-01T00:00:00.000",
+        "post_month": "2026-06-01T00:00:00.000",
+        "same_season_pre_month": "2023-06-01T00:00:00.000",
+        "active_pre": 468,
+        "active_post": 352,
+        "active_same_season_pre": 457,
+        "reviewed_pre": 418,
+        "reviewed_post": 320,
+        "reviewed_same_season_pre": 376,
+        "mlh_share_pre": 0.7327586207,
+        "mlh_share_post": 0.6868008949,
+        "prov_registered_post": 0.6733780761,
+        "prov_exempt_claim_post": 0.2214765101
+      }
+    ],
+    "victoria_geography": [
+      {
+        "geography": "covered",
+        "n_areas": 26,
+        "areas": "Burnside, Central Saanich, Colwood, Downtown, Esquimalt, Fairfield, Fernwood, Gonzales, Harris Green, Highlands, Hillside/Quadra, James Bay, Langford, Metchosin, North Jubilee, North Park, North Saanich, Oak Bay, Oaklands, Rockland, Saanich, Sidney, Sooke, South Jubilee, Victoria West, View Royal",
+        "active_pre": 3133.0,
+        "active_post": 2033.0,
+        "pct_change": -35.1101180977
+      },
+      {
+        "geography": "never_covered",
+        "n_areas": 2,
+        "areas": "Juan de Fuca, Southern Gulf Islands",
+        "active_pre": 500.0,
+        "active_post": 532.0,
+        "pct_change": 6.4
+      },
+      {
+        "geography": "opted_in_2025-11",
+        "n_areas": 1,
+        "areas": "Salt Spring Island",
+        "active_pre": 258.0,
+        "active_post": 252.0,
+        "pct_change": -2.3255813953
+      }
+    ],
+    "vintages": [
+      {
+        "city": "ottawa",
+        "snapshot_date": "2022-12-20T00:00:00.000",
+        "n_total": 2488,
+        "completeness_ratio": 0.945,
+        "scrape_incomplete": false,
+        "share_new_listings": null
+      },
+      {
+        "city": "ottawa",
+        "snapshot_date": "2023-03-18T00:00:00.000",
+        "n_total": 2633,
+        "completeness_ratio": 0.942,
+        "scrape_incomplete": false,
+        "share_new_listings": 0.146
+      },
+      {
+        "city": "ottawa",
+        "snapshot_date": "2023-06-18T00:00:00.000",
+        "n_total": 2795,
+        "completeness_ratio": 0.946,
+        "scrape_incomplete": false,
+        "share_new_listings": 0.15
+      },
+      {
+        "city": "ottawa",
+        "snapshot_date": "2023-09-12T00:00:00.000",
+        "n_total": 2954,
+        "completeness_ratio": 0.932,
+        "scrape_incomplete": false,
+        "share_new_listings": 0.142
+      },
+      {
+        "city": "ottawa",
+        "snapshot_date": "2023-12-18T00:00:00.000",
+        "n_total": 3170,
+        "completeness_ratio": 1.073,
+        "scrape_incomplete": false,
+        "share_new_listings": 0.139
+      },
+      {
+        "city": "ottawa",
+        "snapshot_date": "2024-03-23T00:00:00.000",
+        "n_total": 2712,
+        "completeness_ratio": 0.856,
+        "scrape_incomplete": false,
+        "share_new_listings": 0.112
+      },
+      {
+        "city": "ottawa",
+        "snapshot_date": "2024-06-21T00:00:00.000",
+        "n_total": 2862,
+        "completeness_ratio": 0.999,
+        "scrape_incomplete": false,
+        "share_new_listings": 0.116
+      },
+      {
+        "city": "ottawa",
+        "snapshot_date": "2024-09-15T00:00:00.000",
+        "n_total": 2864,
+        "completeness_ratio": 0.987,
+        "scrape_incomplete": false,
+        "share_new_listings": 0.117
+      },
+      {
+        "city": "ottawa",
+        "snapshot_date": "2024-12-15T00:00:00.000",
+        "n_total": 2903,
+        "completeness_ratio": 1.014,
+        "scrape_incomplete": false,
+        "share_new_listings": 0.118
+      },
+      {
+        "city": "ottawa",
+        "snapshot_date": "2025-03-11T00:00:00.000",
+        "n_total": 2836,
+        "completeness_ratio": 0.977,
+        "scrape_incomplete": false,
+        "share_new_listings": 0.075
+      },
+      {
+        "city": "ottawa",
+        "snapshot_date": "2025-06-17T00:00:00.000",
+        "n_total": 2786,
+        "completeness_ratio": 0.982,
+        "scrape_incomplete": false,
+        "share_new_listings": 0.079
+      },
+      {
+        "city": "ottawa",
+        "snapshot_date": "2025-09-22T00:00:00.000",
+        "n_total": 2730,
+        "completeness_ratio": 0.98,
+        "scrape_incomplete": false,
+        "share_new_listings": 0.09
+      },
+      {
+        "city": "ottawa",
+        "snapshot_date": "2025-12-25T00:00:00.000",
+        "n_total": 2721,
+        "completeness_ratio": 0.997,
+        "scrape_incomplete": false,
+        "share_new_listings": 0.085
+      },
+      {
+        "city": "ottawa",
+        "snapshot_date": "2026-03-27T00:00:00.000",
+        "n_total": 914,
+        "completeness_ratio": 0.335,
+        "scrape_incomplete": true,
+        "share_new_listings": 0.088
+      },
+      {
+        "city": "ottawa",
+        "snapshot_date": "2026-06-24T00:00:00.000",
+        "n_total": 2727,
+        "completeness_ratio": 1.0,
+        "scrape_incomplete": false,
+        "share_new_listings": 0.123
+      },
+      {
+        "city": "seattle",
+        "snapshot_date": "2025-03-16T00:00:00.000",
+        "n_total": 6772,
+        "completeness_ratio": 0.987,
+        "scrape_incomplete": false,
+        "share_new_listings": null
+      },
+      {
+        "city": "seattle",
+        "snapshot_date": "2025-06-21T00:00:00.000",
+        "n_total": 6862,
+        "completeness_ratio": 1.013,
+        "scrape_incomplete": false,
+        "share_new_listings": 0.095
+      },
+      {
+        "city": "seattle",
+        "snapshot_date": "2025-12-28T00:00:00.000",
+        "n_total": 6420,
+        "completeness_ratio": 0.936,
+        "scrape_incomplete": false,
+        "share_new_listings": 0.156
+      },
+      {
+        "city": "seattle",
+        "snapshot_date": "2026-03-29T00:00:00.000",
+        "n_total": 4550,
+        "completeness_ratio": 0.586,
+        "scrape_incomplete": true,
+        "share_new_listings": 0.106
+      },
+      {
+        "city": "seattle",
+        "snapshot_date": "2026-06-15T00:00:00.000",
+        "n_total": 7769,
+        "completeness_ratio": 1.0,
+        "scrape_incomplete": false,
+        "share_new_listings": 0.146
+      },
+      {
+        "city": "vancouver",
+        "snapshot_date": "2022-09-10T00:00:00.000",
+        "n_total": 5572,
+        "completeness_ratio": 0.982,
+        "scrape_incomplete": false,
+        "share_new_listings": null
+      },
+      {
+        "city": "vancouver",
+        "snapshot_date": "2022-12-11T00:00:00.000",
+        "n_total": 5676,
+        "completeness_ratio": 0.95,
+        "scrape_incomplete": false,
+        "share_new_listings": 0.191
+      },
+      {
+        "city": "vancouver",
+        "snapshot_date": "2023-03-14T00:00:00.000",
+        "n_total": 5975,
+        "completeness_ratio": 0.94,
+        "scrape_incomplete": false,
+        "share_new_listings": 0.148
+      },
+      {
+        "city": "vancouver",
+        "snapshot_date": "2023-06-10T00:00:00.000",
+        "n_total": 6355,
+        "completeness_ratio": 0.949,
+        "scrape_incomplete": false,
+        "share_new_listings": 0.16
+      },
+      {
+        "city": "vancouver",
+        "snapshot_date": "2023-09-06T00:00:00.000",
+        "n_total": 6695,
+        "completeness_ratio": 1.001,
+        "scrape_incomplete": false,
+        "share_new_listings": 0.165
+      },
+      {
+        "city": "vancouver",
+        "snapshot_date": "2023-12-13T00:00:00.000",
+        "n_total": 6691,
+        "completeness_ratio": 0.999,
+        "scrape_incomplete": false,
+        "share_new_listings": 0.139
+      },
+      {
+        "city": "vancouver",
+        "snapshot_date": "2024-03-20T00:00:00.000",
+        "n_total": 6312,
+        "completeness_ratio": 0.943,
+        "scrape_incomplete": false,
+        "share_new_listings": 0.106
+      },
+      {
+        "city": "vancouver",
+        "snapshot_date": "2024-06-15T00:00:00.000",
+        "n_total": 6233,
+        "completeness_ratio": 0.987,
+        "scrape_incomplete": false,
+        "share_new_listings": 0.114
+      },
+      {
+        "city": "vancouver",
+        "snapshot_date": "2024-09-06T00:00:00.000",
+        "n_total": 6211,
+        "completeness_ratio": 0.996,
+        "scrape_incomplete": false,
+        "share_new_listings": 0.113
+      },
+      {
+        "city": "vancouver",
+        "snapshot_date": "2024-12-12T00:00:00.000",
+        "n_total": 6186,
+        "completeness_ratio": 0.996,
+        "scrape_incomplete": false,
+        "share_new_listings": 0.128
+      },
+      {
+        "city": "vancouver",
+        "snapshot_date": "2025-03-05T00:00:00.000",
+        "n_total": 3418,
+        "completeness_ratio": 0.553,
+        "scrape_incomplete": true,
+        "share_new_listings": 0.075
+      },
+      {
+        "city": "vancouver",
+        "snapshot_date": "2025-06-12T00:00:00.000",
+        "n_total": 5090,
+        "completeness_ratio": 0.907,
+        "scrape_incomplete": false,
+        "share_new_listings": 0.128
+      },
+      {
+        "city": "vancouver",
+        "snapshot_date": "2025-09-14T00:00:00.000",
+        "n_total": 5613,
+        "completeness_ratio": 0.98,
+        "scrape_incomplete": false,
+        "share_new_listings": 0.121
+      },
+      {
+        "city": "vancouver",
+        "snapshot_date": "2025-12-14T00:00:00.000",
+        "n_total": 5726,
+        "completeness_ratio": 1.0,
+        "scrape_incomplete": false,
+        "share_new_listings": 0.092
+      },
+      {
+        "city": "vancouver",
+        "snapshot_date": "2026-03-21T00:00:00.000",
+        "n_total": 5725,
+        "completeness_ratio": 0.88,
+        "scrape_incomplete": false,
+        "share_new_listings": 0.101
+      },
+      {
+        "city": "vancouver",
+        "snapshot_date": "2026-06-15T00:00:00.000",
+        "n_total": 6509,
+        "completeness_ratio": 1.0,
+        "scrape_incomplete": false,
+        "share_new_listings": 0.19
+      },
+      {
+        "city": "victoria",
+        "snapshot_date": "2022-06-24T00:00:00.000",
+        "n_total": 3713,
+        "completeness_ratio": 0.925,
+        "scrape_incomplete": false,
+        "share_new_listings": null
+      },
+      {
+        "city": "victoria",
+        "snapshot_date": "2022-09-22T00:00:00.000",
+        "n_total": 4015,
+        "completeness_ratio": 0.965,
+        "scrape_incomplete": false,
+        "share_new_listings": 0.154
+      },
+      {
+        "city": "victoria",
+        "snapshot_date": "2022-12-29T00:00:00.000",
+        "n_total": 4162,
+        "completeness_ratio": 0.886,
+        "scrape_incomplete": false,
+        "share_new_listings": 0.113
+      },
+      {
+        "city": "victoria",
+        "snapshot_date": "2023-06-29T00:00:00.000",
+        "n_total": 4700,
+        "completeness_ratio": 0.977,
+        "scrape_incomplete": false,
+        "share_new_listings": 0.216
+      },
+      {
+        "city": "victoria",
+        "snapshot_date": "2023-08-27T00:00:00.000",
+        "n_total": 4810,
+        "completeness_ratio": 1.023,
+        "scrape_incomplete": false,
+        "share_new_listings": 0.073
+      },
+      {
+        "city": "victoria",
+        "snapshot_date": "2023-12-27T00:00:00.000",
+        "n_total": 4659,
+        "completeness_ratio": 0.969,
+        "scrape_incomplete": false,
+        "share_new_listings": 0.114
+      },
+      {
+        "city": "victoria",
+        "snapshot_date": "2024-03-30T00:00:00.000",
+        "n_total": 4365,
+        "completeness_ratio": 0.937,
+        "scrape_incomplete": false,
+        "share_new_listings": 0.06
+      },
+      {
+        "city": "victoria",
+        "snapshot_date": "2024-06-29T00:00:00.000",
+        "n_total": 4040,
+        "completeness_ratio": 0.926,
+        "scrape_incomplete": false,
+        "share_new_listings": 0.088
+      },
+      {
+        "city": "victoria",
+        "snapshot_date": "2024-09-27T00:00:00.000",
+        "n_total": 4075,
+        "completeness_ratio": 1.009,
+        "scrape_incomplete": false,
+        "share_new_listings": 0.081
+      },
+      {
+        "city": "victoria",
+        "snapshot_date": "2024-12-29T00:00:00.000",
+        "n_total": 3951,
+        "completeness_ratio": 0.97,
+        "scrape_incomplete": false,
+        "share_new_listings": 0.057
+      },
+      {
+        "city": "victoria",
+        "snapshot_date": "2025-03-23T00:00:00.000",
+        "n_total": 3712,
+        "completeness_ratio": 0.94,
+        "scrape_incomplete": false,
+        "share_new_listings": 0.044
+      },
+      {
+        "city": "victoria",
+        "snapshot_date": "2025-06-25T00:00:00.000",
+        "n_total": 3275,
+        "completeness_ratio": 0.882,
+        "scrape_incomplete": false,
+        "share_new_listings": 0.064
+      },
+      {
+        "city": "victoria",
+        "snapshot_date": "2025-09-29T00:00:00.000",
+        "n_total": 3396,
+        "completeness_ratio": 1.037,
+        "scrape_incomplete": false,
+        "share_new_listings": 0.053
+      },
+      {
+        "city": "victoria",
+        "snapshot_date": "2025-12-29T00:00:00.000",
+        "n_total": 2874,
+        "completeness_ratio": 0.846,
+        "scrape_incomplete": false,
+        "share_new_listings": 0.051
+      },
+      {
+        "city": "victoria",
+        "snapshot_date": "2026-03-30T00:00:00.000",
+        "n_total": 1987,
+        "completeness_ratio": 0.563,
+        "scrape_incomplete": true,
+        "share_new_listings": 0.057
+      },
+      {
+        "city": "victoria",
+        "snapshot_date": "2026-06-29T00:00:00.000",
+        "n_total": 3530,
+        "completeness_ratio": 1.0,
+        "scrape_incomplete": false,
+        "share_new_listings": 0.067
+      }
+    ],
+    "cpi_rent_change": [
+      {
+        "city": "ottawa",
+        "pct_sep2023_jun2026": 20.5572289157,
+        "pct_jun2023_jun2026": 15.4289834174
+      },
+      {
+        "city": "vancouver",
+        "pct_sep2023_jun2026": 11.5183246073,
+        "pct_jun2023_jun2026": 14.3624161074
+      },
+      {
+        "city": "victoria",
+        "pct_sep2023_jun2026": 19.4805194805,
+        "pct_jun2023_jun2026": 19.2360163711
+      }
+    ]
   },
   "diagnostics": {
     "pretrend_slope_live": {
-      "estimate_per_year": -0.007470696750438569,
-      "se": 0.06670416825728605,
-      "p": 0.9113127287334744,
+      "estimate_per_year": -0.020595008100145272,
+      "se": 0.0659489398723495,
+      "p": 0.7561749226142962,
       "n_periods": 7
     },
     "cross_market_controls_live": [
       "ottawa"
     ],
     "pretrend_slope_synthetic": {
-      "estimate_per_year": 0.005935237601235112,
-      "se": 0.018553925102956906,
-      "p": 0.7505313442701831,
+      "estimate_per_year": 0.010332479605962938,
+      "se": 0.02321728731495155,
+      "p": 0.6582957719569471,
       "n_periods": 21
     },
     "cross_market_controls_synthetic": [
