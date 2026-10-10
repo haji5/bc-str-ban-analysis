@@ -1,5 +1,7 @@
 # Did BC's short-term rental ban work? Evidence from Bill 35, 2022-2026
 
+**[Open the live dashboard →](https://bc-str-ban-analysis.streamlit.app/)**
+
 An end-to-end causal evaluation of British Columbia's *Short-Term Rental Accommodations Act* (Bill 35). The Act restricted short-term rentals to the host's principal residence from May 2024 and added a provincial registry with platform de-listing from May 2025. The project:
 
 - assembles 52 Inside Airbnb snapshots, 36 of them recovered from unlisted archives;
@@ -118,7 +120,7 @@ Without GNU make (e.g. on Windows), `python run.py all` runs the same steps, and
 
 A full run downloads about 135 MB (Inside Airbnb listings files only, plus StatCan and Bank of Canada). Once downloads finish, the build and estimation take under a minute.
 
-**Dashboard.** The Streamlit app (`app/app.py`) offers:
+**Dashboard** ([live](https://bc-str-ban-analysis.streamlit.app/)). The Streamlit app (`app/app.py`) offers:
 
 - city and room-type filters;
 - an adjustable event-study window;
