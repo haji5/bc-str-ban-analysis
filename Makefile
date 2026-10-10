@@ -12,7 +12,7 @@ endif
 PY := $(if $(wildcard $(VENV_PY)),$(VENV_PY),$(PYTHON))
 export STR_OFFLINE := $(if $(OFFLINE),1,)
 
-.PHONY: install data sql model plots test app app-data all clean
+.PHONY: install data sql model plots test app app-data site all clean
 
 install:
 	$(PYTHON) -m venv .venv
@@ -41,6 +41,10 @@ app:
 # Refresh the small committed database the dashboard reads (run after `make all`).
 app-data:
 	$(PY) -m src.database --export-app
+
+# Re-export the static dashboard's data (docs/, served by GitHub Pages) from data/app/.
+site:
+	$(PY) scripts/export_dashboard.py
 
 all: data sql model test
 
