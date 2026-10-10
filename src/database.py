@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 import logging
+import shutil
 from pathlib import Path
 
 import duckdb
@@ -26,8 +27,11 @@ LISTING_COLS = [
 ]
 
 
-def connect(path: Path = C.DB_PATH, read_only: bool = False) -> duckdb.DuckDBPyConnection:
-    path.parent.mkdir(parents=True, exist_ok=True)
+def connect(path: Path | None = None, read_only: bool = False) -> duckdb.DuckDBPyConnection:
+    # Resolved at call time so the dashboard can point C.DB_PATH at the committed bundle.
+    path = path or C.DB_PATH
+    if not read_only:
+        path.parent.mkdir(parents=True, exist_ok=True)
     return duckdb.connect(str(path), read_only=read_only)
 
 
@@ -126,7 +130,7 @@ def build(path: Path = C.DB_PATH) -> dict:
         con.close()
 
 
-def query(sql: str, path: Path = C.DB_PATH) -> pd.DataFrame:
+def query(sql: str, path: Path | None = None) -> pd.DataFrame:
     con = connect(path, read_only=True)
     try:
         return con.execute(sql).df()
@@ -134,9 +138,47 @@ def query(sql: str, path: Path = C.DB_PATH) -> pd.DataFrame:
         con.close()
 
 
+def export_app_bundle(src: Path | None = None, dest: Path = C.APP_DB_PATH,
+                      results: Path = C.RESULTS_PATH) -> dict[str, int]:
+    """Copy the tables the dashboard reads into a small, committable database.
+
+    Written in the DuckDB v1.0 storage format so any duckdb >= 1.0 (whatever the
+    deployment host resolves) can open it. Rows are sorted so an unchanged rebuild
+    produces the same content.
+    """
+    src = src or C.DB_PATH
+    if not (src.exists() and results.exists()):
+        raise FileNotFoundError("full database or model results missing - run `make all` first")
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    tmp = dest.with_suffix(".tmp")
+    tmp.unlink(missing_ok=True)
+    con = duckdb.connect()
+    try:
+        con.execute(f"ATTACH '{src.as_posix()}' AS full_db (READ_ONLY)")
+        con.execute(f"ATTACH '{tmp.as_posix()}' AS app_db (STORAGE_VERSION 'v1.0.0')")
+        counts = {}
+        for t in C.APP_TABLES:
+            con.execute(f"CREATE TABLE app_db.{t} AS SELECT * FROM full_db.{t} ORDER BY ALL")
+            counts[t] = con.execute(f"SELECT count(*) FROM app_db.{t}").fetchone()[0]
+        con.execute("DETACH app_db")
+    finally:
+        con.close()
+    tmp.replace(dest)
+    shutil.copyfile(results, C.APP_RESULTS_PATH)
+    return counts
+
+
 def main() -> None:
-    argparse.ArgumentParser(description="Build the DuckDB analysis database").parse_args()
+    p = argparse.ArgumentParser(description="Build the DuckDB analysis database")
+    p.add_argument("--export-app", action="store_true",
+                   help="instead of building, export the dashboard bundle to data/app/")
+    a = p.parse_args()
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(name)s %(levelname)s %(message)s")
+    if a.export_app:
+        for k, v in export_app_bundle().items():
+            print(f"{k:28s} {v:>12,}")
+        print(f"bundle: {C.APP_DB_PATH.relative_to(C.ROOT)} ({C.APP_DB_PATH.stat().st_size / 1e6:.1f} MB)")
+        return
     out = build()
     for k, v in out["row_counts"].items():
         print(f"{k:28s} {v:>12,}")
