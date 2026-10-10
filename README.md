@@ -1,6 +1,6 @@
 # Did BC's short-term rental ban work? Evidence from Bill 35, 2022-2026
 
-**[Open the interactive dashboard →](https://claude.ai/artifact/HmgSk2mnrQ6M5NeJxBEbAC)**
+**[Open the interactive dashboard →](https://haji5.github.io/bc-str-ban-analysis/)**
 
 An end-to-end causal evaluation of British Columbia's *Short-Term Rental Accommodations Act* (Bill 35). The Act restricted short-term rentals to the host's principal residence from May 2024 and added a provincial registry with platform de-listing from May 2025. The project:
 
@@ -104,7 +104,7 @@ The usual design for this question is a within-market difference-in-differences:
 
 This checks the estimators, not the identification. The simulated data have parallel trends and use the same exempt list as the analysis, so they cannot catch a misclassified control group. That error was found by checking the list against the regulation (see Corrections).
 
-**Tests.** `tests/test_pipeline.py` (31 tests) covers:
+**Tests.** `tests/test_pipeline.py` (32 tests) covers:
 
 - an SQL unit test on hand-written edge cases (including a provincial "Exempt" claim);
 - no NULL or duplicate primary keys;
@@ -115,7 +115,7 @@ This checks the estimators, not the identification. The simulated data have para
 - parameter recovery within 3 SE;
 - event-study window shape and pre-trends;
 - design guards: the exempt schedule matches the regulation, opted-in areas leave the control group, live pre-trend tests use every pre-announcement snapshot, and randomization inference is reported;
-- the committed dashboard bundle (opens read-only with every table the app queries).
+- the committed dashboard bundle (opens read-only with every table the app queries), and the static dashboard's data in `docs/` (identical to a fresh export from that bundle).
 
 ## Reproduce
 
@@ -125,13 +125,14 @@ make all            # data -> sql -> model (+figures) -> test; real data with au
 make all OFFLINE=1  # no network: committed fixtures + synthetic panel only
 make app            # Streamlit app (local, live re-estimation)
 make app-data       # refresh the dashboard's committed data bundle (data/app/)
+make site           # re-export the static dashboard's data (docs/) from that bundle
 ```
 
-Without GNU make (e.g. on Windows), `python run.py all` runs the same steps, and `python run.py all --offline` is the offline version. Individual targets are `data`, `sql`, `model`, `plots`, `test` and `app`.
+Without GNU make (e.g. on Windows), `python run.py all` runs the same steps, and `python run.py all --offline` is the offline version. Individual targets are `data`, `sql`, `model`, `plots`, `test`, `app`, `app-data` and `site`.
 
 A full run downloads about 135 MB (Inside Airbnb listings files only, plus StatCan and Bank of Canada). Once downloads finish, the build takes seconds and estimation about a minute and a half (the randomization inference and 9,999-draw wild bootstraps dominate). Results are identical across rebuilds up to floating-point tolerance.
 
-**Dashboard** ([open](https://claude.ai/artifact/HmgSk2mnrQ6M5NeJxBEbAC)). An interactive D3 dashboard in six sections:
+**Dashboard** ([open](https://haji5.github.io/bc-str-ban-analysis/)). An interactive D3 dashboard in six sections:
 
 - **Verdict:** headline effects, Victoria covered-vs-exempt trajectories, the three designs side by side, and CPI rents;
 - **Supply:** listing trajectories for all four markets (indexed or counts), multi-listing-host exit and registry uptake;
@@ -140,7 +141,7 @@ A full run downloads about 135 MB (Inside Airbnb listings files only, plus StatC
 - **Rents:** CPI rent paths, the mechanical bound on rent effects set against CPI noise, and the rent models;
 - **Data & method:** snapshot coverage, identification strategies, pipeline and threats.
 
-Every figure on it is traceable: clicking a number shows the dataset or formula behind it. Its data are exported from the committed bundle in `data/app/` and `data/processed/regression_table.csv`.
+Every figure on it is traceable: clicking a number shows the dataset or formula behind it. It is a static site in `docs/`, served by GitHub Pages. `make site` (`scripts/export_dashboard.py`) exports its data from the committed bundle in `data/app/`, and a test fails if the two drift apart. To preview it locally, run `python -m http.server -d docs` and open http://localhost:8000.
 
 **Streamlit app** (`app/app.py`, run locally with `make app`). The analyst's workbench:
 
@@ -186,6 +187,8 @@ src/models.py            S1-S5 specifications
 src/plots.py             figures in assets/
 queries/01-03_*.sql      SQL transformation layer
 app/app.py               Streamlit app (local, live re-estimation)
+docs/                    static D3 dashboard (GitHub Pages); data/ is generated
+scripts/                 export_dashboard.py: dashboard data from data/app/ (make site)
 tests/test_pipeline.py   pytest suite
 data/fixtures/           offline fixtures (provenance in data/fixtures/README.md)
 data/app/                committed dashboard data (panel tables + model results)
