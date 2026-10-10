@@ -80,9 +80,19 @@ SELECT
       AND (COALESCE(d.last_review >= d.snapshot_date - getvariable('active_window_days') * INTERVAL 1 DAY, false)
            OR COALESCE(d.availability_365, 0) > 0)                       AS is_active,
     COALESCE(d.host_listings_count > 1, false)                           AS is_commercial_host,
-    (d.license IS NOT NULL AND d.license NOT ILIKE '%exempt%')           AS has_licence,
-    COALESCE(d.license ILIKE '%provincial%', false)                      AS has_provincial_registration,
-    (e.city IS NOT NULL)                                                  AS pr_exempt
+    -- A licence/registration *number* is shown (a 3+ digit token). From 2025 the field
+    -- combines municipal and provincial entries, so one 'Exempt' must not void the other.
+    COALESCE(regexp_matches(d.license, '[0-9]{3,}'), false)              AS has_licence,
+    -- Provincial registry number (H/PM/ST + digits). 'Provincial registration number:
+    -- Exempt' is a self-declared exemption, not a registration.
+    COALESCE(regexp_matches(d.license, 'provincial registration number:\s*[a-z]{0,3}[0-9]{3,}', 'i'), false)
+                                                                          AS has_provincial_registration,
+    COALESCE(regexp_matches(d.license, 'provincial registration number:\s*exempt', 'i'), false)
+                                                                          AS claims_provincial_exemption,
+    -- Exempt from the principal-residence requirement when Phase 1 began (fixed
+    -- geography). pr_exempt_until is the month an opt-in ended the exemption.
+    (e.city IS NOT NULL)                                                  AS pr_exempt,
+    e.exempt_until                                                        AS pr_exempt_until
 FROM dedup d
 LEFT JOIN ref_pr_exempt e
        ON e.city = d.city AND e.neighbourhood = d.neighbourhood

@@ -81,9 +81,13 @@ def register_sources(con: duckdb.DuckDBPyConnection) -> dict[str, int]:
         SELECT * FROM raw_listings_live UNION ALL BY NAME SELECT * FROM raw_listings_synthetic
     """)
 
-    exempt = pd.DataFrame(sorted(C.PR_EXEMPT_NEIGHBOURHOODS), columns=["city", "neighbourhood"])
+    exempt = pd.DataFrame(
+        [(c, n, None if until is None else until.isoformat())
+         for (c, n), until in sorted(C.PR_EXEMPT_NEIGHBOURHOODS.items())],
+        columns=["city", "neighbourhood", "exempt_until"])
     con.register("exempt_df", exempt)
-    con.execute("CREATE OR REPLACE TABLE ref_pr_exempt AS SELECT * FROM exempt_df")
+    con.execute("""CREATE OR REPLACE TABLE ref_pr_exempt AS
+                   SELECT city, neighbourhood, CAST(exempt_until AS DATE) AS exempt_until FROM exempt_df""")
     markets = pd.DataFrame([{"city": k, "province": m.province, "treated_market": m.treated}
                             for k, m in C.MARKETS.items()])
     con.register("markets_df", markets)

@@ -1,9 +1,10 @@
 city,snapshot_date,id,last_scraped,host_id,neighbourhood_cleansed,room_type,price,availability_365,number_of_reviews,number_of_reviews_ltm,first_review,last_review,license,calculated_host_listings_count,latitude,longitude,expect_note
-victoria,2024-03-30,101,2024-03-30,9001,Downtown,Entire home/apt,"$1,234.00",120,40,12,2021-05-01,2024-03-01,Provincial registration number: H1,5,48.42,-123.36,active commercial; comma price
+victoria,2024-03-30,101,2024-03-30,9001,Downtown,Entire home/apt,"$1,234.00",120,40,12,2021-05-01,2024-03-01,Municipal registration number: 24-156789<br />Provincial registration number: H123456789,5,48.42,-123.36,active commercial; comma price; municipal + provincial numbers
 victoria,2024-03-30,101,2024-03-29,9001,Downtown,Entire home/apt,$999.00,120,40,12,2021-05-01,2024-03-01,,5,48.42,-123.36,duplicate older scrape -> dropped
 victoria,2024-03-30,102,2024-03-30,9002,Downtown,Private room,$85.00,0,10,0,2020-01-01,2022-01-01,,1,48.42,-123.36,dormant: old review and no availability
 victoria,2024-03-30,103,2024-03-30,9003,Juan de Fuca,Entire home/apt,,200,0,0,,,,1,48.40,-123.70,exempt area; missing price; bookable never reviewed -> active
 victoria,2024-03-30,104,2024-03-30,9004,Downtown,Hotel room,$300.00,300,5,5,2023-01-01,2024-02-01,,1,48.42,-123.36,other room type
 victoria,2024-03-30,105,2024-03-30,9005,Downtown,Entire home/apt,$5.00,100,2,2,2023-01-01,2024-01-15,exempt,1,48.42,-123.36,price below floor -> NULL; licence 'exempt' not counted
+victoria,2024-03-30,106,2024-03-30,9007,Downtown,Entire home/apt,$150.00,90,3,3,2023-02-01,2024-02-15,Municipal registration number: 24-156789<br />Provincial registration number: Exempt,1,48.42,-123.36,provincial Exempt is a claim not a registration; municipal number still counts
 victoria,2024-03-30,,2024-03-30,9006,Downtown,Entire home/apt,$100.00,100,2,2,2023-01-01,2024-01-15,,1,48.42,-123.36,missing id -> dropped
 vancouver,2024-03-20,201,2024-03-20,9101,Kitsilano,Private room,$95.00,0,30,8,2019-01-01,2024-02-10,Municipal registration number: 24-1,1,49.27,-123.16,reviewed recently but calendar blocked -> active

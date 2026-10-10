@@ -1,13 +1,13 @@
 city,survey_year,vacancy_rate,avg_rent_2br,source_quality,note
-vancouver,2022,0.9,,recalled_verify,CMHC RMR Oct-2022 CMA purpose-built vacancy (verify)
-vancouver,2023,0.9,2193,derived,"2br rent back-cast from 2024 level and +5.5% same-sample growth"
-vancouver,2024,1.6,2314,cmhc_rmr_2024,CMHC Fall 2024 Rental Market Report
-vancouver,2025,3.7,2363,cmhc_rmr_2025,CMHC 2025 Rental Market Report (highest since 1988)
-victoria,2022,1.5,,recalled_verify,CMHC RMR Oct-2022 (verify)
-victoria,2023,1.6,1924,derived,"2br rent back-cast from 2024 level and +3.6% same-sample growth"
-victoria,2024,2.6,1993,cmhc_rmr_2024,CMHC Fall 2024 (highest vacancy since 2013)
-victoria,2025,3.2,,secondary_verify,Secondary source estimate; verify against CMHC Victoria table
-ottawa,2022,2.1,,recalled_verify,CMHC RMR Oct-2022 (verify)
-ottawa,2023,2.1,1698,secondary,2br rent per CTV citing CMHC 2023; vacancy recalled (verify)
-ottawa,2024,2.9,,secondary,CMHC Fall 2024 table as cited by secondary source
-ottawa,2025,3.0,,secondary_verify,Secondary source (sources disagree 2.7-3.0); verify
+vancouver,2022,0.9,,cmhc_cited,"CMHC 2022 RMR, Vancouver CMA, as reported by CTV News (Jan 2023)"
+vancouver,2023,0.9,2193,unverified,"Vacancy not yet checked against the CMHC 2023 RMR table; 2br rent back-cast from 2024 level and +5.5% same-sample growth"
+vancouver,2024,1.6,2314,cmhc_rmr_2024,"CMHC Fall 2024 RMR; 1.6% confirmed by BC Government statement, 17 Dec 2025"
+vancouver,2025,3.7,2363,cmhc_rmr_2025,"CMHC 2025 RMR (released 11 Dec 2025); 3.7% confirmed by BC Government statement, 17 Dec 2025"
+victoria,2022,1.5,,unverified,"Not found in CMHC 2022 RMR summary; verify against the Victoria CMA table"
+victoria,2023,1.6,1924,unverified,"Vacancy not yet checked; 2br rent back-cast from 2024 level and +3.6% same-sample growth"
+victoria,2024,2.6,1993,cmhc_rmr_2024,"CMHC Fall 2024 RMR (highest vacancy since 2013)"
+victoria,2025,3.3,,cmhc_rmr_2025,"CMHC 2025 RMR; 3.3% (highest since 1999) per BC Government statement, 17 Dec 2025"
+ottawa,2022,2.1,,unverified,"Not verified; verify against the CMHC 2022 RMR Ottawa table"
+ottawa,2023,2.1,1698,cmhc_cited,"Vacancy per Ottawa Business Journal citing CMHC (17 Dec 2024); 2br rent per CTV citing CMHC 2023"
+ottawa,2024,2.6,,cmhc_cited,"Purpose-built vacancy per Ottawa Business Journal citing CMHC Fall 2024 RMR (17 Dec 2024); earlier fixture's 2.9 was the 2023 downtown rate"
+ottawa,2025,3.0,,unverified,"Secondary sources disagree (2.7-3.0); verify against CMHC 2025 RMR"
