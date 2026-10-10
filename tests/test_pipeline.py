@@ -7,6 +7,7 @@ from __future__ import annotations
 import hashlib
 import json
 import math
+from datetime import date
 
 import duckdb
 import numpy as np
@@ -57,13 +58,16 @@ def test_clean_listings_sql_edge_cases():
     raw = sample.drop(columns="expect_note").assign(data_source="test")
     con.register("raw_df", raw)
     con.execute("CREATE TABLE raw_listings AS SELECT * FROM raw_df")
-    con.execute("CREATE TABLE ref_pr_exempt AS SELECT 'victoria' AS city, 'Juan de Fuca' AS neighbourhood")
+    con.execute("CREATE TABLE ref_pr_exempt AS "
+                "SELECT 'victoria' AS city, 'Juan de Fuca' AS neighbourhood, NULL::DATE AS exempt_until")
     con.execute((cfg.QUERIES / "01_clean_listings.sql").read_text())
     out = con.execute("SELECT * FROM listings_clean ORDER BY listing_id").df().set_index("listing_id")
 
-    assert len(out) == 6, "missing-id row and the duplicate scrape must be dropped"
+    assert len(out) == 7, "missing-id row and the duplicate scrape must be dropped"
     assert out.loc["101", "price"] == 1234.0, "comma-formatted price, latest scrape wins"
     assert bool(out.loc["101", "is_commercial_host"]) and bool(out.loc["101", "has_provincial_registration"])
+    assert not out.loc["106", "has_provincial_registration"], "'Provincial registration number: Exempt' is not a number"
+    assert bool(out.loc["106", "claims_provincial_exemption"]) and bool(out.loc["106", "has_licence"])
     assert not out.loc["102", "is_active"], "dormant listing"
     assert bool(out.loc["103", "is_active"]) and bool(out.loc["103", "pr_exempt"]) and pd.isna(out.loc["103", "price"])
     assert out.loc["104", "room_type"] == "other"
@@ -163,7 +167,7 @@ def test_models_yield_non_null_coefficients(results):
         for c in r["coefs"]:
             assert c["estimate"] is not None and math.isfinite(c["estimate"]), (r["label"], c["term"])
             assert c["se"] is not None and c["se"] > 0, (r["label"], c["term"])
-        if r["spec"] != "S1-ppml":
+        if not r["spec"].endswith("-ppml"):
             assert r["r2"] is not None and 0 <= r["r2"] <= 1
 
 
@@ -175,7 +179,7 @@ def test_primary_did_present_for_each_source(results):
 
 
 @pytest.mark.parametrize("spec,terms", [("S1", ["ent_p1", "ent_p2"]), ("S2a", ["ent_p1", "ent_p2"]),
-                                        ("S1-ppml", ["ent_p1"])])
+                                        ("S2a-never", ["ent_p1", "ent_p2"]), ("S1-ppml", ["ent_p1"])])
 def test_synthetic_parameter_recovery(results, spec, terms):
     """Estimates on the synthetic panel must cover the known DGP estimand."""
     r = _result(results, spec, "synthetic")
@@ -192,14 +196,17 @@ def test_cross_market_recovery(results):
     assert abs(c["estimate"] - c["truth"]) < 3 * c["se"]
 
 
-def test_event_study_window_and_pretrends(results):
-    r = _result(results, "S3", "synthetic")
+@pytest.mark.parametrize("spec", ["S3", "S2-ES"])
+def test_event_study_window_and_pretrends(results, spec):
+    r = _result(results, spec, "synthetic")
     ks = sorted(c["event_time"] for c in r["coefs"])
     assert ks[0] == cfg.EVENT_MIN and ks[-1] == cfg.EVENT_MAX
     assert cfg.EVENT_REF not in ks, "reference period must be omitted"
     assert len(ks) == cfg.EVENT_MAX - cfg.EVENT_MIN, "one coefficient per non-reference month"
-    pt = r["extra"]["pretrend_test"]
-    assert pt["p"] is not None and pt["p"] > 0.01, "parallel pre-trends hold by construction in the DGP"
+    # With 3 control clusters (S2-ES) the CRV1 Wald test over-rejects (p ~ 0.01 here under true
+    # parallel trends), so the placebo-in-space test is the check for that design.
+    p = r["extra"]["randomization_inference"]["joint_p"] if spec == "S2-ES" else r["extra"]["pretrend_test"]["p"]
+    assert p is not None and p > 0.01, "parallel pre-trends hold by construction in the DGP"
     post = [c for c in r["coefs"] if c["event_time"] >= 3]
     assert np.mean([c["estimate"] for c in post]) < 0, "post-period delisting must be negative"
 
@@ -221,3 +228,41 @@ def test_committed_app_bundle_is_complete():
 def test_rent_models_run(results):
     rf = results["rent"]["rent_reduced_form"]
     assert rf["nobs"] > 100 and all(math.isfinite(c["estimate"]) for c in rf["coefs"])
+
+
+# =========================================================================== design guards
+def test_pr_exempt_schedule_matches_policy():
+    """Metchosin and Highlands are < 10,000 people but within 15 km of Langford/Saanich, so
+    the principal-residence requirement covers them; Salt Spring Island opted in for Nov 2025."""
+    ex = cfg.PR_EXEMPT_NEIGHBOURHOODS
+    assert ("victoria", "Metchosin") not in ex and ("victoria", "Highlands") not in ex
+    assert ex[("victoria", "Juan de Fuca")] is None and ex[("victoria", "Southern Gulf Islands")] is None
+    assert ex[("victoria", "Salt Spring Island")] == date(2025, 11, 1)
+
+
+def test_opted_in_area_leaves_exempt_control(built):
+    df = built.execute("""
+        SELECT year_month >= DATE '2025-11-01' AS after, bool_or(pr_exempt_now) AS any_exempt
+        FROM str_nbhd_panel WHERE neighbourhood = 'Salt Spring Island' GROUP BY ALL""").df().set_index("after")
+    assert bool(df.loc[False, "any_exempt"]) and not bool(df.loc[True, "any_exempt"])
+
+
+def _live(results, spec):
+    r = _result(results, spec, "live")
+    if r is None:
+        pytest.skip("no live Inside Airbnb snapshots in this build")
+    return r
+
+
+@pytest.mark.parametrize("spec", ["S3", "S2-ES"])
+def test_live_pretrend_test_uses_every_pre_snapshot(results, spec):
+    """Live leads must not be pooled into one endpoint bin: one lead per pre-announcement snapshot."""
+    assert _live(results, spec)["extra"]["pretrend_test"]["df"] >= 3
+
+
+def test_live_exempt_design_reports_randomization_inference(results):
+    ri = _live(results, "S2a")["extra"]["randomization_inference"]
+    assert ri["exhaustive"] and ri["n_controls"] == 3
+    assert set(ri["p"]) == {"ent_antic", "ent_p1", "ent_p2"}
+    es = _live(results, "S2-ES")["extra"]["randomization_inference"]
+    assert es["joint_p"] is not None and len(es["joint_terms"]) >= 3
