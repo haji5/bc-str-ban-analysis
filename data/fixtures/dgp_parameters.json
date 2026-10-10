@@ -1,0 +1,22 @@
+{
+  "note": "Ground-truth parameters for the synthetic listing panel. Effects are log-point shifts in expected active listings relative to the no-policy counterfactual. Magnitudes are calibrated to the real Inside Airbnb anchors (calibration_anchors.json): Victoria non-exempt entire homes fell ~0.44 log points Aug-2023 -> Jun-2026 and private rooms ~0.28; Victoria exempt areas and Vancouver were roughly flat. The synthetic panel is a pipeline-validation and offline-reproducibility device: its estimates recover these numbers by construction and are NOT empirical findings.",
+  "anticipation_share": 0.3,
+  "effects": {
+    "vancouver": {"entire_home": {"phase1": -0.06, "phase2": -0.04}, "private_room": {"phase1": -0.02, "phase2": -0.03}},
+    "victoria":  {"entire_home": {"phase1": -0.26, "phase2": -0.18}, "private_room": {"phase1": -0.12, "phase2": -0.15}},
+    "victoria_exempt": {"entire_home": {"phase1": 0.0, "phase2": -0.03}, "private_room": {"phase1": 0.0, "phase2": -0.03}},
+    "ottawa":    {"entire_home": {"phase1": 0.0, "phase2": 0.0}, "private_room": {"phase1": 0.0, "phase2": 0.0}},
+    "seattle":   {"entire_home": {"phase1": 0.0, "phase2": 0.0}, "private_room": {"phase1": 0.0, "phase2": 0.0}}
+  },
+  "ottawa_2022_bylaw_entire_home": -0.15,
+  "annual_growth_until_2023_07": {"vancouver": 0.18, "victoria": 0.20, "ottawa": 0.06, "seattle": 0.08},
+  "annual_growth_after": {"vancouver": 0.0, "victoria": 0.0, "ottawa": 0.0, "seattle": 0.03},
+  "seasonal_amplitude": {"entire_home": 0.10, "private_room": 0.07, "other": 0.05},
+  "cell_noise_sd": 0.04,
+  "cell_noise_rho": 0.6,
+  "scrape_coverage_sd": 0.03,
+  "monthly_churn": 0.04,
+  "commercial_exit_weight": 3.0,
+  "bc_entire_price_effect_phase1": 0.05,
+  "bc_entire_availability_shift_days": -25
+}

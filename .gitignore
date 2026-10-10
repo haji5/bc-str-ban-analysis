@@ -1,0 +1,9 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+# Raw downloads are re-fetchable; aggregates needed offline live in data/fixtures/.
+data/raw/
+data/processed/
+data/*.duckdb
+data/*.duckdb.wal
