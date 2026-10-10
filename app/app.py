@@ -1,11 +1,21 @@
 """Streamlit dashboard: BC Bill 35 short-term-rental evaluation.
 
     streamlit run app/app.py     (or `make app`)
+
+On first start the app builds anything that is missing (ingest -> DuckDB -> models),
+so it deploys to Streamlit Community Cloud as-is: the database and results are
+gitignored, and a cold container starts without them. Set ``STR_OFFLINE = "1"``
+(environment variable or app secret) to build from the committed fixtures only,
+skipping the ~135 MB of downloads.
 """
 from __future__ import annotations
 
 import json
+import os
+import subprocess
 import sys
+import threading
+import time
 from pathlib import Path
 
 import pandas as pd
@@ -25,9 +35,66 @@ POLICY = [(cfg.ANNOUNCE_MONTH, "Announced"), (cfg.PHASE1_MONTH, "Enforced"), (cf
 
 st.set_page_config(page_title="BC Bill 35 - STR evaluation", layout="wide")
 
-if not cfg.DB_PATH.exists():
-    st.error("Database not built yet. Run `make all` (or `python run.py all`) first.")
-    st.stop()
+# --------------------------------------------------------------------------- first-start build
+BUILD_STEPS = [
+    ("Fetching Inside Airbnb, StatCan and Bank of Canada data (fixture fallback on any failure)", "src.ingest"),
+    ("Building the DuckDB database from queries/*.sql", "src.database"),
+    ("Estimating the models", "src.models"),
+]
+
+
+def _setting(name: str, default: str = "") -> str:
+    """Environment variable first, then Streamlit secrets (absent locally -> default)."""
+    if name in os.environ:
+        return os.environ[name]
+    try:
+        return str(st.secrets.get(name, default))
+    except Exception:  # noqa: BLE001 - no secrets.toml
+        return default
+
+
+def _artifacts_ready() -> bool:
+    # The results file is written last, so its presence implies a complete build.
+    return cfg.DB_PATH.exists() and cfg.RESULTS_PATH.exists()
+
+
+@st.cache_resource
+def _build_lock() -> threading.Lock:
+    return threading.Lock()  # one per server process, shared by every session
+
+
+def ensure_built() -> None:
+    if _artifacts_ready():
+        return
+    lock = _build_lock()
+    if not lock.acquire(blocking=False):
+        with st.spinner("The database is being built by another session. Waiting for it to finish..."):
+            lock.acquire()
+    try:
+        if _artifacts_ready():
+            return
+        cfg.RESULTS_PATH.unlink(missing_ok=True)  # an interrupted build must not look complete
+        offline = _setting("STR_OFFLINE") == "1"
+        env = {**os.environ, "STR_OFFLINE": "1" if offline else ""}
+        t0 = time.time()
+        with st.status("First start: building the analysis database (about 1-3 minutes)...",
+                       expanded=True) as status:
+            for label, module in BUILD_STEPS:
+                status.write(label + (" [offline]" if offline and module == "src.ingest" else ""))
+                # Each stage runs in its own process so its memory is returned to the OS
+                # afterwards; small cloud containers cannot hold all stages at once.
+                proc = subprocess.run([sys.executable, "-m", module], cwd=cfg.ROOT, env=env,
+                                      capture_output=True, text=True)
+                if proc.returncode != 0:
+                    status.update(label=f"Build failed at `{module}`", state="error", expanded=True)
+                    st.code((proc.stderr or proc.stdout)[-4000:], language="text")
+                    st.stop()
+            status.update(label=f"Database built in {time.time() - t0:.0f}s", state="complete", expanded=False)
+    finally:
+        lock.release()
+
+
+ensure_built()
 
 
 @st.cache_data(show_spinner=False)

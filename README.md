@@ -46,6 +46,8 @@ make app            # Streamlit dashboard
 
 Without GNU make (e.g. stock Windows), `python run.py all` runs the same steps, and `python run.py all --offline` is the offline equivalent. Individual targets are `data`, `sql`, `model`, `plots`, `test` and `app`.
 
+**Streamlit Community Cloud.** Point a new app at `app/app.py`; no build step is needed. On a cold start the app finds no database (it is gitignored), so it runs ingest → SQL → models in subprocesses: about 25 s locally when the raw files are already downloaded, longer when it has to fetch all 135 MB (not timed on Cloud). Peak memory is about 800 MB. Later sessions reuse the result. To build from committed fixtures only (synthetic panel, no downloads), add `STR_OFFLINE = "1"` to the app's secrets.
+
 A full live run downloads about 135 MB from Inside Airbnb (listings files only, never calendars), StatCan and the Bank of Canada, then builds and estimates in under a minute.
 
 ## Design review: what the brief got right, and what changed

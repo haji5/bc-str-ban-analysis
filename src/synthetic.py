@@ -184,87 +184,113 @@ def generate(out_path: Path) -> int:
                 rows_id.append(pool.copy())
 
     # ------------------------------------------------------------------ row assembly
+    # Rows are formatted and written in chunks so peak memory stays well under 1 GB
+    # (materialising ~1M rows of strings at once peaked at ~2.8 GB, which is more than a
+    # Streamlit Community Cloud container gets). Every random array is drawn up front, in
+    # the original call order and at full length, so the output is identical to a
+    # single-pass build; booleans/small ints are narrowed right after drawing.
     A = pd.DataFrame(attr)
-    A.index = np.arange(10_000_000, 10_000_000 + len(A))
-    t_idx = np.concatenate(rows_snap).astype(int)
-    ids = np.concatenate(rows_id)
-    df = A.loc[ids].reset_index(names="id")
-    df["t"] = t_idx
-    snap = snap_dates[t_idx]
-    month_ts = ms[t_idx]
-    n = len(df)
-    bc = df["city"].isin(C.BC_MARKETS).to_numpy()
-    entire = (df["rt"] == "entire_home").to_numpy()
-    exempt = np.array([(c, nb) in C.PR_EXEMPT_NEIGHBOURHOODS for c, nb in zip(df["city"], df["nbhd"])])
-    post1 = (month_ts >= p1)
-    post2 = (month_ts >= p2)
+    pos = np.concatenate(rows_id) - 10_000_000            # row -> listing attribute index
+    t_idx = np.concatenate(rows_snap).astype(np.int16)
+    n = len(pos)
 
-    season = 0.5 * 0.10 * np.cos(2 * np.pi * (month_ts.month.values - 7) / 12)
-    price = df["base_price"].to_numpy() * np.exp(
-        season + params["bc_entire_price_effect_phase1"] * (bc & entire & ~exempt & post1) + rng.normal(0, 0.08, n))
-    price_str = np.char.add("$", np.array([f"{p:,.2f}" for p in price]))
-    price_str[rng.random(n) < 0.02] = ""
-
+    noise_price = rng.normal(0, 0.08, n)
+    price_null = rng.random(n) < 0.02
     dormant = rng.random(n) < 0.08
     reviewed = (~dormant) & (rng.random(n) < 0.85)
-    lag_days = np.where(dormant, rng.integers(200, 900, n),
-                        np.where(reviewed, rng.integers(0, 170, n), rng.integers(190, 700, n)))
-    last_review = (snap - pd.to_timedelta(lag_days, unit="D")).strftime("%Y-%m-%d").to_numpy().astype(object)
+    lag_dormant = rng.integers(200, 900, n).astype(np.int16)
+    lag_reviewed = rng.integers(0, 170, n).astype(np.int16)
+    lag_stale = rng.integers(190, 700, n).astype(np.int16)
     never = (~reviewed) & (~dormant) & (rng.random(n) < 0.4)
-    last_review[never] = ""
-    avail = df["base_avail"].to_numpy() + params["bc_entire_availability_shift_days"] * (bc & entire & ~exempt & post1)
-    avail = np.where(dormant, 0, np.clip(np.round(avail + rng.normal(0, 20, n)), 1, 365)).astype(int)
-    born_ts = ms[df["born"].to_numpy()]
-    first_review = (born_ts + pd.Timedelta(days=30)).strftime("%Y-%m-%d").to_numpy().astype(object)
-    first_review[never] = ""
+    noise_avail = rng.normal(0, 20, n)
+    u_lic = [rng.random(n) < q for q in (0.85, 0.35, 0.75, 0.8, 0.6)]  # van, vic, bc-post2, sea, ott
+    hotel = rng.random(n) < 0.7
+    n_reviews = rng.poisson(40, n).astype(np.int16)
+    n_reviews_ltm = rng.poisson(10, n).astype(np.int16)
+    host_count = rng.integers(2, 30, n).astype(np.int16)
+    # Same positions pandas' DataFrame.sample(frac=0.003, random_state=SEED) picks on n rows.
+    dup_pos = pd.RangeIndex(n).to_series().sample(frac=0.003, random_state=C.SEED).to_numpy()
 
-    lic = np.full(n, "", dtype=object)
-    van = (df["city"] == "vancouver").to_numpy()
-    lic[van & (rng.random(n) < 0.85)] = "Municipal registration number: 24-156789"
-    vic = (df["city"] == "victoria").to_numpy()
-    lic[vic & (rng.random(n) < 0.35)] = "Municipal registration number: 00012345"
-    lic[bc & post2 & (rng.random(n) < 0.75)] = "Provincial registration number: H123456789"
-    sea = (df["city"] == "seattle").to_numpy()
-    lic[sea & (rng.random(n) < 0.8)] = "STR-OPLI-19-001234"
-    ott_c = (df["city"] == "ottawa").to_numpy()
-    lic[ott_c & (rng.random(n) < 0.6)] = "STR-845-123"
+    a_city = A["city"].to_numpy()
+    a_nbhd = A["nbhd"].to_numpy()
+    a_rt = A["rt"].to_numpy()
+    a_exempt = np.array([(c, nb) in C.PR_EXEMPT_NEIGHBOURHOODS for c, nb in zip(a_city, a_nbhd)])
 
-    other_label = np.where(rng.random(n) < 0.7, "Hotel room", "Shared room")
-    room_type = np.where(entire, ROOM_LABEL["entire_home"],
-                         np.where(df["rt"] == "private_room", ROOM_LABEL["private_room"], other_label))
+    def frame(idx: np.ndarray) -> pd.DataFrame:
+        """Format the rows at positions ``idx`` (a slice of the full row space)."""
+        ap = pos[idx]
+        city, rt = a_city[ap], a_rt[ap]
+        snap = snap_dates[t_idx[idx]]
+        month_ts = ms[t_idx[idx]]
+        bc = np.isin(city, C.BC_MARKETS)
+        entire = rt == "entire_home"
+        treated = bc & entire & ~a_exempt[ap] & (month_ts >= p1)
+        post2 = month_ts >= p2
+        season = 0.5 * 0.10 * np.cos(2 * np.pi * (month_ts.month.values - 7) / 12)
+        price = A["base_price"].to_numpy()[ap] * np.exp(
+            season + params["bc_entire_price_effect_phase1"] * treated + noise_price[idx])
+        price_str = np.char.add("$", np.array([f"{p:,.2f}" for p in price]))
+        price_str[price_null[idx]] = ""
+        dorm, rev, nev = dormant[idx], reviewed[idx], never[idx]
+        lag_days = np.where(dorm, lag_dormant[idx], np.where(rev, lag_reviewed[idx], lag_stale[idx])).astype(np.int64)
+        last_review = (snap - pd.to_timedelta(lag_days, unit="D")).strftime("%Y-%m-%d").to_numpy().astype(object)
+        last_review[nev] = ""
+        avail = A["base_avail"].to_numpy()[ap] + params["bc_entire_availability_shift_days"] * treated
+        avail = np.where(dorm, 0, np.clip(np.round(avail + noise_avail[idx]), 1, 365)).astype(int)
+        first_review = (ms[A["born"].to_numpy()[ap]] + pd.Timedelta(days=30)).strftime("%Y-%m-%d").to_numpy().astype(object)
+        first_review[nev] = ""
+        lic = np.full(len(ap), "", dtype=object)
+        lic[(city == "vancouver") & u_lic[0][idx]] = "Municipal registration number: 24-156789"
+        lic[(city == "victoria") & u_lic[1][idx]] = "Municipal registration number: 00012345"
+        lic[bc & post2 & u_lic[2][idx]] = "Provincial registration number: H123456789"
+        lic[(city == "seattle") & u_lic[3][idx]] = "STR-OPLI-19-001234"
+        lic[(city == "ottawa") & u_lic[4][idx]] = "STR-845-123"
+        other_label = np.where(hotel[idx], "Hotel room", "Shared room")
+        room_type = np.where(entire, ROOM_LABEL["entire_home"],
+                             np.where(rt == "private_room", ROOM_LABEL["private_room"], other_label))
+        return pd.DataFrame({
+            "city": city,
+            "snapshot_date": snap.strftime("%Y-%m-%d"),
+            "id": pd.Series(ap + 10_000_000).astype(str),
+            "last_scraped": snap.strftime("%Y-%m-%d"),
+            "host_id": pd.Series(A["host_id"].to_numpy()[ap]).astype(str),
+            "neighbourhood_cleansed": a_nbhd[ap],
+            "room_type": room_type,
+            "price": price_str,
+            "availability_365": avail.astype(str),
+            "number_of_reviews": n_reviews[idx].astype(str),
+            "number_of_reviews_ltm": np.where(rev, n_reviews_ltm[idx], 0).astype(str),
+            "first_review": first_review,
+            "last_review": last_review,
+            "license": lic,
+            "calculated_host_listings_count": np.where(A["commercial"].to_numpy()[ap], host_count[idx], 1).astype(str),
+            "latitude": pd.Series(A["lat"].to_numpy()[ap]).round(5).astype(str),
+            "longitude": pd.Series(A["lon"].to_numpy()[ap]).round(5).astype(str),
+        })
 
-    out = pd.DataFrame({
-        "city": df["city"],
-        "snapshot_date": snap.strftime("%Y-%m-%d"),
-        "id": df["id"].astype(str),
-        "last_scraped": snap.strftime("%Y-%m-%d"),
-        "host_id": df["host_id"].astype(str),
-        "neighbourhood_cleansed": df["nbhd"],
-        "room_type": room_type,
-        "price": price_str,
-        "availability_365": avail.astype(str),
-        "number_of_reviews": rng.poisson(40, n).astype(str),
-        "number_of_reviews_ltm": np.where(reviewed, rng.poisson(10, n), 0).astype(str),
-        "first_review": first_review,
-        "last_review": last_review,
-        "license": lic,
-        "calculated_host_listings_count": np.where(df["commercial"], rng.integers(2, 30, n), 1).astype(str),
-        "latitude": df["lat"].round(5).astype(str),
-        "longitude": df["lon"].round(5).astype(str),
-    })
-    # Duplicate-row pathology: ~0.3% of rows re-scraped a day earlier with a stale price.
-    dup = out.sample(frac=0.003, random_state=C.SEED).copy()
-    dup["last_scraped"] = (pd.to_datetime(dup["last_scraped"]) - pd.Timedelta(days=1)).dt.strftime("%Y-%m-%d")
-    out = pd.concat([out, dup], ignore_index=True)
-
-    import duckdb
+    import pyarrow as pa
+    import pyarrow.parquet as pq
 
     out_path.parent.mkdir(parents=True, exist_ok=True)
-    con = duckdb.connect()
-    con.register("out_df", out)
-    con.execute(f"COPY out_df TO '{out_path.as_posix()}' (FORMAT PARQUET, COMPRESSION ZSTD)")
-    con.close()
-    return len(out)
+    tmp = out_path.with_suffix(".part")
+    schema = writer = None
+    try:
+        chunk = 200_000
+        for start in range(0, n, chunk):
+            tbl = pa.Table.from_pandas(frame(np.arange(start, min(start + chunk, n))), preserve_index=False)
+            if writer is None:
+                schema = pa.schema([pa.field(f.name, pa.string()) for f in tbl.schema])
+                writer = pq.ParquetWriter(tmp, schema, compression="zstd")
+            writer.write_table(tbl.cast(schema))
+        # Duplicate-row pathology: ~0.3% of rows re-scraped a day earlier with a stale price.
+        dup = frame(dup_pos)
+        dup["last_scraped"] = (pd.to_datetime(dup["last_scraped"]) - pd.Timedelta(days=1)).dt.strftime("%Y-%m-%d")
+        writer.write_table(pa.Table.from_pandas(dup, preserve_index=False).cast(schema))
+    finally:
+        if writer is not None:
+            writer.close()
+    tmp.replace(out_path)
+    return n + len(dup_pos)
 
 
 if __name__ == "__main__":
