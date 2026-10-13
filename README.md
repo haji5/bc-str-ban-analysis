@@ -1,16 +1,37 @@
 # Did BC's short-term rental ban work? Evidence from Bill 35, 2022-2026
 
-**[Open the interactive dashboard →](https://haji5.github.io/bc-str-ban-analysis/)**
+**[Interactive dashboard](https://haji5.github.io/bc-str-ban-analysis/)** · **[Policy brief](memo/bc_str_policy_memo.md)** · **[Data provenance](data/fixtures/README.md)**
 
-An end-to-end causal evaluation of British Columbia's *Short-Term Rental Accommodations Act* (Bill 35). The Act restricted short-term rentals to the host's principal residence from May 2024 and added a provincial registry with platform de-listing from May 2025. The project:
+## Summary
 
-- assembles 52 Inside Airbnb snapshots, 40 of them recovered from unlisted archives;
-- joins them to Statistics Canada, Bank of Canada and CMHC housing data in a DuckDB SQL layer;
-- estimates difference-in-differences and event-study models with cluster-robust, wild-bootstrap and randomization inference;
-- presents the results in an interactive web dashboard and a two-page policy brief.
+**Question.** British Columbia's *Short-Term Rental Accommodations Act* (Bill 35) limited short-term rentals to the host's principal residence from May 2024. It added a provincial host registry from May 2025, which platforms enforced by de-listing unregistered listings from June 2025. Did the Act reduce short-term-rental supply, and did rents fall?
+
+**Answer.**
+
+- **Supply fell where the rules changed.** Against nearby areas the rule does not cover, Phase 1 cut entire-home listings in the Victoria region by about a third (−32%, randomization-inference p = 0.011).
+- **Vancouver did not shrink.** It already had a principal-residence bylaw, and its listings are back above pre-announcement levels, though the latest snapshot is unusually noisy.
+- **No rent effect is detectable.** The listings removed are too few relative to the rental stock for any rent effect to stand out from the noise in the price data.
+
+**What the project shows.** The work runs end to end, from raw data to a policy recommendation:
+
+- **Data.** 52 Inside Airbnb snapshots, 40 of them recovered from unlisted archives, joined in DuckDB SQL to Statistics Canada, Bank of Canada and CMHC housing data.
+- **Causal inference.** Difference-in-differences, event studies, a triple difference and Poisson (PPML) models, with clustered, wild-bootstrap and randomization inference.
+- **Validation.** The estimators are run on a calibrated synthetic panel with known effects, and a 32-test pytest suite checks the pipeline.
+- **Communication.** An interactive D3 dashboard and a briefing note for decision-makers.
+
+The project also documents where the textbook design failed on real data, and an audit's corrections are listed in full.
 
 **Stack:** Python · DuckDB/SQL · pyfixest · statsmodels · pandas · matplotlib · D3.js · pytest
 **Data:** Inside Airbnb listings through June 2026 (retrieved October 2026); StatCan CPI Table 18-10-0004-01; Bank of Canada policy rate; CMHC Rental Market Survey.
+
+### Documentation
+
+| Document | What it covers |
+|---|---|
+| This README | Findings, research design, method, reproduction, limitations, corrections |
+| [Interactive dashboard](https://haji5.github.io/bc-str-ban-analysis/) | Every chart and estimate, each traceable to its data ([source in `docs/`](docs/)) |
+| [`memo/bc_str_policy_memo.md`](memo/bc_str_policy_memo.md) | Briefing note: findings and recommendations for a policy audience |
+| [`data/fixtures/README.md`](data/fixtures/README.md) | Where each offline fixture came from, and the quality flag on each CMHC value |
 
 ## Headline findings
 
@@ -43,7 +64,7 @@ An end-to-end causal evaluation of British Columbia's *Short-Term Rental Accommo
 | Room-type DiD, BC, PPML | −0.179 (0.061) | +0.049 (0.051) | |
 | Cross-market BC vs Ottawa | −0.212 (0.046) | −0.058 (0.032) | **fails** (one lead in window, +0.12, p = 0.001); not used for inference |
 
-Coefficients are log points. Neighbourhood-clustered standard errors are in parentheses. With only three control areas, clustered p-values overstate precision: on the synthetic panel, the clustered pre-trend test rejects at p = 0.01 even though parallel trends hold by construction. The preferred design therefore uses placebo-in-space randomization inference (RI). Every set of three of the 29 Victoria neighbourhoods is relabelled as the control group, and the p-value is the share of placebo estimates at least as large as the real one. Wild-cluster bootstrap p-values (0.050 for Phase 1, 0.093 for Phase 2) are in the results file but are unreliable with this few controls. `make model` writes the full regression table to `data/processed/regression_table.csv`.
+Coefficients are log points. Neighbourhood-clustered standard errors are in parentheses. With only three control areas, clustered p-values overstate precision: on the synthetic panel, the clustered pre-trend test rejects at p = 0.01 even though parallel trends hold by construction. The preferred design therefore uses placebo-in-space randomization inference (RI). Every set of three of the 29 Victoria neighbourhoods is relabelled as the control group, and the p-value is the share of placebo estimates at least as large as the real one in absolute value. The joint RI pre-trend test uses the sum of squared lead coefficients. The registry also applies in the exempt areas, so in this design the Phase-2 coefficient is the registry's *additional* effect in covered areas (where it made the principal-residence rule enforceable), not its total effect. Wild-cluster bootstrap p-values (0.050 for Phase 1, 0.093 for Phase 2) are in the results file but are unreliable with this few controls. `make model` writes the full regression table to `data/processed/regression_table.csv`.
 
 ![Supply trajectories](assets/fig1_supply_trajectories.png)
 
@@ -51,7 +72,7 @@ Coefficients are log points. Neighbourhood-clustered standard errors are in pare
 
 The rent comparison (STR supply vs CPI rent, policy rate and CMHC vacancy) is in [`assets/fig3_rent_transmission.png`](assets/fig3_rent_transmission.png).
 
-**Policy brief.** [`memo/bc_str_policy_memo.md`](memo/bc_str_policy_memo.md) presents the findings and recommendations as a two-page briefing note addressed to a Deputy Minister. It is an independent analysis, written in that format as a communication exercise; it was not commissioned by or prepared for the Government of British Columbia.
+**Policy brief.** [`memo/bc_str_policy_memo.md`](memo/bc_str_policy_memo.md) presents the findings and recommendations as a briefing note addressed to a Deputy Minister. It is an independent analysis, written in that format as a communication exercise; it was not commissioned by or prepared for the Government of British Columbia.
 
 ## Design decisions: where the textbook design broke on real data
 
@@ -59,12 +80,12 @@ The usual design for this question is a within-market difference-in-differences:
 
 | Textbook choice | What the data showed | What this project does instead |
 |---|---|---|
-| Download the Inside Airbnb archive for 2022-2026 | The site lists only the trailing 12 months (Dec 2025-Sep 2026), all after the policy. That alone cannot identify anything | Older files still exist on Inside Airbnb's server. A limited search found 40 unlisted snapshots back to Jun 2022, listed in `data/fixtures/known_archive_snapshots.json` |
+| Download the Inside Airbnb archive for 2022-2026 | The site lists only the trailing 12 months (when retrieved, the Dec 2025, Mar 2026 and Jun 2026 snapshots), all after the policy. That alone cannot identify anything | Older files still exist on Inside Airbnb's server. A limited search found 40 unlisted snapshots back to Jun 2022, listed in `data/fixtures/known_archive_snapshots.json` |
 | City × room-type × month panel | 2 BC cities × 2 room types = **4 clusters**, too few for cluster-robust standard errors | Estimation runs at neighbourhood × room type (49 BC clusters). City-level tables are kept for reporting |
 | Private rooms as an untreated control | The Phase-2 registry covers every listing, and covered-area private rooms in Victoria fell 25%. Renting rooms in one's own home stays legal, so how far Phase 1 reached private rooms is unclear | The room-type DiD is reported as a **lower bound**. The **exempt-area design** is the preferred within-BC control, with a triple difference alongside |
 | "Exempt" = municipalities under 10,000 people | A small municipality is exempt only if it is more than 15 km from a larger one. Metchosin and Highlands are covered, and Salt Spring Island opted in from Nov 2025 | Controls are Juan de Fuca and the Southern Gulf Islands, plus Salt Spring Island until its opt-in (`src/config.py`). A variant uses the two never-covered areas only |
 | Cluster-robust inference | Three control clusters: clustered tests over-reject, and the wild bootstrap is unreliable | Placebo-in-space randomization inference over every three-area control group (3,654), for the effects and for the pre-trend test |
-| Normalise the event study to t = −1 | t = −1 (Apr 2024) is six months after the Oct 2023 announcement, so anticipation would contaminate the baseline | Reference is the last pre-announcement snapshot (**Sep 2023**, t = −8). Live leads are never pooled into an endpoint bin, so every pre-announcement snapshot gets its own coefficient (4-5 leads per test). A separate anticipation term enters the static DiD |
+| Normalise the event study to t = −1 | t = −1 (Apr 2024) is six months after the Oct 2023 announcement, so anticipation would contaminate the baseline | Reference is the last pre-announcement snapshot (**Aug-Sep 2023**: t = −8 months, or the quarter bin covering t = −10 to −8 in the real data). Live leads are never pooled into an endpoint bin, so every pre-announcement snapshot gets its own coefficient (4-5 leads per test). A separate anticipation term enters the static DiD |
 | Ottawa + Seattle as outside controls | Ottawa fails pre-trends (BC out-grew it in mid-2023). Seattle has no public archive before 2025 | Cross-market results are reported with pre-trend diagnostics but not relied on. A control city needs ≥ 2 pre-announcement snapshots in the window |
 | Monthly panel | Real snapshots are roughly quarterly. Four are truncated (the Mar 2026 Victoria, Ottawa and Seattle files and Vancouver Mar 2025), unevenly across neighbourhoods; one estimate was inflated 3× before this was caught | Months without a snapshot are marked unobserved, never interpolated. Real-data event studies use one bin per snapshot quarter. Snapshots with fewer than 75% of their neighbours' listings are flagged and excluded. Each snapshot also records its share of never-seen listing IDs |
 | Registry compliance from the licence field | From 2025 the field reads "Provincial registration number: …", and 6-9% of listings show "Exempt" there | Only a registry number (H/PM/ST + digits) counts as registered. Exemption claims are reported separately |
@@ -89,7 +110,7 @@ The usual design for this question is a within-market difference-in-differences:
 | S1 | `log(1+active) ~ Entire×{Antic, Post2024, Post2025} \| unit + city×month`, clustered by neighbourhood. Variants: per city, Poisson (PPML), reviewed-in-180-days outcome, room × calendar-month FE |
 | S2a | Victoria covered vs exempt entire homes (unit + month FE), with randomization inference and wild-cluster bootstrap. Variants: never-covered controls only, reviewed-in-180-days outcome, PPML |
 | S2-ES / S2b | Event study for the exempt-area design (Wald and randomization-inference pre-trend tests); triple difference |
-| S3 | Event study t ∈ [−12, 24], reference t = −8. Synthetic: monthly, binned endpoints. Real: one bin per snapshot quarter, leads never pooled. Joint pre-announcement Wald test |
+| S3 | Event study t ∈ [−12, 24] months, reference t = −8 (Sep 2023). Synthetic: monthly, binned endpoints. Real: one bin per snapshot quarter (reference bin t = −10 to −8), leads never pooled. Joint pre-announcement Wald test |
 | S4 | Cross-market event study and DiD, with leave-one-control-out and wild bootstrap |
 | S5 | Rent: level and y/y DiD of CPI rented accommodation, BC vs Ottawa (Driscoll-Kraay SEs; descriptive with three cities); association with observed STR counts; mechanical bound |
 
@@ -183,7 +204,7 @@ scripts/                 export_dashboard.py: dashboard data from data/app/ (mak
 tests/test_pipeline.py   pytest suite
 data/fixtures/           offline fixtures (provenance in data/fixtures/README.md)
 data/app/                committed dashboard data (panel tables + model results)
-memo/                    two-page policy brief
+memo/                    policy briefing note
 ```
 
 **Data sources and licences:** Inside Airbnb (CC BY 4.0), Statistics Canada (Open Government Licence - Canada), Bank of Canada, CMHC.

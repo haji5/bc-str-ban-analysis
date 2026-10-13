@@ -440,12 +440,12 @@
     <div class="bc-cols">
       <div class="bc-card" id="pipeline-card">
         <h3>Pipeline</h3>
-        <p class="bc-note">One command (<code>make all</code>) rebuilds every number from raw files.</p>
+        <p class="bc-note"><code>make all</code> rebuilds every estimate from the raw files; <code>make app-data</code> and <code>make site</code> refresh this dashboard.</p>
         <div class="bc-flow">
           <div class="bc-step"><h4>Acquire</h4><p>Inside Airbnb snapshots incl. recovered archives; StatCan CPI via WDS; Bank of Canada Valet; CMHC RMS.</p></div>
           <div class="bc-step"><h4>Model in SQL</h4><p>DuckDB: clean listings, aggregate to neighbourhood × month, build the panel with policy timing.</p></div>
           <div class="bc-step"><h4>Estimate</h4><p>pyfixest DiD, PPML and event studies; clustered, randomization and wild-bootstrap inference; synthetic-truth validation.</p></div>
-          <div class="bc-step"><h4>Communicate</h4><p>This dashboard and a two-page briefing note.</p></div>
+          <div class="bc-step"><h4>Communicate</h4><p>This dashboard and a policy briefing note.</p></div>
         </div>
         <div class="bc-chips"><span>Python</span><span>DuckDB / SQL</span><span>pyfixest</span><span>statsmodels</span><span>pandas</span><span>D3.js</span><span>pytest</span></div>
       </div>
@@ -455,7 +455,7 @@
           <li><b>Quebec contamination.</b> Montreal’s post-2023 crackdown is a parallel treatment, so Montreal is excluded from all controls.</li>
           <li><b>Ottawa isn’t clean.</b> Its 2022 bylaw roll-out violates parallel trends; Seattle’s archive has no pre-period.</li>
           <li><b>Truncated scrapes.</b> Spatially uneven truncation once inflated the Phase-2 estimate threefold; affected snapshots are dropped by rule.</li>
-          <li><b>Which areas are exempt.</b> Small municipalities within 15 km of a larger one (Metchosin, Highlands) are covered, and Salt Spring Island opted in from Nov 2025. An earlier version treated all three as exempt.</li>
+          <li><b>Which areas are exempt.</b> Small municipalities within 15 km of a larger one (Metchosin, Highlands) are covered, and Salt Spring Island opted in from Nov 2025. An earlier version treated Metchosin and Highlands as exempt and missed Salt Spring Island's opt-in.</li>
           <li><b>Partly treated control.</b> Private rooms fell too; design B and a triple difference bound design A.</li>
           <li><b>Measurement changes.</b> Price fields changed in 2026, so nightly prices are not used as an outcome.</li>
         </ul>
@@ -468,7 +468,7 @@
 
 <footer class="site-foot">
   <span>Code, data and method: <a href="https://github.com/haji5/bc-str-ban-analysis">github.com/haji5/bc-str-ban-analysis</a></span>
-  <span>Policy brief: <a href="https://github.com/haji5/bc-str-ban-analysis/blob/master/memo/bc_str_policy_memo.md">two-page memo</a></span>
+  <span>Policy brief: <a href="https://github.com/haji5/bc-str-ban-analysis/blob/master/memo/bc_str_policy_memo.md">briefing note</a></span>
 </footer>
 <noscript><p class="noscript">This dashboard draws its charts with JavaScript. The findings are also in the <a href="https://github.com/haji5/bc-str-ban-analysis#readme">project README</a>.</p></noscript>
 

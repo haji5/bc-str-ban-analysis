@@ -23,12 +23,6 @@ dependencies = [
 [project.optional-dependencies]
 dev = ["pytest>=8"]
 
-[tool.poetry]
-name = "bc-str-ban-analysis"
-version = "1.0.0"
-package-mode = false
-description = "Causal evaluation of BC Bill 35"
-
 [tool.setuptools]
 packages = ["src"]
 

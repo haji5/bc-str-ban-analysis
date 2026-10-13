@@ -65,4 +65,4 @@ RI = randomization inference. Each p-value is the share of all alternative contr
 4. **Audit Vancouver's rebound.** The 2025 dip and 2026 recovery suggest re-registration rather than exit. Check that the 27% of listings without a displayed provincial number are being validated by platforms, including the 6% that claim an exemption.
 5. **Fund asking-rent data** (new-lease rents by CMA). The CPI and CMHC averages are too slow and too capped to detect a 1-3% supply effect.
 
-*Method, code and full results: `README.md`. All estimates reproduce with `make all`.*
+*Method, code and full results: [README](../README.md). All estimates reproduce with `make all`.*
