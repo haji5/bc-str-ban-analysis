@@ -29,6 +29,7 @@ The project also documents where the textbook design failed on real data, and an
 | Document | What it covers |
 |---|---|
 | This README | Findings, research design, method, reproduction, limitations, corrections |
+| [`LICENSE`](LICENSE) | MIT License for the code and documentation |
 | [Interactive dashboard](https://haji5.github.io/bc-str-ban-analysis/) | Every chart and estimate, each traceable to its data ([source in `docs/`](docs/)) |
 | [`memo/bc_str_policy_memo.md`](memo/bc_str_policy_memo.md) | Briefing note: findings and recommendations for a policy audience |
 | [`data/fixtures/README.md`](data/fixtures/README.md) | Where each offline fixture came from, and the quality flag on each CMHC value |
@@ -207,4 +208,4 @@ data/app/                committed dashboard data (panel tables + model results)
 memo/                    policy briefing note
 ```
 
-**Data sources and licences:** Inside Airbnb (CC BY 4.0), Statistics Canada (Open Government Licence - Canada), Bank of Canada, CMHC.
+**Licence:** the code and documentation are under the [MIT License](LICENSE). The data keep their own terms: Inside Airbnb (CC BY 4.0), Statistics Canada (Open Government Licence - Canada), Bank of Canada, CMHC.
