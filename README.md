@@ -2,38 +2,17 @@
 
 [Interactive dashboard](https://haji5.github.io/bc-str-ban-analysis/) · [Policy brief](memo/bc_str_policy_memo.md) · [Data provenance](data/fixtures/README.md)
 
-## Summary
+British Columbia's *Short-Term Rental Accommodations Act* (Bill 35) limited short-term rentals to the host's principal residence from May 2024. It added a provincial host registry from May 2025, which platforms enforced by de-listing unregistered listings from June 2025. This project asks whether the Act reduced short-term-rental supply and whether rents fell.
 
-British Columbia's *Short-Term Rental Accommodations Act* (Bill 35) limited short-term rentals to the host's principal residence from May 2024. It added a provincial host registry from May 2025, which platforms enforced by de-listing unregistered listings from June 2025. This project asks whether the Act reduced short-term-rental supply and whether rents fell. In short:
+Supply fell where the rules changed. Compared with nearby areas the rule does not cover, Phase 1 cut entire-home listings in the Victoria region by about a third (−32%, randomization-inference p = 0.011). Vancouver, which already had a principal-residence bylaw, did not shrink: its listings are back above pre-announcement levels, though the latest snapshot is unusually noisy. Rents show no detectable effect, because too few listings were removed, relative to the rental stock, for a change to stand out from the noise in the price data.
 
-- Supply fell where the rules changed. Against nearby areas the rule does not cover, Phase 1 cut entire-home listings in the Victoria region by about a third (−32%, randomization-inference p = 0.011).
-- Vancouver did not shrink. It already had a principal-residence bylaw, and its listings are back above pre-announcement levels, though the latest snapshot is unusually noisy.
-- No rent effect is detectable. Too few listings were removed, relative to the rental stock, for any rent effect to stand out from the noise in the price data.
-
-The analysis goes from raw data to a policy recommendation:
-
-- Data: 52 Inside Airbnb snapshots, 40 of them recovered from unlisted archives, joined in DuckDB SQL to Statistics Canada, Bank of Canada and CMHC housing data.
-- Causal inference: difference-in-differences, event studies, a triple difference and Poisson (PPML) models, with clustered, wild-bootstrap and randomization inference.
-- Validation: the estimators run on a calibrated synthetic panel with known effects, and a 32-test pytest suite checks the pipeline.
-- Communication: an interactive D3 dashboard and a briefing note for decision-makers.
-
-It also records where the textbook design failed on real data, and lists an audit's corrections in full.
+The pipeline starts from 52 Inside Airbnb snapshots, 40 of them recovered from unlisted archives, and joins them in DuckDB SQL to Statistics Canada, Bank of Canada and CMHC housing data. The estimates come from difference-in-differences, event studies, a triple difference and Poisson (PPML) models, with clustered, wild-bootstrap and randomization inference. The same estimators also run on a calibrated synthetic panel, where they have to recover effects known in advance, and a 32-test pytest suite checks the pipeline. Results are published as an interactive D3 dashboard and a briefing note for decision-makers. The sections on [where the textbook design failed](#where-the-textbook-design-failed-on-real-data) and on [an audit's corrections](#corrections-october-2026-audit) record what went wrong along the way.
 
 Stack: Python · DuckDB/SQL · pyfixest · statsmodels · pandas · matplotlib · D3.js · pytest
 
 Data: Inside Airbnb listings through June 2026 (retrieved October 2026); StatCan CPI Table 18-10-0004-01; Bank of Canada policy rate; CMHC Rental Market Survey.
 
-### Documentation
-
-| Document | What it covers |
-|---|---|
-| This README | Findings, research design, method, reproduction, limitations, corrections |
-| [`LICENSE`](LICENSE) | MIT License for the code and documentation |
-| [Interactive dashboard](https://haji5.github.io/bc-str-ban-analysis/) | Every chart and estimate, each traceable to its data ([source in `docs/`](docs/)) |
-| [`memo/bc_str_policy_memo.md`](memo/bc_str_policy_memo.md) | Briefing note: findings and recommendations for a policy audience |
-| [`data/fixtures/README.md`](data/fixtures/README.md) | Where each offline fixture came from, and the quality flag on each CMHC value |
-
-## Headline findings
+## Findings
 
 1. Supply fell where Bill 35 changed the rules. In the Victoria Capital Regional District (CRD), active entire-home listings in areas covered by the principal-residence requirement fell 35%, from 3,133 in Aug 2023 to 2,033 in Jun 2026. The never-covered areas (Juan de Fuca, Southern Gulf Islands) rose 6%. Against the exempt areas, listings fell 32% at Phase 1 (May 2024). Randomization inference gives p = 0.011 for Phase 1, against all 3,654 possible three-area control groups. The further 11% decline at Phase 2 (registry, May 2025) cannot be told apart from placebo assignments (p = 0.27).
 2. Vancouver, which already had a 2018 bylaw, did not shrink. Entire-home listings dipped 22% at the June 2025 registry deadline. By June 2026 they were 5% above September 2023, and 9% above June 2023 on a like-for-like season basis. That endpoint rests on one snapshot in which 19% of listings are IDs never seen before, against 9-13% in every complete snapshot since March 2024.
@@ -56,7 +35,7 @@ Data: Inside Airbnb listings through June 2026 (retrieved October 2026); StatCan
 
 | Causal estimate (real data) | Phase 1 (May 2024) | Phase 2, incremental (May 2025) | Pre-trend |
 |---|---:|---:|---|
-| Victoria covered vs exempt (preferred; 3 control areas) | −0.390 (0.054), RI p = 0.011 | −0.115 (0.045), RI p = 0.27 | 4 leads: p = 0.29 (Wald), 0.92 (RI); anticipation −0.124 (0.034) |
+| **Victoria covered vs exempt** (preferred; 3 control areas) | **−0.390** (0.054), RI p = 0.011 | −0.115 (0.045), RI p = 0.27 | 4 leads: p = 0.29 (Wald), 0.92 (RI); anticipation −0.124 (0.034) |
 | … never-covered controls only (2 areas) | −0.404 (0.057), RI p = 0.040 | −0.115 (0.055), RI p = 0.37 | |
 | … reviewed-in-180-days outcome | −0.502 (0.085) | −0.174 (0.060) | |
 | Victoria triple difference (room × coverage × post) | −0.326 (0.130) | −0.274 (0.241) | |
